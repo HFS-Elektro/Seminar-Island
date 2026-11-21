@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; connect-src 'self' data: blob:; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; manifest-src 'self'; worker-src 'self'; script-src 'self' 'sha256-Q2DjwsG6/B2iZ4zTB0QU6HpbMGHYFsg+QhMrY64xgds='">
 <meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="author" content="P. Disson">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Hafenstadt Didaktika</title>
 <meta name="description" content="Point-and-Click-Lernadventure zur Unterrichtsplanung: Erkunde eine Hafenstadt, sammle die vier Siegel der Planung (Klären, Entscheiden, Gestalten, Evaluieren) und entzünde das Leuchtfeuer.">
@@ -696,5 +698,7 @@ if(!SCENES[G.sc]){G.sc="pier";G.x=110;G.y=236;P.x=P.tx=G.x;P.y=P.ty=G.y}G.inv=G.
 updTmr();
 loadAll().then(()=>{buildHQ();$("#loading").remove();renderSeals();renderInv();camX=Math.max(0,Math.min(sc().w-W,P.x-W/2));requestAnimationFrame(frame);onEnter(G.sc)});
 </script>
+<style>.ll-credit{position:fixed;right:6px;bottom:4px;z-index:2147483000;font:10px/1.3 system-ui,sans-serif;color:#888;opacity:.6;pointer-events:none;max-width:calc(100vw - 12px);text-align:right}.ll-credit a{color:inherit;pointer-events:auto}.ll-credit:hover{opacity:1}@media print{.ll-credit{display:none}}</style>
+<div class="ll-credit" lang="de">Idee &amp; Design: P. Disson · entwickelt mit Claude · <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de" rel="license noopener" target="_blank">CC BY-NC-SA 4.0</a></div>
 </body>
 </html>

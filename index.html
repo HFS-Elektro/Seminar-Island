@@ -2,12 +2,15 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; connect-src 'self' data: blob:; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; manifest-src 'self'; worker-src 'self'; script-src 'self' 'sha256-aVmzOay63wQfnI1dRMuhuksrVgsMm1VUl5yTIzT0t48='">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; connect-src 'self' data: blob:; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; manifest-src 'self'; worker-src 'self'; script-src 'self' 'sha256-0d6Un4dFfX5oncaEVen9h7eBFJDaw+bfThNtOqCZQAs='">
 <meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="author" content="P. Disson">
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Seminar-Island · Lernlauncher</title>
 <meta name="description" content="Lernlauncher für das Kolloquium Pädagogik und Pädagogische Psychologie mit Schwerpunkt Unterrichtsplanung: Lernpfad, Spickzettel, Glossar, Lernkarten, Prüfungssimulator, Lernspiele und Skripte als PDF.">
 <script src="assets/app.js"></script>
+<script src="assets/qr.js"></script>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0f766e">
 <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
@@ -91,6 +94,11 @@ h2.sec{font-family:var(--f-head);font-size:clamp(24px,3.4vw,30px);margin:36px 0 
 .route span{font-size:14px;color:var(--muted)}
 footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between}
 .btn{font:inherit;font-weight:800;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:7px 12px;border-radius:10px;cursor:pointer}
+.share-l{display:block;font-size:13px;font-weight:700;color:var(--muted);margin-bottom:4px}
+.share-r{display:flex;gap:6px}
+.share-in{font:inherit;font-size:14px;flex:1;min-width:0;padding:7px 10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
+.qrwrap{display:flex;justify-content:center;margin:12px 0}
+.qrwrap canvas{width:176px;height:176px;image-rendering:pixelated;border-radius:10px;background:#fff}
 .themebtn{position:fixed;right:14px;bottom:14px;border-radius:99px;z-index:5}
 </style>
 </head>
@@ -164,8 +172,8 @@ footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:v
   <a class="dlrow" href="skripte/Lernskript_Paedagogische_Psychologie.pdf" target="_blank" rel="noopener"><div class="ic">📙</div><div><b>Lernskript Pädagogische Psychologie</b><span>Klassenführung, Motivation, Lernen, Kommunikation, Lehrergesundheit, Gewalt & Mobbing, Mediation – mit Schaubildern und Fällen · ca. 4,7 MB</span></div><em>PDF ↗</em></a>
  </div>
 
- <h2 class="sec">Lernstand & App</h2>
- <p class="secl">Dein Fortschritt liegt nur in diesem Browser. Hier kannst du ihn sichern, umziehen und den Launcher als App installieren.</p>
+ <h2 class="sec">Lernstand, App & Teilen</h2>
+ <p class="secl">Dein Fortschritt liegt nur in diesem Browser. Hier kannst du ihn sichern, umziehen, den Launcher als App installieren oder weitergeben.</p>
  <div class="tools">
   <div class="box"><h3>💾 Lernstand sichern</h3><p>Exportiert Fortschritt, Lernkarten, Spielstände und Prüfungstermin in eine Datei. Auf einem anderen Gerät oder Browser wieder importieren.</p>
    <div class="row"><button class="btn pri" id="exp">Exportieren</button><label class="btn" for="imp" style="cursor:pointer">Importieren …</label><input type="file" id="imp" accept=".json,application/json" hidden></div><p class="note" id="bkNote" aria-live="polite"></p></div>
@@ -174,11 +182,17 @@ footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:v
    <label><input type="checkbox" id="optHc"> Höherer Kontrast</label><label><input type="checkbox" id="optRm"> Bewegungen reduzieren</label><label><input type="checkbox" id="optFs"> Spiele automatisch im Vollbild starten</label></div></div>
   <div class="box"><h3>📲 Als App installieren</h3><p>Auf Handy oder PC installieren – danach funktioniert alles auch ohne Internet, inklusive der Skripte.</p>
    <div class="row"><button class="btn pri" id="inst" hidden>Jetzt installieren</button></div><p class="note" id="appNote" aria-live="polite"></p></div>
+  <div class="box" id="teilen"><h3>🔗 Link teilen</h3><p>Den Launcher weitergeben: Link kopieren oder den QR-Code mit dem Handy scannen lassen.</p>
+   <label for="shareUrl" class="share-l">Link (anpassbar, z. B. für eine einzelne Seite)</label>
+   <div class="share-r"><input id="shareUrl" class="share-in" type="url" spellcheck="false" autocomplete="off"><button class="btn" id="shareReset" title="Link zum Launcher wiederherstellen" aria-label="Link zum Launcher wiederherstellen">↺</button></div>
+   <div class="qrwrap"><canvas id="qr" width="1" height="1" role="img" aria-label="QR-Code mit dem Link"></canvas></div>
+   <div class="row"><button class="btn pri" id="copyLink">Link kopieren</button><button class="btn" id="saveQr">QR-Code speichern</button><button class="btn" id="shareBtn" hidden>Teilen …</button></div><p class="note" id="shareNote" aria-live="polite"></p></div>
  </div>
 
  <footer>
   <span>Lernmaterial zur Prüfungsvorbereitung – keine offiziellen Seminarunterlagen. Fachbeispiele dienen der Veranschaulichung.</span>
   <span>Fortschritt wird nur lokal im Browser gespeichert. Die Seiten laden nichts von fremden Servern; beim Aufruf über GitHub Pages protokolliert GitHub technisch bedingt die IP-Adresse. <button class="btn" id="wipe">Alles zurücksetzen</button></span>
+  <span>Idee &amp; Design: P. Disson · Entwickelt mit Claude (Anthropic) · Lizenz: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de" rel="license noopener" target="_blank">CC BY-NC-SA 4.0</a> (Namensnennung, nicht kommerziell, Weitergabe unter gleichen Bedingungen). Schriften: SIL Open Font License.</span>
  </footer>
 </div>
 <button class="btn themebtn" id="theme" aria-label="Hell/Dunkel umschalten">◐</button>
@@ -264,8 +278,24 @@ window.addEventListener("appinstalled",()=>{$("#inst").hidden=true;$("#appNote")
  else n.textContent="Falls kein Button erscheint: im Browser-Menü „App installieren“ bzw. „Zum Startbildschirm hinzufügen“ wählen.";
  if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol)){navigator.serviceWorker.register("sw.js").then(()=>navigator.serviceWorker.ready).then(()=>{n.textContent=standalone?"Läuft als App – auch offline.":n.textContent+" Offline-Speicher ist bereit."}).catch(()=>{})}})();
 
+/* Teilen: Link kopieren, QR-Code (lokal erzeugt mit assets/qr.js), System-Teilen */
+(function(){const inp=$("#shareUrl"),cv=$("#qr"),note=$("#shareNote"),web=/^https?:$/.test(location.protocol);
+ const def=web?new URL("./",location.href).href:location.href.split("#")[0];
+ const val=()=>inp.value.trim()||def;
+ inp.value=def;
+ if(!web)note.textContent="Hinweis: Die Seite ist gerade lokal geöffnet. Nach dem Hochladen steht hier automatisch der Link zu GitHub Pages.";
+ let t,err=false;
+ const draw=()=>{try{window.LLQR.draw(cv,val(),{scale:8,margin:4});cv.hidden=false;if(err){note.textContent="";err=false}}catch(e){cv.hidden=true;err=true;note.textContent="Der Text ist zu lang für einen QR-Code."}};
+ inp.addEventListener("input",()=>{clearTimeout(t);t=setTimeout(draw,150)});
+ $("#shareReset").onclick=()=>{inp.value=def;draw();note.textContent=""};
+ draw();
+ $("#copyLink").onclick=async()=>{let ok=false;try{await navigator.clipboard.writeText(val());ok=true}catch(e){inp.focus();inp.select();try{ok=document.execCommand("copy")}catch(e2){}}
+  note.textContent=ok?"✓ Link kopiert – jetzt einfügen und teilen.":"Kopieren nicht möglich: Der Link ist markiert, bitte mit Strg+C kopieren."};
+ $("#saveQr").onclick=()=>{if(cv.hidden)return;const a=document.createElement("a");a.href=cv.toDataURL("image/png");a.download="seminar-island-qr-code.png";document.body.appendChild(a);a.click();a.remove();note.textContent="✓ QR-Code als Bild gespeichert."};
+ if(navigator.share){const b=$("#shareBtn");b.hidden=false;b.onclick=()=>{navigator.share({title:"Seminar-Island",text:"Lernlauncher für das Kolloquium Pädagogik & Päd. Psychologie",url:val()}).catch(()=>{})}}})();
+
 /* Versionshinweis: nur eigene version.json, kein Nachladen von Code */
-const BUILD="ac109f393cfc";
+const BUILD="abbdeea4b865";
 if(/^https?:$/.test(location.protocol))fetch("version.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(v=>{if(v&&typeof v.version==="string"&&v.version!==BUILD){$("#upd").hidden=false;$("#updBtn").onclick=()=>location.reload()}}).catch(()=>{});
 </script>
 </body>

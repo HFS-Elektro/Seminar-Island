@@ -23,7 +23,7 @@ Alles läuft direkt im Browser, ohne Anmeldung und ohne Server. Der Lernstand bl
 | Spiel | `spiele/seminar-island-adventure.html` | Lernadventure quer durch alle Themen |
 | Skripte | `skripte/*.pdf` | Ausführliche Lernskripte als PDF |
 | App | `manifest.webmanifest`, `sw.js`, `version.json`, `icons/` | Installation als App, Offline-Modus und Hinweis auf neue Versionen |
-| Gemeinsam | `assets/app.js`, `assets/music.js`, `assets/fonts/` | Geräteerkennung, Vollbild, Schriftgröße, Kontrast, Bewegung reduzieren; im Browser erzeugte Musik und Soundkulisse; lokal eingebundene Schriften (SIL Open Font License) |
+| Gemeinsam | `assets/app.js`, `assets/music.js`, `assets/qr.js`, `assets/fonts/` | QR-Code-Erzeuger zum Teilen (lokal, ohne fremden Dienst); Geräteerkennung, Vollbild, Schriftgröße, Kontrast, Bewegung reduzieren; im Browser erzeugte Musik und Soundkulisse; lokal eingebundene Schriften (SIL Open Font License) |
 
 ## Veröffentlichen mit GitHub Pages
 
@@ -92,3 +92,10 @@ Hinweis: Der gemeinsame Fortschritt im Launcher funktioniert am zuverlässigsten
 
 Lernmaterial zur Prüfungsvorbereitung, keine offiziellen Seminarunterlagen. Fachbeispiele (überwiegend aus der Elektrotechnik) dienen der Veranschaulichung. Inhaltliche Grundlage sind u. a. das Planungsinstrument nach Zumsteg u. a., Klafki, das Berliner Modell, Anderson & Krathwohl, Krathwohl/Bloom/Masia, Ziener, Grell & Grell, Mühlhausen und Helmke.
 Die Karikaturen und Namen der Figuren werden mit Einverständnis der abgebildeten Personen verwendet.
+
+## Lizenz und Mitwirkende
+
+Idee & Design: **P. Disson** · Entwickelt mit **Claude** (Anthropic)
+
+Dieses Werk ist lizenziert unter [Creative Commons Namensnennung – Nicht kommerziell – Weitergabe unter gleichen Bedingungen 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de).
+Die eingebundenen Schriften stehen unter der SIL Open Font License.
