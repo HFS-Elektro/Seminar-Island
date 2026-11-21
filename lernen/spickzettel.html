@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; connect-src 'self' data: blob:; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; manifest-src 'self'; worker-src 'self'; script-src 'self' 'sha256-+jPAWARlr4eHErjwv0Xx9Lr7S7+EZopg/QC0+4H9AGE='">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spickzettel Unterrichtsplanung</title>
+<meta name="description" content="Druckbarer Spickzettel auf zwei Seiten: Planungsinstrument, Lernziele, Taxonomien, Einstiege, Verlaufsplan, Evaluieren, Prozessbeschreibung, Antwortschema und Querbezüge.">
+<script src="../assets/app.js"></script>
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
+<style>
+:root{--bg:#f6f1e7;--surface:#fffdf8;--surface2:#f0e9db;--ink:#1f2a36;--muted:#5d6b78;--line:#ded4c2;--accent:#0f766e;--accent-ink:#fff;
+ --k:#2b7fa8;--e:#d9731c;--g:#23a35a;--v:#8e44ad;--f-head:"Fraunces",Georgia,serif;--f-body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#12171d;--surface:#1b222b;--surface2:#232c37;--ink:#e8edf2;--muted:#9aa8b5;--line:#2f3a47;--accent:#2dd4bf;--accent-ink:#06201d;--k:#5fb3dd;--e:#f59e4b;--g:#4ccf82;--v:#c084fc}}
+:root[data-theme="dark"]{--bg:#12171d;--surface:#1b222b;--surface2:#232c37;--ink:#e8edf2;--muted:#9aa8b5;--line:#2f3a47;--accent:#2dd4bf;--accent-ink:#06201d;--k:#5fb3dd;--e:#f59e4b;--g:#4ccf82;--v:#c084fc}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 var(--f-body)}
+.bar{max-width:1100px;margin:0 auto;padding:18px 16px 4px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.bar h1{font-family:var(--f-head);font-size:clamp(24px,4vw,34px);margin:0 auto 0 0;line-height:1.1}
+.btn{font:inherit;font-weight:800;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:8px 13px;border-radius:10px;cursor:pointer;text-decoration:none}
+.btn.pri{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.hint{max-width:1100px;margin:0 auto;padding:0 16px;color:var(--muted);font-size:14px}
+.sheet{max-width:1100px;margin:14px auto;padding:0 16px 40px}
+.page{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:18px}
+@media (max-width:900px){.page{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:600px){.page{grid-template-columns:1fr}}
+.c{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;break-inside:avoid}
+.c.w2{grid-column:span 2}.c.w3{grid-column:1/-1}
+@media (max-width:600px){.c.w2{grid-column:auto}}
+.c h2{font-family:var(--f-head);font-size:16px;margin:0 0 5px;display:flex;gap:6px;align-items:center}
+.c h2 .n{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:6px;color:#fff;font-family:var(--f-body);font-size:12px;font-weight:800;flex:0 0 auto}
+.c p,.c ul,.c ol{margin:3px 0}
+.c ul,.c ol{padding-left:17px}
+.c li{margin:1px 0}
+.k{color:var(--k)}.e{color:var(--e)}.g{color:var(--g)}.v{color:var(--v)}
+b{font-weight:800}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{border-top:1px solid var(--line);padding:3px 4px;text-align:left;vertical-align:top}
+th{font-weight:800}
+.tax{display:flex;flex-direction:column-reverse;gap:2px;margin:4px 0}
+.tax span{display:block;padding:1px 8px;border-radius:5px;color:#fff;font-weight:800;font-size:12.5px}
+.say{border-left:4px solid var(--accent);padding:4px 8px;background:var(--surface2);border-radius:0 8px 8px 0;font-style:italic;margin:4px 0}
+.small{font-size:13px;color:var(--muted)}
+.themebtn{position:fixed;right:14px;bottom:14px;border-radius:99px}
+@media print{
+ @page{size:A4;margin:9mm}
+ :root,:root[data-theme="dark"]{--bg:#fff;--surface:#fff;--surface2:#f3f3f3;--ink:#000;--muted:#333;--line:#bbb;--accent:#0f766e;--k:#2b7fa8;--e:#c0610f;--g:#1d8a4b;--v:#7d3a99}
+ body{font-size:8.6pt;line-height:1.3;background:#fff}
+ .bar,.hint,.themebtn{display:none}
+ .sheet{max-width:none;margin:0;padding:0}
+ .page{grid-template-columns:repeat(3,1fr);gap:2.2mm;margin:0}
+ .page+.page{break-before:page}
+ .c{padding:1.6mm 2.2mm;border-radius:2mm}
+ .c h2{font-size:10pt;margin-bottom:1mm}
+ table{font-size:8pt}
+ .tax span{font-size:7.6pt;padding:0 2mm}
+ .small{font-size:7.8pt}
+ *{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style>
+</head>
+<body>
+<div class="bar"><h1>Spickzettel Unterrichtsplanung</h1><button class="btn pri" id="printBtn">🖨️ Drucken / als PDF speichern</button><a class="btn" href="../index.html">← Launcher</a></div>
+<p class="hint">Zwei A4-Seiten zum Ausdrucken. Im Druckdialog „Als PDF speichern“ wählen, Hintergrundgrafiken an, Ränder „Standard“. Am besten 1× drucken und dann frei aus dem Kopf nachschreiben.</p>
+<main class="sheet">
+<section class="page" aria-label="Seite 1">
+ <div class="c w2"><h2>🧭 Das Planungsinstrument <span class="small">(Zumsteg u. a.; Hintergrund: Klafki, Berliner Modell)</span></h2>
+  <table><tr><th>Schritt</th><th>Leitfrage</th><th>Ergebnis</th></tr>
+  <tr><td><b class="k">1 Klären</b></td><td>Worum geht es, für wen, wozu?</td><td>Sache, Bedingungen, Sinn/Bedeutung → <b>Thematik</b></td></tr>
+  <tr><td><b class="e">2 Entscheiden</b></td><td>Was sollen sie am Ende können – und woran sehe ich es?</td><td>Lernziele, Form der Lern-Evaluation, Lehr-Lern-Arrangement</td></tr>
+  <tr><td><b class="g">3 Gestalten</b></td><td>Wer macht was wann wie (warum) mit wem – und wie bleibt's hängen?</td><td>Verlaufsplan: Phasen mit Sozialform, Methode, Medien, Einstieg, Sicherung</td></tr>
+  <tr><td><b class="v">4 Evaluieren</b></td><td>Was lief anders als geplant – und warum?</td><td>Überraschungen, Knackstellen → nächste Stunde</td></tr></table>
+  <p class="small">Merkbild Hausbau: Grundstück klären → Grundriss entscheiden → Raum für Raum bauen → nach dem Einzug prüfen. Niemand kauft zuerst die Fliesen – und niemand plant vom Arbeitsblatt aus. Die Schritte greifen ineinander; spätere Antworten können frühere ändern.</p></div>
+ <div class="c"><h2><span class="n" style="background:var(--k)">1</span> Klären</h2>
+  <ul><li><b>Sache:</b> Fach- und fachdidaktischer Stand, eigene Lücken, Bildungsplan</li>
+  <li><b>Bedingungen:</b> Klasse, Vorwissen, Heterogenität, Sprache, Förderbedarf, Gruppenphase, Rahmen</li>
+  <li><b>Sinn & Bedeutung (Klafki):</b> Gegenwarts-, Zukunfts-, exemplarische Bedeutung, Zugänglichkeit</li></ul>
+  <p><b>Thematik</b> = Thema · Kompetenz/Stundenziel · Arbeitsform · Lernprodukt · Charakter der Stunde</p></div>
+ <div class="c"><h2><span class="n" style="background:var(--e)">2</span> Lernziele</h2>
+  <p>Konkrete, <b>beobachtbare</b> Beschreibung einer Handlung, zu der die Lehrkraft die SuS veranlassen will.</p>
+  <p><b>I-B-H:</b> Inhalt · Bedingung/Hilfsmittel · beobachtbares Handeln<br><i>„… erklären anhand einer Prinzipskizze die Funktion des RCD.“</i></p>
+  <p><b>Stolperfalle:</b> wissen, kennen, verstehen = nicht beobachtbar. „Motiviert mitarbeiten“ = Verhaltenserwartung, kein Lernziel.</p>
+  <p><b>Dimensionen:</b> kognitiv (Denken) · affektiv (Fühlen) · psychomotorisch (Tun)</p></div>
+ <div class="c"><h2><span class="n" style="background:var(--e)">2</span> Taxonomien</h2>
+  <p><b>Anderson & Krathwohl (2001)</b> – höhere Stufen setzen niedrigere voraus:</p>
+  <div class="tax"><span style="background:#7fb3d5">Erinnern</span><span style="background:#5499c7">Verstehen</span><span style="background:#2e86c1">Anwenden</span><span style="background:#2874a6">Analysieren</span><span style="background:#1f618d">Bewerten</span><span style="background:#154360">Erschaffen</span></div>
+  <p>Zweite Achse: <b>Wissensarten</b> (faktisch, konzeptuell, prozedural, metakognitiv) – „Wissen, dass“ vs. „Wissen, wie“. Gegenüber Bloom: Verben statt Nomen, Erschaffen oben.</p>
+  <p><b>Affektiv (Krathwohl, Bloom & Masia):</b> vom Aufmerksamwerden bis zur Verhaltensänderung aus Überzeugung.</p></div>
+ <div class="c"><h2><span class="n" style="background:var(--e)">2</span> Anforderungsbereiche</h2>
+  <table><tr><td><b>AFB I</b> Reproduktion</td><td>nennen, beschreiben, wiedergeben, entnehmen</td></tr>
+  <tr><td><b>AFB II</b> Reorganisation & Transfer</td><td>erklären, erläutern, vergleichen, analysieren</td></tr>
+  <tr><td><b>AFB III</b> Reflexion & Problemlösung</td><td>beurteilen, bewerten, Stellung nehmen, begründen, entwerfen</td></tr></table>
+  <p class="small">Operatoren auch im Unterricht und auf Arbeitsblättern nutzen – nicht nur in der Klassenarbeit.</p></div>
+ <div class="c"><h2><span class="n" style="background:var(--e)">2</span> Hauptziel & Zienern</h2>
+  <ol><li>Thema steht fest</li><li><b>Hauptziel:</b> „Am Ende sollen alle … können.“</li><li><b>Charakter</b> der Stunde („Übungsstunde“, „Staun-Stunde“ …) + Schwerpunkt-Dimension</li><li><b>Zienern</b> (Ziener): „Was kann jemand, der … kann?“</li><li>Liste kürzen, verteilen, ordnen → <b>Zielgerüst</b></li></ol>
+  <p><b>Roter-Faden-Test:</b> Gedankengang der Stunde in 1–2 Sätzen sagen können.</p></div>
+ <div class="c"><h2><span class="n" style="background:var(--e)">2</span> Lern-Evaluation & LLA</h2>
+  <p><b>Evaluation:</b> Woran erkenne ich, dass gelernt wurde – und wie erfahren es die SuS? Formativ und summativ; Rückmeldung 1. jeder sich selbst · 2. Peer · 3. Lehrkraft (z. B. Exit-Ticket mit Ampel).</p>
+  <p><b>Lehr-Lern-Arrangement:</b> Kreuz im Diagramm <i>Fremd- ↔ Selbststeuerung</i> × <i>Nach- ↔ Selbstkonstruktion</i>: direkte Instruktion, LdL, kooperatives Lernen (Helmke), Projektmethode (Frey), SOL (Sandwich).</p>
+  <p><b>Das Arrangement folgt dem Ziel</b> – nicht „Ich mache LdL“, sondern „Für dieses Ziel eignet sich LdL, weil …“</p></div>
+</section>
+
+<section class="page" aria-label="Seite 2">
+ <div class="c"><h2><span class="n" style="background:var(--g)">3</span> Verlaufsplan je Phase</h2>
+  <ol><li><b>Sozialform</b></li><li><b>Methode</b> (von fachtypischen Handlungen ausgehen: messen, prüfen, Fehler suchen …)</li><li><b>Medien</b> – nie Selbstzweck, nie Ausgangspunkt</li><li><b>Einstieg</b> – Ziel und Nutzen transparent</li><li><b>Kontrollfragen</b></li></ol>
+  <p><b>Die vier Kontrollfragen:</b> Zeit ↔ Ertrag? · Reflexion über das Lernen? · Ergebnissicherung passend zum Ziel? · Individuelle Bedürfnisse (Zusatzaufgaben, Wahl)?</p></div>
+ <div class="c"><h2><span class="n" style="background:var(--g)">3</span> Sozialformen</h2>
+  <table><tr><td><b>Einzelarbeit</b></td><td>allein können müssen (Klassenarbeit!), Ideen sammeln, zur Ruhe kommen</td></tr>
+  <tr><td><b>Partnerarbeit</b></td><td>Neues anwenden, gegenseitige Hilfe, ins Gespräch kommen</td></tr>
+  <tr><td><b>Triade</b></td><td>Feedback, Mini-Rollenspiel – Trittbrettfahren fast unmöglich</td></tr>
+  <tr><td><b>Gruppenarbeit</b></td><td>komplexe Aufgaben; Rollen, enge Zeit, klare Ergebniserwartung, offen lassen, wer präsentiert</td></tr>
+  <tr><td><b>Plenum</b></td><td>alle sollen mitbekommen, Klassendiskussion</td></tr></table></div>
+ <div class="c"><h2><span class="n" style="background:var(--g)">3</span> Einstiege</h2>
+  <table><tr><td><b>Informierend</b> (Grell & Grell)</td><td>Was, wozu, wie – max. ca. 4 Min.; Hauptgedankengang, nicht Teilziele</td></tr>
+  <tr><td><b>Mit Verpackung</b></td><td>Aufmerksamkeitserregendes → Problemfrage festhalten; bis 10 Min.</td></tr>
+  <tr><td><b>Mit Lernsituation</b></td><td>knifflige Situation, z. B. Kundenauftrag → Bestandsaufnahme → Ziel; bis 10 Min.</td></tr></table>
+  <p><b>Stolperfallen:</b> Thema erraten lassen · stummer Impuls mit erwarteter Antwort · Verpackung zu lang · Lernsituation ohne passendes Lernprodukt.</p>
+  <p><b>Zeitfresser:</b> Abschreiben, Umbauphasen, Gruppeneinteilung, fragend-entwickelnde Phasen, iPad-Anmeldung.</p></div>
+ <div class="c"><h2><span class="n" style="background:var(--v)">4</span> Evaluieren (Mühlhausen)</h2>
+  <p>Was lief anders als geplant (2–3 Situationen) – und woran kann es gelegen haben?</p>
+  <ul><li><b>vermeidbar:</b> Mängel im Entwurf (z. B. Zeitplanung) · Inszenierungsschnitzer (schludriger Arbeitsauftrag)</li>
+  <li><b>unvermeidbar:</b> Zielirritationen · Missverständnisse · Sperrigkeit (SuS, Gegenstand, Lehrkraft) · Niveauüberraschung</li></ul>
+  <p><b>Überraschungsoffen</b> sein: neugierig auf die SuS, nicht beleidigt. Knackstellen-Analyse über die eigene Präsenzkurve.</p></div>
+ <div class="c"><h2><span class="n" style="background:var(--v)">4</span> Feedback-Fragen</h2>
+  <ul><li>Ist die Sozialform stimmig?</li><li>Passt die Methode zum Ziel?</li><li>Sind die Medien stimmig?</li><li>Stehen Ergebnisse und Zeit im guten Verhältnis?</li><li>Passt die Ergebnissicherung zu den Zielen?</li><li>Wird über Lernprozesse nachgedacht?</li><li>Gibt es Ansätze zur Individualisierung?</li></ul></div>
+ <div class="c"><h2>⏱️ Prozessbeschreibung (9 Schritte)</h2>
+  <ol><li>Zeitbudget festlegen</li><li>Zeitfresser meiden</li><li>Klärungen: Sache, Bedingungen, Sinn</li><li>Thema eingrenzen (Thematik)</li><li>Ziele: Hauptziel → zienern → Zielgerüst</li><li>Recherche begrenzen (wo, wie lange)</li><li>Evaluation, vorläufiger Einstieg, LLA</li><li>Notfallprogramm: Stunde einmal komplett</li><li>Verlauf je Phase ausplanen, Einstieg überarbeiten</li></ol>
+  <p class="small">„Gut begründet anders“ ist erlaubt (z. B. vom Lernfeld aus rückwärts planen) – Klären, Ziele und Evaluation bleiben drin.</p></div>
+ <div class="c w2"><h2>🔗 Querbezüge, die du selbst anbieten kannst</h2>
+  <table>
+  <tr><td><b>Klären</b> ↔ Motivation</td><td>Sinn und Lebensweltbezug bedienen Heckhausens Ergebnis-Folge-Erwartung und das Kompetenzerleben (Deci & Ryan)</td></tr>
+  <tr><td><b>Bedingungen</b> ↔ Gruppe/Mobbing/Inklusion</td><td>Tuckman-Phase, Außenseiter, Sprachniveau – sonst misst man Lesefähigkeit statt Fachkompetenz (Validität)</td></tr>
+  <tr><td><b>Lernziele</b> ↔ Leistungsmessung</td><td>präzise Ziele = Grundlage der Validität; Operatoren ↔ AFB ↔ Erwartungshorizont</td></tr>
+  <tr><td><b>Taxonomie</b> ↔ Gedächtnis</td><td>höhere Stufen brauchen vernetztes Wissen (Netzwerkmodell); deklarativ vs. prozedural</td></tr>
+  <tr><td><b>Affektive Ziele</b> ↔ Modelllernen</td><td>Werte entstehen über Vorbilder (Bandura) und Erlebnisse</td></tr>
+  <tr><td><b>LLA</b> ↔ Arbeitsgedächtnis/Motivation</td><td>DI entlastet das Arbeitsgedächtnis; SOL bedient Autonomie</td></tr>
+  <tr><td><b>Gruppenarbeit</b> ↔ kooperatives Lernen</td><td>positive Interdependenz und individuelle Verantwortlichkeit gegen free rider und sucker effect</td></tr>
+  <tr><td><b>Übergänge</b> ↔ Klassenführung</td><td>Kounin: Reibungslosigkeit, Allgegenwärtigkeit; Umbauphasen sind Zeitfresser</td></tr>
+  <tr><td><b>Einstieg</b> ↔ Lernen</td><td>Advance Organizer, Vorwissen aktivieren, Aufmerksamkeit bündeln</td></tr>
+  <tr><td><b>Evaluieren</b> ↔ Schulentwicklung/Belastung</td><td>Schülerfeedback im Sequenzmodell (Helmke); Perfektionismus = Risikomuster A (AVEM), Lazarus</td></tr></table></div>
+ <div class="c"><h2>🎙️ So antwortest du</h2>
+  <ol><li>Fall erfassen bzw. nachfragen</li><li>schlagwortartiger Überblick</li><li>Vertiefung auf Nachfrage</li><li>Querbezug anbieten</li></ol>
+  <p class="say">„Das hängt mit [Theorie] zusammen, weil [Mechanismus]. Für die Planung heißt das: [Konsequenz]. – Soll ich das ausführen?“</p>
+  <p class="say">„Gemessen an der Kontrollfrage Zeit zu Ertrag …“</p>
+  <p class="small">Kein Redeschwall. Lieber kurz und anbieten, dann vertiefen.</p></div>
+</section>
+</main>
+<button class="btn themebtn" id="theme" aria-label="Hell/Dunkel umschalten">◐</button>
+<script>
+(function(){let t=null;try{t=JSON.parse(localStorage.getItem("lp-theme"))}catch(e){}if(t)document.documentElement.dataset.theme=t;
+document.getElementById("theme").onclick=()=>{const c=document.documentElement.dataset.theme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");const n=c==="dark"?"light":"dark";document.documentElement.dataset.theme=n;try{localStorage.setItem("lp-theme",JSON.stringify(n))}catch(e){}}})();
+document.getElementById("printBtn").onclick=()=>window.print();
+</script>
+</body>
+</html>

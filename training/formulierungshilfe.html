@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; connect-src 'self' data: blob:; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; manifest-src 'self'; worker-src 'self'; script-src 'self' 'sha256-uOjqMXUNAGoG2t460LKBHrfEsPVMK89tABehd0W6Mr8='">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Formulierungshilfe Kolloquium</title>
+<meta name="description" content="Satzbausteine für die mündliche Prüfung: nachfragen, Überblick geben, vertiefen, Querbezug anbieten – mit Vorlesefunktion, Lückentext und Sprech-Trainer.">
+<script src="../assets/app.js"></script>
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
+<style>
+:root{--bg:#f6f1e7;--surface:#fffdf8;--surface2:#f0e9db;--ink:#1f2a36;--muted:#5d6b78;--line:#ded4c2;--accent:#0f766e;--accent-ink:#fff;--good:#1f8a4c;--bad:#c0392b;
+ --c1:#2b7fa8;--c2:#d9731c;--c3:#23a35a;--c4:#8e44ad;--c5:#7a6a58;--shadow:0 1px 0 rgba(0,0,0,.04),0 10px 26px -16px rgba(60,40,10,.4);
+ --f-head:"Fraunces",Georgia,serif;--f-body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#12171d;--surface:#1b222b;--surface2:#232c37;--ink:#e8edf2;--muted:#9aa8b5;--line:#2f3a47;--accent:#2dd4bf;--accent-ink:#06201d;--good:#4ade80;--bad:#f87171;--c1:#5fb3dd;--c2:#f59e4b;--c3:#4ccf82;--c4:#c084fc;--c5:#b8a894;--shadow:0 10px 26px -14px rgba(0,0,0,.8)}}
+:root[data-theme="dark"]{--bg:#12171d;--surface:#1b222b;--surface2:#232c37;--ink:#e8edf2;--muted:#9aa8b5;--line:#2f3a47;--accent:#2dd4bf;--accent-ink:#06201d;--good:#4ade80;--bad:#f87171;--c1:#5fb3dd;--c2:#f59e4b;--c3:#4ccf82;--c4:#c084fc;--c5:#b8a894;--shadow:0 10px 26px -14px rgba(0,0,0,.8)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--f-body)}
+.wrap{max-width:1000px;margin:0 auto;padding:24px 16px 70px}
+.back{font-size:14px;font-weight:700;text-decoration:none;color:var(--muted)}
+h1{font-family:var(--f-head);font-size:clamp(30px,5vw,44px);margin:10px 0 6px;line-height:1.05}
+h2{font-family:var(--f-head);font-size:clamp(22px,3.2vw,28px);margin:34px 0 6px}
+.lead{color:var(--muted);margin:0 0 14px;max-width:64ch}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 4px;position:sticky;top:0;background:var(--bg);padding:8px 0;z-index:3}
+.btn{font:inherit;font-weight:800;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:8px 13px;border-radius:10px;cursor:pointer;text-decoration:none;min-height:40px}
+.btn.pri{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.schema{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:10px 0}
+@media (max-width:700px){.schema{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.schema div{border-radius:12px;padding:10px;color:#fff;font-weight:800;font-size:14px}
+.grp{background:var(--surface);border:1px solid var(--line);border-left:7px solid var(--c);border-radius:16px;padding:14px 16px;margin:12px 0;box-shadow:var(--shadow)}
+.grp h3{margin:0 0 2px;font-size:19px}
+.grp p.why{margin:0 0 8px;color:var(--muted);font-size:15px}
+.ph{display:flex;gap:8px;align-items:flex-start;padding:8px 0;border-top:1px solid var(--line)}
+.ph q{flex:1;quotes:"„" "“";font-size:16px}
+.ph button{flex:0 0 auto;border:1px solid var(--line);background:var(--surface2);color:var(--ink);border-radius:99px;width:36px;height:36px;cursor:pointer;font-size:16px}
+.ph button:hover{border-color:var(--accent)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow);margin:12px 0}
+.cloze{font-size:17px;line-height:2.1;margin:10px 0;padding:10px 0;border-top:1px solid var(--line)}
+.cloze select{font:inherit;font-weight:700;font-size:16px;border:2px dashed var(--line);border-radius:8px;background:var(--surface2);color:var(--ink);padding:2px 6px}
+.cloze select.ok{border:2px solid var(--good)}.cloze select.no{border:2px solid var(--bad)}
+.res{font-weight:800}.res.ok{color:var(--good)}.res.no{color:var(--bad)}
+.topic{font-family:var(--f-head);font-size:clamp(22px,3.4vw,30px);margin:6px 0}
+.starter{display:grid;gap:8px;margin:10px 0}
+.starter div{background:var(--surface2);border-radius:12px;padding:10px 12px;border-left:6px solid var(--c)}
+.starter b{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.clock{font-family:var(--f-head);font-size:52px;font-variant-numeric:tabular-nums;line-height:1}
+.hint{color:var(--muted);font-size:14px}
+.themebtn{position:fixed;right:14px;bottom:14px;border-radius:99px;z-index:5}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="back" href="../index.html">← zurück zum Launcher</a>
+<h1>Formulierungshilfe</h1>
+<p class="lead">Die richtigen Sätze im richtigen Moment: Bausteine für jede Phase deiner Antwort im Kolloquium. Lies sie laut, lass sie dir vorlesen 🔊, übe sie im Lückentext und bau im Sprech-Trainer eigene Antworten.</p>
+<div class="schema" aria-label="Antwortschema"><div style="background:var(--c1)">1 Fall erfassen / nachfragen</div><div style="background:var(--c2)">2 Überblick</div><div style="background:var(--c3)">3 Vertiefung</div><div style="background:var(--c4)">4 Querbezug anbieten</div></div>
+<div class="tabs" role="tablist"><button class="btn" data-tab="bau" aria-pressed="true">💬 Satzbausteine</button><button class="btn" data-tab="luecke" aria-pressed="false">✏️ Lückentext</button><button class="btn" data-tab="sprech" aria-pressed="false">🎙️ Sprech-Trainer</button></div>
+
+<section id="bau"></section>
+
+<section id="luecke" hidden>
+ <div class="panel"><p class="hint" style="margin-top:0">Wähle das passende Wort. Danach „Prüfen“ – und den fertigen Satz einmal laut sprechen.</p><div id="clozes"></div>
+ <div class="row" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px"><button class="btn pri" id="chk">Prüfen</button><button class="btn" id="newC">Neue Sätze</button><span class="res" id="cres" aria-live="polite"></span></div></div>
+</section>
+
+<section id="sprech" hidden>
+ <div class="panel"><span class="hint">Dein Thema</span><div class="topic" id="topic"></div><p class="hint" id="topicHint"></p>
+  <div class="starter" id="starters"></div>
+  <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap"><div class="clock" id="clk">1:30</div><button class="btn pri" id="go">▶ 90 Sekunden sprechen</button><button class="btn" id="nextT">Neues Thema</button><button class="btn" id="readT">🔊 Bausteine vorlesen</button></div>
+  <p class="hint">Nimm je einen Baustein pro Phase und füll ihn mit dem Thema. Danach: Hast du einen Querbezug angeboten? Bist du im Zeitrahmen geblieben?</p></div>
+</section>
+</div>
+<button class="btn themebtn" id="theme" aria-label="Hell/Dunkel umschalten">◐</button>
+<script>
+"use strict";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const pick=a=>a[Math.random()*a.length|0];
+const GROUPS=[
+ {k:"erfassen",c:"--c1",t:"1 · Fall erfassen und nachfragen",w:"Zeigt, dass du genau hinhörst – und verschafft dir ein paar Sekunden.",p:["Darf ich kurz nachfragen: Um welche Klasse und welche Schulart geht es?","Habe ich richtig verstanden, dass es vor allem um … geht?","Ich ordne den Fall kurz ein: Es geht um …","Bevor ich antworte, eine Rückfrage: Welche Lernvoraussetzungen bringt die Klasse mit?"]},
+ {k:"ueberblick",c:"--c2",t:"2 · Überblick geben",w:"Kurz und strukturiert – die Prüfenden entscheiden dann, wo sie vertiefen.",p:["Ich sehe hier drei Punkte: erstens …, zweitens …, drittens …","Kurz zusammengefasst: Positiv ist …, problematisch ist …","Das betrifft vor allem den Planungsschritt Entscheiden – genauer die Lernziele.","Ich betrachte das mit dem Planungsinstrument: Klären, Entscheiden, Gestalten, Evaluieren."]},
+ {k:"vertiefung",c:"--c3",t:"3 · Vertiefen und begründen",w:"Theorie nennen, auf den Fall anwenden, Lösung anbieten.",p:["Theoretisch steckt dahinter …, und auf den Fall übertragen heißt das …","Gemessen an der Kontrollfrage Zeit zu Ertrag …","Ich würde es so verbessern: … – und zwar, weil …","In meinem Unterricht habe ich das so umgesetzt: …","Einerseits …, andererseits … – ich würde mich für … entscheiden, weil …","Das Arrangement folgt dem Ziel: Für dieses Ziel eignet sich …, weil …"]},
+ {k:"querbezug",c:"--c4",t:"4 · Querbezug anbieten",w:"Selbst anbieten – Prüfende fragen selten danach.",p:["Das hängt mit … zusammen, weil … – soll ich das ausführen?","Hier sehe ich auch einen Querbezug zur Pädagogischen Psychologie, nämlich …","Aus Sicht der Motivationspsychologie würde ich ergänzen: …","Das berührt auch die Leistungsmessung – Stichwort Validität."]},
+ {k:"zeit",c:"--c5",t:"Denkpause gewinnen",w:"Völlig in Ordnung – besser kurz sortieren als drauflosreden.",p:["Darüber möchte ich kurz nachdenken.","Ich sortiere kurz meine Gedanken.","Ich nähere mich der Frage über ein Beispiel aus meinem Unterricht."]},
+ {k:"luecke",c:"--c5",t:"Wenn du etwas nicht weißt",w:"Ehrlich bleiben und zeigen, was du stattdessen kannst.",p:["Das Modell habe ich nicht mehr im Detail parat, aber ich weiß, dass es um … geht.","Bei dem Begriff bin ich unsicher – darf ich beschreiben, wie ich in der Praxis vorgehen würde?","Das kann ich nicht sicher sagen. Was ich aber weiß, ist …"]},
+ {k:"position",c:"--c5",t:"Eigene Position vertreten",w:"Gefragt ist eine begründete Haltung – nicht die eine richtige Antwort.",p:["Ich sehe das differenziert: … Für meine Klassen halte ich … für sinnvoll, weil …","Gut begründet würde ich hier vom Seminarmodell abweichen: …","Mir ist dabei besonders wichtig, dass …"]},
+ {k:"schluss",c:"--c5",t:"Abschließen",w:"Ein klarer Schlusssatz wirkt souverän.",p:["Zusammengefasst: …","Wenn Sie möchten, kann ich noch auf … eingehen.","Das wäre mein Vorgehen – gern vertiefe ich einen der Punkte."]}];
+const CLOZE=[
+ "Ein Lernziel ist eine möglichst konkrete, [[beobachtbare|interessante|motivierende]] Beschreibung einer Handlung.",
+ "Nach Anderson & Krathwohl setzen höhere Stufen [[niedrigere voraus|keine Übung voraus|die Wissensarten außer Kraft]].",
+ "Teilziele leite ich durch Zienern ab: Was kann jemand, der … [[kann|weiß|kennt]]?",
+ "Ein informierender Einstieg dauert höchstens etwa [[4|10|20]] Minuten.",
+ "Gruppenarbeit wirkt, wenn positive Interdependenz und [[individuelle Verantwortlichkeit|freie Gruppenwahl|eine gemeinsame Note]] gegeben sind.",
+ "Präzise Lernziele sind die Grundlage für die [[Validität|Beliebtheit|Länge]] einer Klassenarbeit.",
+ "Beim Evaluieren frage ich mit Mühlhausen: Was lief [[anders als geplant|genau nach Plan|am lautesten]] – und woran lag es?",
+ "Wer Misserfolg auf mangelnde [[Anstrengung|Begabung|Intelligenz]] zurückführt, bleibt eher motiviert.",
+ "Das Lehr-Lern-Arrangement folgt dem [[Ziel|Medium|Lehrbuch]].",
+ "Medien sind nie Selbstzweck und nie [[Ausgangspunkt|Hilfsmittel|Teil der Stunde]].",
+ "Nach Deci & Ryan stärken Autonomie, Kompetenz und [[soziale Eingebundenheit|Belohnungen|Notendruck]] die intrinsische Motivation.",
+ "Im Kolloquium biete ich Querbezüge [[selbst an|nur auf Nachfrage an|lieber gar nicht an]].",
+ "Die Kontrollfragen prüfen unter anderem, ob die [[Ergebnissicherung|Sitzordnung|Pausenaufsicht]] zum Ziel passt.",
+ "Ein Einstieg mit Verpackung wird problematisch, wenn die Klasse das Thema [[erraten|aufschreiben|vorlesen]] soll.",
+ "Kounin nennt die Fähigkeit, alles im Blick zu haben, [[Allgegenwärtigkeit|Überlappung|Schwung]].",
+ "Wirksames Feedback beantwortet: Wo will ich hin, wo stehe ich und was ist der [[nächste Schritt|Notendurchschnitt|Lieblingsfehler]]?"];
+const TOPICS=[["Lernziele formulieren","Ein Kollege schreibt: „Die SuS sollen die Schutzmaßnahmen kennen.“"],["Unterrichtseinstieg","Ein Einstieg mit 15-Minuten-Video und Thema-Raten."],["Sozialformen","45 Minuten Gruppenarbeit, obwohl am Montag die Klassenarbeit ist."],["Evaluieren","Die Stunde lief ganz anders als geplant."],["Prozessbeschreibung","Wie bereiten Sie eine Stunde vor?"],["Lehr-Lern-Arrangement","Wann wählen Sie direkte Instruktion, wann SOL?"],["Motivation","Die Klasse sagt: „Die Berufsschule zählt eh nicht.“"],["Klassenführung","Nach 20 Minuten wird es laut, Material wird verteilt."],["Feedback","Rückmeldungen bestehen nur aus Noten."],["Heterogenität","Sehr unterschiedliche Sprachniveaus in einer Klasse."],["Taxonomie","Erklären Sie den Aufbau der Taxonomie nach Anderson & Krathwohl."],["Zienern","Leiten Sie Teilziele für „Wechselschaltung aufbauen und prüfen“ ab."]];
+
+/* Satzbausteine */
+$("#bau").innerHTML=GROUPS.map(g=>`<div class="grp" style="--c:var(${g.c})"><h3>${esc(g.t)}</h3><p class="why">${esc(g.w)}</p>${g.p.map(p=>`<div class="ph"><q>${esc(p)}</q><button data-say="${esc(p)}" aria-label="Vorlesen" title="Vorlesen">🔊</button><button data-copy="${esc(p)}" aria-label="Kopieren" title="Kopieren">⧉</button></div>`).join("")}</div>`).join("");
+function speak(t){try{if(!("speechSynthesis" in window))return alert("Dein Browser kann leider nicht vorlesen.");speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t.replace(/…/g,", ähm,"));u.lang="de-DE";u.rate=.95;const v=speechSynthesis.getVoices().find(v=>/^de/i.test(v.lang));if(v)u.voice=v;speechSynthesis.speak(u)}catch(e){}}
+document.addEventListener("click",e=>{const s=e.target.closest("[data-say]");if(s)speak(s.dataset.say);const c=e.target.closest("[data-copy]");if(c){try{navigator.clipboard.writeText(c.dataset.copy);c.textContent="✓";setTimeout(()=>c.textContent="⧉",1200)}catch(err){}}});
+
+/* Tabs */
+document.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{document.querySelectorAll("[data-tab]").forEach(x=>x.setAttribute("aria-pressed",x===b));["bau","luecke","sprech"].forEach(id=>$("#"+id).hidden=id!==b.dataset.tab);if(b.dataset.tab==="sprech"&&!$("#topic").textContent)newTopic()});
+
+/* Lückentext */
+let cur=[];
+function newCloze(){cur=shuffle(CLOZE).slice(0,6);$("#cres").textContent="";
+ $("#clozes").innerHTML=cur.map((s,i)=>`<div class="cloze">${s.replace(/\[\[([^\]]+)\]\]/,(m,opts)=>{const o=opts.split("|");return `<select data-i="${i}" data-a="${esc(o[0])}" aria-label="Lücke ${i+1}"><option value="">…</option>${shuffle(o).map(x=>`<option>${esc(x)}</option>`).join("")}</select>`}).split(/(<select[\s\S]*?<\/select>)/).map(p=>p.startsWith("<select")?p:esc(p)).join("")}</div>`).join("")}
+$("#chk").onclick=()=>{let ok=0;const ss=[...document.querySelectorAll(".cloze select")];ss.forEach(s=>{const r=s.value===s.dataset.a;s.className=s.value?(r?"ok":"no"):"no";if(r)ok++});$("#cres").className="res "+(ok===ss.length?"ok":"no");$("#cres").textContent=`${ok} von ${ss.length} richtig${ok===ss.length?" – jetzt die Sätze einmal laut sprechen!":""}`};
+$("#newC").onclick=newCloze;newCloze();
+
+/* Sprech-Trainer */
+let tick=null,topic=null,starters=[];
+function newTopic(){clearInterval(tick);tick=null;$("#clk").textContent="1:30";$("#go").disabled=false;topic=pick(TOPICS);$("#topic").textContent=topic[0];$("#topicHint").textContent=topic[1];
+ starters=GROUPS.slice(0,4).map(g=>[g,pick(g.p)]);$("#starters").innerHTML=starters.map(([g,p])=>`<div style="--c:var(${g.c})"><b>${esc(g.t)}</b>„${esc(p)}“</div>`).join("")}
+$("#nextT").onclick=newTopic;
+$("#readT").onclick=()=>speak(starters.map(x=>x[1]).join(" "));
+$("#go").onclick=()=>{let s=90;$("#go").disabled=true;clearInterval(tick);tick=setInterval(()=>{s--;$("#clk").textContent=`${Math.floor(Math.max(0,s)/60)}:${String(Math.max(0,s)%60).padStart(2,"0")}`;if(s<=0){clearInterval(tick);tick=null;$("#clk").textContent="Zeit!";$("#go").disabled=false}},1000)};
+
+(function(){let t=null;try{t=JSON.parse(localStorage.getItem("lp-theme"))}catch(e){}if(t)document.documentElement.dataset.theme=t;
+$("#theme").onclick=()=>{const c=document.documentElement.dataset.theme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");const n=c==="dark"?"light":"dark";document.documentElement.dataset.theme=n;try{localStorage.setItem("lp-theme",JSON.stringify(n))}catch(e){}}})();
+</script>
+</body>
+</html>

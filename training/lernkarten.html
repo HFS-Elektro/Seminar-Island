@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; connect-src 'self' data: blob:; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; manifest-src 'self'; worker-src 'self'; script-src 'self' 'sha256-RGeq7HwkiudzZ2eaAq+/Eu+ewJkQZoLxKUlRIne3bjE='">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lernkarten Kolloquium</title>
+<meta name="description" content="Karteikasten-Trainer (Leitner-System) für Unterrichtsplanung, Pädagogik und Pädagogische Psychologie – mit Wiederholungsplan und eigenen Karten.">
+<script src="../assets/app.js"></script>
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
+<style>
+:root{--bg:#f6f1e7;--surface:#fffdf8;--surface2:#f0e9db;--ink:#1f2a36;--muted:#5d6b78;--line:#ded4c2;--accent:#0f766e;--accent-ink:#fff;--good:#1f8a4c;--bad:#c0392b;
+ --b1:#c0392b;--b2:#d9731c;--b3:#c9a227;--b4:#2b7fa8;--b5:#1f8a4c;--shadow:0 1px 0 rgba(0,0,0,.04),0 10px 26px -14px rgba(60,40,10,.35);
+ --f-head:"Fraunces",Georgia,serif;--f-body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#12171d;--surface:#1b222b;--surface2:#232c37;--ink:#e8edf2;--muted:#9aa8b5;--line:#2f3a47;--accent:#2dd4bf;--accent-ink:#06201d;--good:#4ade80;--bad:#f87171;--b1:#f87171;--b2:#f59e4b;--b3:#facc15;--b4:#5fb3dd;--b5:#4ade80;--shadow:0 10px 26px -14px rgba(0,0,0,.8)}}
+:root[data-theme="dark"]{--bg:#12171d;--surface:#1b222b;--surface2:#232c37;--ink:#e8edf2;--muted:#9aa8b5;--line:#2f3a47;--accent:#2dd4bf;--accent-ink:#06201d;--good:#4ade80;--bad:#f87171;--b1:#f87171;--b2:#f59e4b;--b3:#facc15;--b4:#5fb3dd;--b5:#4ade80;--shadow:0 10px 26px -14px rgba(0,0,0,.8)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--f-body)}
+.wrap{max-width:760px;margin:0 auto;padding:24px 16px 60px}
+.back{font-size:14px;font-weight:700;text-decoration:none;color:var(--muted)}
+h1{font-family:var(--f-head);font-size:clamp(28px,5vw,38px);margin:10px 0 4px;line-height:1.1}
+.lead{color:var(--muted);margin:0 0 16px}
+.decks{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.chip{font:inherit;font-weight:800;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:7px 12px;border-radius:99px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.boxes{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:14px 0}
+.bx{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px 6px;text-align:center}
+.bx b{display:block;font-size:22px;font-family:var(--f-head)}
+.bx span{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.bx i{display:block;height:5px;border-radius:9px;margin-top:6px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{font:inherit;font-weight:800;font-size:15px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;border-radius:12px;cursor:pointer;min-height:44px}
+.btn.pri{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.good{background:var(--good);color:#fff;border-color:var(--good)}
+.btn.bad{background:var(--bad);color:#fff;border-color:var(--bad)}
+.btn:focus-visible,.chip:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.stage{perspective:1400px;margin:18px 0 12px}
+.card{position:relative;min-height:260px;transition:transform .5s;transform-style:preserve-3d;cursor:pointer}
+.card.flip{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:22px;display:flex;flex-direction:column;justify-content:center;overflow:auto}
+.face.back{transform:rotateY(180deg)}
+.face .meta{position:absolute;top:12px;left:16px;right:16px;display:flex;justify-content:space-between;font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.face .txt{font-size:clamp(18px,3.4vw,22px);font-weight:700;line-height:1.35;margin-top:14px}
+.face.back .txt{font-weight:600;font-size:clamp(16px,3vw,19px)}
+.hint{color:var(--muted);font-size:13px}
+.done{text-align:center;padding:30px 10px}
+.done b{font-family:var(--f-head);font-size:28px;display:block}
+details{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:18px}
+summary{cursor:pointer;font-weight:800}
+textarea,select{font:inherit;width:100%;border:1px solid var(--line);border-radius:10px;padding:8px;background:var(--bg);color:var(--ink);margin:4px 0 8px}
+ul.mine{padding-left:18px;font-size:14px}
+ul.mine button{font:inherit;font-size:12px;border:none;background:none;color:var(--bad);cursor:pointer}
+.themebtn{position:fixed;right:14px;bottom:14px;border-radius:99px}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <a class="back" href="../index.html">← zurück zum Launcher</a>
+ <h1>Lernkarten</h1>
+ <p class="lead">Karteikasten nach Leitner: Gewusst wandert ein Fach weiter (und kommt später wieder), nicht gewusst zurück in Fach 1. So wiederholst du genau das, was noch wackelt – verteiltes Lernen gegen die Vergessenskurve.</p>
+ <div class="decks" id="decks" role="group" aria-label="Stapel wählen"></div>
+ <div class="boxes" id="boxes" aria-label="Fächer"></div>
+ <div class="row"><button class="btn pri" id="start">Fällige Karten lernen</button><button class="btn" id="cram">Alle Karten durchmischen</button><span class="hint" id="dueInfo"></span></div>
+ <div id="session"></div>
+ <details><summary>Eigene Karte hinzufügen</summary>
+  <label>Stapel<select id="myDeck"></select></label>
+  <label>Frage<textarea id="myQ" rows="2"></textarea></label>
+  <label>Antwort<textarea id="myA" rows="3"></textarea></label>
+  <button class="btn" id="myAdd">Karte speichern</button>
+  <ul class="mine" id="mine"></ul>
+  <p class="hint">Eigene Karten bleiben nur in diesem Browser gespeichert.</p>
+ </details>
+ <details><summary>Tastatur & Tipps</summary><p class="hint">Leertaste = umdrehen · <b>1</b> = nicht gewusst · <b>2</b> = gewusst. Antworte immer erst laut, bevor du umdrehst (Testing-Effekt). Wiederholungsabstände: Fach 1 sofort, Fach 2 nach 1 Tag, Fach 3 nach 3 Tagen, Fach 4 nach 7 Tagen, Fach 5 nach 14 Tagen.</p>
+ <button class="btn" id="resetAll">Lernstand zurücksetzen</button></details>
+</div>
+<button class="btn themebtn" id="theme" aria-label="Hell/Dunkel umschalten">◐</button>
+<script>
+"use strict";
+const DECKS={
+up:{name:"Unterrichtsplanung",cards:[
+["Nenne die vier Schritte des Planungsinstruments.","Klären – Entscheiden – Gestalten – Evaluieren (nach Zumsteg u. a.). Eselsbrücke K-E-G-E: „Klug Entscheiden, Gut Erleben“."],
+["Welche drei Felder werden beim Klären bearbeitet?","Sache · Bedingungen · Bedeutung und Sinn → münden in die Thematik."],
+["Aus welchen vier Blickrichtungen wird die Thematik festgelegt?","Sache · Kompetenz · Arbeitsform · Evaluation/Lernprodukt."],
+["Welche drei Entscheidungen fallen im zweiten Schritt?","Lernziele · Form der Lern-Evaluation · Lehr-Lern-Arrangement."],
+["Definiere „Lernziel“.","Möglichst konkrete, beobachtbare Beschreibung einer Handlung, zu der die Lehrkraft die Schülerinnen und Schüler veranlassen will."],
+["Nenne die drei Lernzieldimensionen mit je einem Beispiel.","kognitiv (Spannungsfall berechnen) · affektiv (bereit sein, Sicherheitsregeln einzuhalten) · psychomotorisch (Aderendhülse verpressen). Kopf – Herz – Hand."],
+["Welche drei Bestandteile hat ein präzises Lernziel?","Lerninhalt · Bedingung · Lernhandeln (beobachtbares Verb). Eselsbrücke I-B-H."],
+["Warum sind präzise Lernziele nützlich?","Überprüfung steckt schon in der Formulierung; roter Faden; spart Recherche; Grundlage für Validität von Leistungsmessung."],
+["Nenne vier unpräzise Verben.","wissen, kennen, verstehen, glauben – nicht beobachtbar, nicht überprüfbar."],
+["Beschreibe die Struktur der Taxonomie nach Anderson/Krathwohl.","(1) Sechs Stufen zunehmender Komplexität: Erinnern, Verstehen, Anwenden, Analysieren, Bewerten, (Er)Schaffen – höhere setzen niedrigere voraus. (2) Zweite Achse: Wissensarten (faktisch, konzeptuell, prozedural, metakognitiv)."],
+["Was ist bei Anderson/Krathwohl anders als bei Bloom (1956)?","Verben statt Nomen; „Erschaffen“ steht ganz oben (über Bewerten); zusätzliche Dimension der Wissensarten."],
+["Welche drei Anforderungsbereiche hat die EPA?","AFB I Reproduktion · AFB II Reorganisation/Transfer · AFB III Reflexion, Problemlösung, Beurteilung."],
+["Nenne je zwei Operatoren für AFB I, II und III.","I: nennen, beschreiben · II: erklären, vergleichen · III: beurteilen, Stellung nehmen."],
+["Worauf beruht die affektive Taxonomie (Krathwohl, Bloom & Masia)?","Auf dem Ausmaß, in dem sich jemand einen Wert zu eigen macht: Aufmerksamwerden → Reagieren → Werten → Wertordnung → Erfülltsein/Verhaltensänderung."],
+["Darf Schule affektive Ziele verfolgen?","Ja – Erziehungsauftrag/Bildungsauftrag (Handlungskompetenz inkl. Selbstkompetenz). Grenze: Werte anbieten, nicht überwältigen. Überprüfung nur über Anzeichen; nicht benoten."],
+["Was heißt „zienern“?","Aus dem Hauptziel Teilziele ableiten mit der Frage „Was kann jemand, der … kann?“ (Gerhard Ziener) – danach streichen, verteilen, ordnen → Zielgerüst."],
+["Was ist der Roter-Faden-Test?","Den Gedankengang der Stunde in 1–2 Sätzen sagen können. Wenn nicht, findet auch die Klasse keinen roten Faden."],
+["Was ist mit „Charakter der Stunde“ gemeint?","Ein sloganhaftes Grundmuster (z. B. Übungsstunde, Staun-Stunde, Werkzeug-Stunde) plus Schwerpunkt-Dimension."],
+["Wer gibt Rückmeldung – in welcher Rangfolge?","1. jeder sich selbst · 2. Peer · 3. Lehrkraft."],
+["Unterscheide formative und summative Evaluation.","Formativ: begleitet und steuert den Lernprozess (Exit-Ticket, Ampel). Summativ: bilanziert das Ergebnis, oft benotet (Klassenarbeit)."],
+["Nenne die Achsen des LLA-Diagramms.","Fremd- vs. Selbststeuerung · Nach- vs. Selbstkonstruktion."],
+["Welche fünf Planungsfragen gelten pro Phase?","Sozialform · Methode · Medien · Einstieg · Kontrollfragen."],
+["Nenne die vier Kontrollfragen.","Zeit ↔ Ertrag? · Reflexion über das Lernen? · Ergebnissicherung passend zum Ziel? · Individuelle Bedürfnisse?"],
+["Wann passt Einzelarbeit?","Wenn jede/r es allein können muss (Klassenarbeit), bei individuellen Gedanken (Selbsteinschätzung), beim Ideensammeln, zum Zur-Ruhe-Kommen."],
+["Wann passt Partnerarbeit – und worauf achten?","Neue/komplexe Inhalte anwenden, gegenseitige Hilfe, ins Gespräch kommen. Darf nicht zur Kleingruppenarbeit werden."],
+["Was zeichnet die Triade aus?","Persönlicher Austausch, Feedback, Mini-Rollenspiel (A und B spielen, C beobachtet). Trittbrettfahren fast unmöglich."],
+["Worauf ist bei Gruppenarbeit zu achten?","Rollen verteilen, offen lassen wer präsentiert, enge Zeit, klare Ergebniserwartung, leistungsheterogen mischen; eher ungeeignet für Kreativphasen."],
+["Nenne die drei Einstiegsformen mit Motto.","Informierend: „Karten auf den Tisch!“ · Verpackung: „Guck mal, ist das nicht bemerkenswert?“ · Lernsituation: „Der Reifen ist platt – am Ende könnt ihr ihn flicken.“"],
+["Dauer und Logik der Einstiegsformen?","Informierend max. 4 Min., deduktiv · Verpackung und Lernsituation bis ca. 10 Min., induktiv."],
+["Was geht beim Einstieg immer?","Sagen, worum es geht, wozu es gut ist und wie gearbeitet wird."],
+["Nenne vier Stolperfallen beim Einstieg.","Thema erraten lassen · stummer Impuls mit erwarteter Antwort · zu lange Verpackung · Lernsituation ohne passendes Lernprodukt."],
+["Wozu überhaupt Einstiege?","Transparenz/Sinn → Motivation (Heckhausen) · Vorwissen aktivieren → Enkodierung (Advance Organizer) · Aufmerksamkeit bündeln · strukturiertes Ankommen (Klassenführung)."],
+["Welche Überraschungen unterscheidet Mühlhausen?","Vermeidbar (Mängel im Entwurf, Inszenierungsschnitzer) und unvermeidbar (Zielirritationen, Missverständnisse, Sperrigkeit, Niveauüberraschung)."],
+["Leitfrage beim Evaluieren?","Was lief anders als geplant (2–3 Situationen) – und woran kann es gelegen haben?"],
+["Was ist das Notfallprogramm?","Die Stunde im ersten Durchgang zügig komplett und haltbar vorbereiten, dann verfeinern – nie am Einstieg hängen bleiben."],
+["Nenne klassische Zeitfresser im Unterricht.","Abschreiben von der Tafel, Umbauphasen, Gruppeneinteilung, lange fragend-entwickelnde Phasen, Geräte anmelden/Dateien öffnen."],
+["Welche Modelle stehen hinter dem Planungsinstrument?","Klafkis didaktische Analyse (Klären) und das Berliner Modell (Verlaufsplan)."],
+["Welchen Querbezug nennt das Seminar ausdrücklich?","Gruppenphasen (Tuckman, PädPsy) ↔ Sozialformen/kooperatives Lernen (Päd)."],
+["Warum sollten Medien nie Ausgangspunkt sein?","Sonst bestimmt das Material statt das Ziel den Unterricht – der rote Faden fehlt; Medien sind nie Selbstzweck."],
+["Wie kann man „gut begründet anders“ planen?","Z. B. von der Lernsituation aus rückwärts planen (Backward Design) – zeigen, dass Klären, Ziele und Evaluation trotzdem enthalten sind."]]},
+paed:{name:"Pädagogik",cards:[
+["Regeln für einen guten Lehrervortrag?","Kurz (ca. 5–20 Min.), Struktur sichtbar (Advance Organizer, Tafelbild), anschaulich, Beispiele, Sprechpausen, Blickkontakt, Zusammenfassung."],
+["Regeln für fragend-entwickelnden Unterricht (FEU)?","Weite statt enge Fragen, Wartezeit 3–8 Sekunden, kein Lehrerecho, Impulse statt Kettenfragen, Schülerbeiträge aufgreifen."],
+["Bestandteile eines guten Arbeitsauftrags?","Was ist zu tun · Zeit · Sozialform · Hilfsmittel · Ergebnisform · Präsentation/Weiterarbeit – schriftlich sichtbar."],
+["Nenne die Funktionen der Notengebung.","Rückmeldung, Anreiz/Motivation, Berichts- bzw. Informationsfunktion, Selektion/Berechtigung (Zuteilung von Chancen)."],
+["Nenne die drei Hauptgütekriterien.","Objektivität · Reliabilität · Validität."],
+["Was bedeutet Validität?","Der Test misst, was er messen soll (z. B. Fachkompetenz statt Lesefähigkeit). Hängt an präzisen Lernzielen."],
+["Was bedeutet Reliabilität?","Zuverlässigkeit/Messgenauigkeit: Bei Wiederholung käme dasselbe Ergebnis heraus."],
+["Was bedeutet Objektivität?","Unabhängigkeit des Ergebnisses von der Person, die durchführt, auswertet und interpretiert (z. B. Erwartungshorizont)."],
+["Nenne die drei Bezugsnormen.","Sozial (Vergleich mit anderen) · individuell (Vergleich mit früherer eigener Leistung) · sachlich/kriterial (Vergleich mit Lernziel)."],
+["Nenne vier Beurteilungsfehler.","Halo-Effekt · Milde-/Strengefehler · Tendenz zur Mitte · Reihenfolge-/Kontrasteffekt · logischer Fehler · Erwartungseffekt (Pygmalion)."],
+["Was ist lernförderliches Feedback nach Klassenarbeiten?","Konkret, auf Kriterien bezogen, zeigt Stärken und nächste Schritte (Feed-up, Feed-back, Feed-forward nach Hattie)."],
+["Lern- vs. Leistungssituation?","Lernsituation: Fehler erlaubt, nicht bewertet. Leistungssituation: angekündigt, bewertet. Beides klar trennen."],
+["Textoptimierung vs. sprachliche Vereinfachung?","Optimierung: Text verständlicher machen bei gleichem Inhalt (Struktur, Gliederung). Vereinfachung: sprachliches Niveau senken (kurze Sätze, Aktiv). Fachwörter erklären, nicht ersetzen."],
+["Nenne vier Regeln zur Textvereinfachung.","Kurze Sätze, eine Aussage pro Satz · Aktiv statt Passiv · Verben statt Nominalstil · Fachbegriffe erklären · gleiche Begriffe beibehalten · klare Gliederung."],
+["Kernmerkmale der Direkten Instruktion?","Ziel klären, Vorwissen aktivieren, Lösungsbeispiel/Modellieren, angeleitetes Üben (≥ 80 % richtig), selbstständiges Üben, Rückmeldung, Wiederholen."],
+["Was ist Lernen durch Lehren (LdL)?","Nach Jean-Pol Martin: Schüler erarbeiten Inhalte und vermitteln sie der Klasse; Lehrkraft begleitet. Fördert Tiefenverarbeitung und Selbstwirksamkeit."],
+["Merkmale kooperativen Lernens (Helmke)?","Positive Interdependenz und individuelle Verantwortlichkeit – gegen free rider und sucker effect; dazu Interaktion, soziale Kompetenzen, Reflexion."],
+["Was ist die Projektmethode nach Frey?","Projektinitiative → Projektskizze → Projektplan → Durchführung → Abschluss, mit Fixpunkten und Metainteraktion; hohe Selbststeuerung."],
+["Was ist SOL mit dem Sandwich-Prinzip?","Selbstorganisiertes Lernen: Wechsel von kollektiven (Input) und individuellen Lernphasen – wie Schichten eines Sandwichs; Advance Organizer, Methodenkompetenz."],
+["Wann verhalten sich Jugendliche sozial (Hanisch)?","Durch Vorbilder, positive Zuschreibungen, eigene Erlebnisse/Erfahrungen und Anerkennung – nicht durch Appelle."],
+["Was bedeutet Handlungskompetenz in der Berufsschule?","Fachkompetenz, Selbstkompetenz und Sozialkompetenz (plus Methoden-, Lern-, kommunikative Kompetenz)."],
+["Inklusion vs. Integration?","Integration: Eingliederung in ein bestehendes System. Inklusion: System passt sich an die Vielfalt aller an – Teilhabe von Anfang an."],
+["Was ist Nachteilsausgleich?","Anpassung der Bedingungen (Zeit, Hilfsmittel, Form) bei gleichen Anforderungen – kein Notenschutz und kein Vermerk im Zeugnis."],
+["Was ist Notenschutz?","Abweichen von den allgemeinen Leistungsanforderungen (z. B. Rechtschreibung nicht bewerten) – wird im Zeugnis vermerkt."],
+["Warum braucht Unterrichtsentwicklung Schulentwicklung?","Gute Einzelstunden reichen nicht: Teams, Absprachen, gemeinsame Standards und Feedbackkultur machen Verbesserung nachhaltig (Organisations-, Personal-, Unterrichtsentwicklung)."],
+["Was ist OES?","Operativ eigenständige Schule: Schule verantwortet ihre Qualitätsentwicklung selbst – Leitbild, Selbstevaluation, Individualfeedback, Qualitätshandbuch."],
+["Sequenzmodell nach Helmke?","Information → Rezeption → Reflexion → Aktion → Evaluation (Nutzung von Feedback für Unterrichtsentwicklung)."],
+["Was ist ein Advance Organizer?","Vorstrukturierende Übersicht zu Beginn (Ausubel), die neues Wissen an Vorwissen anknüpfbar macht."]]},
+psy:{name:"Päd. Psychologie",cards:[
+["Unterrichtsstörung vs. Disziplinproblem?","Störung: Unterricht wird beeinträchtigt (kann viele Ursachen haben, auch die Lehrkraft). Disziplinproblem: Schüler verstößt bewusst gegen Regeln/Normen."],
+["Nenne Kounins Dimensionen der Klassenführung.","Allgegenwärtigkeit (withitness) · Überlappung · Reibungslosigkeit und Schwung · Gruppenmobilisierung · Rechenschaftsprinzip · Abwechslung/Herausforderung."],
+["Was meint Kounin mit „Allgegenwärtigkeit“?","Die Klasse merkt, dass die Lehrkraft alles im Blick hat – und greift früh und am richtigen Schüler ein."],
+["Nenne die vier fehlgeleiteten Ziele nach Dreikurs.","Aufmerksamkeit · Macht · Rache · Unzulänglichkeit (Rückzug). Diagnose über das eigene Gefühl der Lehrkraft und die Reaktion auf Ermahnung."],
+["Was unterscheidet erfolgreiche Lehrkräfte bei subjektiven Theorien?","Differenzierte subjektive Theorien: viele Ursachenannahmen und Handlungsalternativen, Blick auch auf eigenes Verhalten."],
+["Ebenen der Prävention und Intervention?","Beziehung · Unterrichtsgestaltung · Regeln und Rituale (Prävention) → nonverbal · verbal kurz · Konsequenzen · außerhalb des Unterrichts (Intervention)."],
+["Was ist der Linzer Diagnosebogen zur Klassenführung (LDK)?","Fragebogen nach Mayr: Schüler und Lehrkraft schätzen Klassenführung ein – Vergleich von Selbst- und Fremdbild."],
+["Ablauf einer Fallbesprechungsgruppe?","Fall schildern → Rückfragen → Hypothesen/Ideen der Gruppe (Fallgeber hört zu) → Fallgeber nimmt Stellung → Lösungen sammeln → Abschluss."],
+["Phasen der Gruppenentwicklung nach Tuckman?","Forming · Storming · Norming · Performing (· Adjourning)."],
+["Drei Grundbedürfnisse nach Deci & Ryan?","Kompetenzerleben · Autonomie · soziale Eingebundenheit."],
+["Intrinsische vs. extrinsische Motivation?","Intrinsisch: Tätigkeit selbst ist lohnend. Extrinsisch: wegen Folgen (Note, Lob). Kontinuum der Selbstbestimmung (introjiziert → identifiziert → integriert)."],
+["Kognitives Grundmodell nach Heckhausen?","Situation → Handlung → Ergebnis → Folgen, mit Erwartungen: Situations-Ergebnis-, Handlungs-Ergebnis-, Ergebnis-Folge-Erwartung."],
+["Kausalattribution nach Weiner – Dimensionen?","Lokation (internal/external) × Stabilität (stabil/variabel): Fähigkeit, Anstrengung, Aufgabenschwierigkeit, Zufall."],
+["Günstiges Attributionsmuster?","Erfolg auf Fähigkeit/Anstrengung (internal), Misserfolg auf mangelnde Anstrengung (variabel) – nicht auf fehlende Begabung."],
+["Risiko-Wahl-Modell nach Atkinson?","Tendenz = Motiv × Erfolgswahrscheinlichkeit × Anreiz (A = 1 − W). Erfolgsmotivierte wählen mittelschwere, Misserfolgsmotivierte sehr leichte oder sehr schwere Aufgaben."],
+["Welche Bezugsnorm wirkt motivationsförderlich?","Die individuelle Bezugsnorm: macht Lernzuwachs sichtbar, fördert günstige Attribution (Rheinberg & Krug)."],
+["Was ist das Selbstkonzept?","Bild von den eigenen Fähigkeiten; beeinflusst Erwartungen, Aufgabenwahl und Anstrengung (z. B. Big-Fish-Little-Pond-Effekt)."],
+["Klassische Konditionierung – Grundidee?","Pawlow: neutraler Reiz wird durch Kopplung mit unbedingtem Reiz zum bedingten Reiz, der eine bedingte Reaktion auslöst (z. B. Prüfungsangst)."],
+["Wie löst man konditionierte Angst auf?","Löschung, Gegenkonditionierung, systematische Desensibilisierung; Prävention: positive Lernatmosphäre, Fehlerkultur."],
+["Vier-Felder-Matrix der operanten Konditionierung?","Positive Verstärkung (Angenehmes hinzu) · negative Verstärkung (Unangenehmes weg) · Bestrafung Typ I (Unangenehmes hinzu) · Bestrafung Typ II (Angenehmes weg)."],
+["Nachteile von Strafen?","Unterdrücken nur, zeigen kein Alternativverhalten, Beziehung leidet, Modellwirkung von Aggression, Vermeidung/Angst."],
+["Lernen am Modell (Bandura) – Phasen?","Aneignung: Aufmerksamkeit, Gedächtnis · Ausführung: motorische Reproduktion, Motivation (Verstärkung, auch stellvertretend)."],
+["Was ist eine Ich-Botschaft?","Verhalten beschreiben + eigenes Gefühl + Auswirkung auf mich – ohne Vorwurf (Gordon)."],
+["Was ist aktives Zuhören?","Verstanden-Gefühl spiegeln, paraphrasieren, nachfragen – Gesprächspartner fühlt sich angenommen."],
+["Kommunikationssperren nach Gordon (Beispiele)?","Befehlen, Warnen, Moralisieren, Ratschläge, Belehren, Kritisieren, Beschimpfen, Interpretieren, Loben (manipulativ), Beruhigen, Ausfragen, Ablenken."],
+["Fünf Axiome nach Watzlawick?","Man kann nicht nicht kommunizieren · Inhalts- und Beziehungsaspekt · Interpunktion · digital/analog · symmetrisch/komplementär."],
+["Vier Seiten einer Nachricht (Schulz von Thun)?","Sachinhalt · Selbstkundgabe · Beziehung · Appell (vier Ohren beim Empfänger)."],
+["Vier Schritte der GfK (Rosenberg)?","Beobachtung (ohne Bewertung) · Gefühl · Bedürfnis · Bitte."],
+["Mehrspeichermodell?","Sensorisches Register → Arbeitsgedächtnis (begrenzt, ca. 7±2 bzw. 4 Einheiten) → Langzeitgedächtnis; Aufmerksamkeit und Wiederholung/Elaboration als Übergänge."],
+["Netzwerkmodell des Langzeitgedächtnisses?","Wissen als Knoten und Verbindungen; je vernetzter, desto leichter der Abruf (Elaboration, Vorwissen aktivieren)."],
+["Deklaratives vs. prozedurales Wissen?","„Wissen, dass“ (Fakten, Begriffe) vs. „Wissen, wie“ (Fertigkeiten, Abläufe)."],
+["Vergessenstheorien?","Spurenzerfall · Interferenz (pro- und retroaktive Hemmung) · Abrufversagen · motiviertes Vergessen."],
+["Techniken gegen das Vergessen?","Verteiltes Wiederholen, Testing-Effekt (Abrufüben), Elaboration, Visualisierung, Mnemotechniken, Ebbinghaus-Kurve berücksichtigen."],
+["Repräsentationsformen nach Bruner?","Enaktiv (handelnd) → ikonisch (bildhaft) → symbolisch (Sprache, Formeln)."],
+["Transaktionales Stressmodell (Lazarus)?","Primäre Bewertung (Bedrohung/Herausforderung?) → sekundäre Bewertung (Ressourcen?) → Coping (problem-/emotionsorientiert) → Neubewertung."],
+["AVEM-Muster nach Schaarschmidt?","G (Gesundheit) · S (Schonung) · Risikomuster A (Selbstüberforderung) · Risikomuster B (Burnout/Resignation)."],
+["Modell der Stressentstehung nach Rudow?","Belastungen (objektiv) → Widerspiegelung/Bewertung durch die Person → Beanspruchung (positiv/negativ) → Folgen."],
+["Frustrations-Aggressions-Theorie?","Frustration erhöht die Wahrscheinlichkeit von Aggression (Dollard u. a.) – heute: nicht zwangsläufig, abhängig von Hinweisreizen und Lernerfahrungen."],
+["Mobbing – Definition?","Wiederholte, systematische Schikane über längere Zeit durch eine oder mehrere Personen bei Machtungleichgewicht (Olweus)."],
+["Farsta-Methode vs. No-Blame-Approach?","Farsta: konfrontativ, Täter werden einzeln mit klarer Norm konfrontiert. No Blame: lösungsorientiert, Unterstützergruppe ohne Schuldzuweisung."],
+["Lehrerverhalten bei akuter Gewalt?","Eingreifen (laut, mit Namen), trennen, Hilfe holen, Verletzte versorgen, sich selbst schützen, später aufarbeiten und dokumentieren."],
+["Merkmale der Mediation?","Freiwilligkeit, Allparteilichkeit, Vertraulichkeit, Eigenverantwortung der Konfliktparteien für die Lösung."],
+["Phasen der Mediation?","Einleitung · Sichtweisen darstellen · Konflikterhellung (Gefühle, Interessen) · Lösungen sammeln und bewerten · Vereinbarung."],
+["Lehrer-Schüler-Beziehung – Dimensionen?","Wertschätzung/Wärme und Lenkung/Struktur (z. B. nach Tausch: autoritativ = hohe Wärme + klare Lenkung)."]]}
+};
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const $=s=>document.querySelector(s);
+const SKEY="lernkarten-stand", MYKEY="lernkarten-eigene", INTERVAL=[0,0,1,3,7,14];
+let state=store.get(SKEY,{}), mine=store.get(MYKEY,[]), deck=store.get("lernkarten-deck","up"), queue=[], cur=null, flipped=false, stats={ok:0,no:0};
+(function(){const t=store.get("lp-theme",null);if(t)document.documentElement.dataset.theme=t;$("#theme").onclick=()=>{const c=document.documentElement.dataset.theme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");const n=c==="dark"?"light":"dark";document.documentElement.dataset.theme=n;store.set("lp-theme",n)}})();
+const today=()=>Math.floor(Date.now()/864e5);
+function allCards(){const out=[];for(const[k,d] of Object.entries(DECKS))d.cards.forEach((c,i)=>out.push({id:k+":"+i,deck:k,q:c[0],a:c[1]}));mine.forEach((c,i)=>out.push({id:"my:"+c.id,deck:c.deck,q:c.q,a:c.a,mine:true}));return out}
+const inDeck=c=>deck==="all"||c.deck===deck;
+const boxOf=c=>(state[c.id]&&state[c.id].b)||1, dueOf=c=>(state[c.id]&&state[c.id].d)||0;
+function renderDecks(){const h=$("#decks");h.innerHTML="";[["up","Unterrichtsplanung"],["paed","Pädagogik"],["psy","Päd. Psychologie"],["all","Alle"]].forEach(([k,n])=>{const b=document.createElement("button");b.className="chip";b.textContent=n;b.setAttribute("aria-pressed",deck===k);b.onclick=()=>{deck=k;store.set("lernkarten-deck",k);renderDecks();renderBoxes();$("#session").innerHTML=""};h.append(b)});
+ const s=$("#myDeck");s.innerHTML="";[["up","Unterrichtsplanung"],["paed","Pädagogik"],["psy","Päd. Psychologie"]].forEach(([k,n])=>{const o=document.createElement("option");o.value=k;o.textContent=n;s.append(o)})}
+function renderBoxes(){const cs=allCards().filter(inDeck),n=[0,0,0,0,0,0];cs.forEach(c=>n[boxOf(c)]++);const h=$("#boxes");h.innerHTML="";for(let b=1;b<=5;b++){const d=document.createElement("div");d.className="bx";d.innerHTML=`<span>Fach ${b}</span><b>${n[b]}</b><i style="background:var(--b${b})"></i>`;h.append(d)}
+ const due=cs.filter(c=>dueOf(c)<=today()).length;$("#dueInfo").textContent=`${due} von ${cs.length} Karten fällig · ${n[5]} sitzen sicher`;$("#start").disabled=!due}
+function start(cram){const cs=allCards().filter(inDeck);queue=(cram?cs:cs.filter(c=>dueOf(c)<=today())).sort(()=>Math.random()-.5);stats={ok:0,no:0};next()}
+function next(){cur=queue.shift();flipped=false;const h=$("#session");if(!cur){h.innerHTML=`<div class="done"><b>Geschafft! 🎉</b><p>${stats.ok} gewusst · ${stats.no} noch üben</p><p class="hint">Komm morgen wieder – dann sind die nächsten Karten fällig.</p></div>`;renderBoxes();return}
+ const dn=cur.deck==="up"?"Unterrichtsplanung":cur.deck==="paed"?"Pädagogik":"Päd. Psychologie";
+ h.innerHTML=`<div class="stage"><div class="card" id="card" tabindex="0" role="button" aria-label="Karte umdrehen"><div class="face"><div class="meta"><span>${dn}${cur.mine?" · eigene":""}</span><span>Fach ${boxOf(cur)} · noch ${queue.length}</span></div><div class="txt"></div></div><div class="face back"><div class="meta"><span>Antwort</span><span></span></div><div class="txt"></div></div></div></div>
+ <div class="row" id="ctrl"><button class="btn pri" id="flipB">Umdrehen</button></div>`;
+ h.querySelector(".face .txt").textContent=cur.q;h.querySelector(".face.back .txt").textContent=cur.a;
+ $("#card").onclick=flip;$("#flipB").onclick=flip;$("#card").focus({preventScroll:true})}
+function flip(){if(!cur)return;flipped=!flipped;$("#card").classList.toggle("flip",flipped);if(flipped&&!$("#okB")){$("#ctrl").innerHTML=`<button class="btn bad" id="noB">✗ Nicht gewusst (1)</button><button class="btn good" id="okB">✓ Gewusst (2)</button>`;$("#noB").onclick=()=>grade(false);$("#okB").onclick=()=>grade(true)}}
+function grade(ok){const b=ok?Math.min(5,boxOf(cur)+1):1;state[cur.id]={b,d:today()+INTERVAL[b]};store.set(SKEY,state);ok?stats.ok++:stats.no++;if(!ok)queue.splice(Math.min(queue.length,3),0,cur);renderBoxes();next()}
+document.addEventListener("keydown",e=>{if(!cur||/TEXTAREA|SELECT|INPUT/.test(e.target.tagName))return;if(e.key===" "){e.preventDefault();flip()}else if(flipped&&e.key==="1")grade(false);else if(flipped&&e.key==="2")grade(true)});
+$("#start").onclick=()=>start(false);$("#cram").onclick=()=>start(true);
+function renderMine(){const u=$("#mine");u.innerHTML="";mine.forEach((c,i)=>{const li=document.createElement("li");li.textContent=c.q+" ";const b=document.createElement("button");b.textContent="löschen";b.onclick=()=>{mine.splice(i,1);store.set(MYKEY,mine);renderMine();renderBoxes()};li.append(b);u.append(li)})}
+$("#myAdd").onclick=()=>{const q=$("#myQ").value.trim(),a=$("#myA").value.trim();if(!q||!a)return;mine.push({id:Date.now().toString(36),deck:$("#myDeck").value,q,a});store.set(MYKEY,mine);$("#myQ").value=$("#myA").value="";renderMine();renderBoxes()};
+$("#resetAll").onclick=()=>{if(confirm("Lernstand aller Karten zurücksetzen? Eigene Karten bleiben erhalten.")){state={};store.set(SKEY,state);renderBoxes();$("#session").innerHTML=""}};
+renderDecks();renderBoxes();renderMine();
+</script>
+</body>
+</html>

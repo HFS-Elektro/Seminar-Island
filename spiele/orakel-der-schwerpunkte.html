@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; connect-src 'self' data: blob:; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; manifest-src 'self'; worker-src 'self'; script-src 'self' 'unsafe-inline'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Seminar-Island: Das Orakel der Schwerpunkte</title>
+<script src="../assets/app.js"></script>
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
+<style>
+:root{--sea:#0b2238;--sea2:#123553;--sea3:#1b4a70;--sand:#f4dc9b;--ink:#eaf2f8;--mut:#9fb6c8;--acc:#ffb347;--ok:#5fd38d;--bad:#ff6b6b;--mid:#ffd166;--psy:#c39bff;--paed:#6ec6ff}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--sea);color:var(--ink);font-family:Nunito,system-ui,sans-serif;font-size:16px;line-height:1.45}
+body{background:radial-gradient(ellipse at top,#1d4f78 0%,var(--sea) 60%) fixed}
+.wrap{max-width:760px;margin:0 auto;padding:14px 14px 90px}
+h1,h2,h3,.px{font-family:"Press Start 2P",monospace;letter-spacing:.5px}
+h1{font-size:15px;line-height:1.6;color:var(--sand);margin:6px 0 4px}
+h2{font-size:12px;line-height:1.7;color:var(--acc);margin:18px 0 8px}
+h3{font-size:10px;line-height:1.7;margin:0 0 6px;color:var(--sand)}
+.sub{color:var(--mut);font-size:14px;margin:0 0 10px}
+.card{background:var(--sea2);border:2px solid var(--sea3);border-radius:6px;padding:14px;margin:10px 0;box-shadow:0 4px 0 #071827}
+.dlg{display:flex;gap:10px;align-items:flex-start;background:#0e2a44;border:2px solid var(--sand);border-radius:6px;padding:12px;margin:10px 0;box-shadow:0 4px 0 #071827}
+.dlg .who{font-size:30px;line-height:1}
+.dlg b.n{display:block;font-family:"Press Start 2P";font-size:9px;color:var(--sand);margin-bottom:5px}
+button,.btn{font-family:inherit;font-weight:800;font-size:15px;border:none;border-radius:5px;padding:11px 14px;cursor:pointer;background:var(--acc);color:#2a1700;box-shadow:0 3px 0 #a8661a;margin:4px 4px 4px 0;touch-action:manipulation}
+button:active{transform:translateY(2px);box-shadow:0 1px 0 #a8661a}
+button.sec{background:var(--sea3);color:var(--ink);box-shadow:0 3px 0 #0a2236}
+button.ghost{background:transparent;color:var(--mut);box-shadow:none;border:1px solid var(--sea3)}
+button:disabled{opacity:.45;cursor:default}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#071827ee;border-top:2px solid var(--sea3);display:flex;justify-content:center;z-index:9;backdrop-filter:blur(4px)}
+.nav button{flex:1;max-width:130px;background:none;box-shadow:none;color:var(--mut);font-size:11px;padding:8px 2px 10px;margin:0;border-radius:0;line-height:1.2}
+.nav button span{display:block;font-size:20px}
+.nav button.on{color:var(--sand);border-top:3px solid var(--acc)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.isl{background:var(--sea2);border:2px solid var(--sea3);border-radius:6px;padding:10px;cursor:pointer;position:relative;min-height:84px}
+.isl .id{font-family:"Press Start 2P";font-size:9px}
+.isl .nm{font-size:13px;font-weight:700;margin-top:4px}
+.isl .st{font-size:11px;color:var(--mut);margin-top:4px}
+.tag{display:inline-block;font-size:11px;font-weight:800;padding:2px 7px;border-radius:10px;margin:2px 4px 2px 0}
+.t-paed{background:#1d4f78;color:var(--paed)}.t-psy{background:#3a2a5a;color:var(--psy)}
+.t-ok{background:#1f5039;color:var(--ok)}.t-bad{background:#5a2328;color:#ffb0b0}.t-mid{background:#5a4a1a;color:var(--mid)}
+.opt{display:block;width:100%;text-align:left;background:var(--sea3);color:var(--ink);box-shadow:0 3px 0 #0a2236;font-weight:700;margin:7px 0;font-size:15px}
+.opt.sel{outline:3px solid var(--acc)}
+.opt.right{background:#1f6a45}.opt.wrong{background:#7a2a30}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.sl{margin:10px 0}
+.sl label{display:flex;justify-content:space-between;font-size:14px;font-weight:700}
+.sl .hint{font-size:12px;color:var(--mut)}
+input[type=range]{width:100%;accent-color:var(--acc);height:28px}
+.bar{height:12px;background:#0a1d30;border-radius:6px;overflow:hidden;margin:3px 0}
+.bar i{display:block;height:100%;border-radius:6px}
+.mut{color:var(--mut);font-size:13px}
+.big{font-size:18px;font-weight:800}
+.chk{display:flex;gap:10px;align-items:flex-start;padding:8px;border-radius:5px;background:#0e2a44;margin:6px 0;cursor:pointer;font-size:15px}
+.chk input{width:22px;height:22px;flex:none;accent-color:var(--ok);margin-top:1px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:6px 4px;border-bottom:1px solid var(--sea3);text-align:left;vertical-align:top}
+th{color:var(--sand);font-size:11px}
+.pill{font-family:"Press Start 2P";font-size:9px;padding:3px 6px;border-radius:4px;background:#0a1d30}
+.timer{font-family:"Press Start 2P";font-size:22px;color:var(--sand);text-align:center;margin:10px 0}
+.merk{border-left:4px solid var(--mid);background:#2a2610;padding:8px 10px;border-radius:4px;margin:8px 0;font-size:14px}
+.esel{border-left:4px solid var(--psy);background:#241b38;padding:8px 10px;border-radius:4px;margin:8px 0;font-size:14px}
+.say{border-left:4px solid var(--ok);background:#13321f;padding:8px 10px;border-radius:4px;margin:8px 0;font-size:14px}
+.rank{display:flex;gap:10px;align-items:center}
+.rank .medal{font-size:30px}
+.fade{animation:f .35s ease}
+@keyframes f{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
+.shake{animation:s .35s}
+@keyframes s{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.prog{font-family:"Press Start 2P";font-size:9px;color:var(--mut)}
+.toast{position:fixed;top:12px;left:50%;transform:translateX(-50%);background:var(--sand);color:#2a1700;font-weight:800;padding:10px 16px;border-radius:6px;z-index:20;box-shadow:0 4px 0 #a8661a;max-width:90%;text-align:center}
+details summary{cursor:pointer;font-weight:800;color:var(--sand);padding:4px 0}
+.week{border-left:4px solid var(--acc);padding-left:10px;margin:12px 0}
+.week ul{margin:4px 0;padding-left:20px}
+.week li{margin:4px 0}
+a{color:var(--acc)}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<nav class="nav" id="nav"></nav>
+<script>
+/* ====================== DATEN ====================== */
+const T = [
+{id:"P1",f:"paed",sp:true,n:"Unterrichtsplanung",isl:"Bauplan-Bucht",ic:"🏗️",
+ merk:"Hausbau: erst Grundstück klären, dann Grundriss entscheiden, dann bauen, dann Mängel prüfen. Niemand kauft zuerst die Fliesen.",
+ esel:"K-E-G-E: Klug Entscheiden, Gut Erleben. Lernziel-Check I-B-H: Inhalt – Bedingung – Handeln.",
+ drei:["Klären von Sache, Bedingungen und Bedeutung","präzise Lernziele und Zienern","Einstieg, Phasen und Ergebnissicherung"],
+ links:["Mehrspeichermodell (AO)","Motivation (Ergebnis-Folge-Erwartung)","Gruppenphasen"],
+ q:[
+ {q:"In welcher Reihenfolge arbeitet das Planungsinstrument des Seminars?",o:["Klären – Entscheiden – Gestalten – Evaluieren","Entscheiden – Klären – Gestalten – Evaluieren","Gestalten – Klären – Entscheiden – Evaluieren","Klären – Gestalten – Entscheiden – Evaluieren"],a:0,e:"K-E-G-E. Erst klären (Sache, Bedingungen, Bedeutung), dann Ziele, Lern-Evaluation und Arrangement entscheiden, dann Phasen gestalten, danach evaluieren."},
+ {q:"Welches Lernziel ist präzise formuliert?",o:["Die SuS verstehen Photovoltaik.","Die SuS kennen die fünf Sicherheitsregeln.","Die SuS berechnen mithilfe des Tabellenbuchs den erforderlichen Leitungsquerschnitt.","Die SuS wissen, was ein RCD ist."],a:2,e:"Präzise = Inhalt + Bedingung + beobachtbares Verb. „verstehen, kennen, wissen“ sind nicht beobachtbar."},
+ {q:"Was meint „zienern“?",o:["Lernziele den sechs Taxonomiestufen zuordnen","Aus dem Hauptziel Teilziele ableiten: „Was kann jemand, der … kann?“","Die Stunde nach dem Ziener-Phasenmodell rhythmisieren","Operatoren in Anforderungsbereiche einordnen"],a:1,e:"Nach Gerhard Ziener: Hauptziel → Frage „Was kann jemand, der … kann?“ → Liste von Teilzielen mit rotem Faden."}],
+ fall:{t:"Eine Kollegin plant: „Ich zeige einen 20-minütigen Film über Photovoltaik, dann diskutieren wir.“ Ziel: „Die Schüler sollen PV verstehen.“ Analysiere und verbessere.",k:["Ziel „verstehen“ ist nicht beobachtbar → präzisieren (Inhalt, Bedingung, Verb)","Medium ist Ausgangspunkt der Planung – das ist ein Planungsfehler","20 Min. Film ohne Beobachtungsauftrag überlastet / aktiviert nicht","Teilziele zienern, Film kürzen + Auftrag, Ergebnissicherung einplanen","Querbezug genannt (z. B. Arbeitsgedächtnis, Motivation)"]}},
+{id:"P2",f:"paed",sp:true,n:"Unterrichtsmethoden",isl:"Vortrags-Vulkan",ic:"🌋",
+ merk:"Lehrervortrag = Stadtführung mit Plan. FEU = Schnitzeljagd, die der Lehrer gelegt hat – spannend, solange niemand im Kreis läuft.",
+ esel:"Arbeitsauftrag W-Z-S-H-E-P: Was, Zeit, Sozialform, Hilfsmittel, Ergebnisform, Präsentation. FEU-Fehler: die 3 K (Kettenfrage, Klingt-suggestiv, Krampfhaft auf Begriffe).",
+ drei:["Basisregeln Lehrervortrag","Fragetechnik und Feedback im FEU","Arbeitsaufträge erteilen"],
+ links:["Mehrspeichermodell","Motivation (Erfolgszuversicht)","Sprache/Inklusion"],
+ q:[
+ {q:"Wie lange solltest du nach einer schweren Denkfrage im FEU ungefähr warten?",o:["1 Sekunde","ca. 3 Sekunden","ca. 8 Sekunden","30 Sekunden"],a:2,e:"Faustregel: ca. 3 s, bei schweren Fragen ca. 8 s. Und bei Schweigen nicht umformulieren, sondern nachfragen, wo es hakt."},
+ {q:"Warum ist das Lehrerecho problematisch?",o:["Es kostet zu viel Zeit.","SuS hören einander nicht mehr zu und üben ihre Ausdrucksfähigkeit nicht.","Es ist rechtlich unzulässig.","Es verwirrt die Lehrkraft."],a:1,e:"Aufmerksamkeit wandert zur Lehrkraft („die wiederholt's ja eh“). Es ist kein aktives Zuhören. Ausnahme: Fremdsprachenunterricht."},
+ {q:"Welche Aussage gehört NICHT zu den Basisregeln des Lehrervortrags?",o:["Ziel und Nutzen offenlegen","Struktur sichtbar machen (Advance Organizer)","Möglichst 30–45 Minuten am Stück, damit der rote Faden hält","An Vorwissen anknüpfen"],a:2,e:"5–20 Minuten je nach Klasse – das Arbeitsgedächtnis ist begrenzt."}],
+ fall:{t:"Herr B. fragt: „Was passiert, wenn der N-Leiter unterbrochen ist, und wer weiß, warum, und wie misst man das?“ Niemand meldet sich. Nach zwei Sekunden beantwortet er alles selbst.",k:["Kettenfrage erkannt (drei Fragen auf einmal)","Wartezeit zu kurz (3–8 s)","Selbst beantworten: SuS lernen „Warten lohnt sich“ (operant!)","Rat: eine weite Frage, warten, ggf. Partneraustausch, streuen","qualifizierendes Feedback + Ergebnissicherung an der Tafel"]}},
+{id:"P3",f:"paed",sp:true,n:"Grundlagen Leistungsmessung",isl:"Waagen-Atoll",ic:"⚖️",
+ merk:"Note = Marktwaage: zeigt bei jedem Händler gleich (Objektivität), beim zweiten Wiegen dasselbe (Reliabilität) und wiegt die Äpfel, nicht die Kiste (Validität).",
+ esel:"O-R-V: Ohne Regeln Verloren. Erhebungsanlässe D-F-S: Davor – Fortlaufend – Schluss.",
+ drei:["Funktionen der Notengebung","Gütekriterien O-R-V","Bezugsnormen und Beurteilungsfehler"],
+ links:["Leistungsmotivation (Bezugsnorm)","Wahrnehmung/Kommunikation","Direkte Instruktion (Feedback)"],
+ q:[
+ {q:"In deiner Klassenarbeit kommt eine Aufgabe zu Stoff, den du nie unterrichtet hast. Welches Gütekriterium leidet vor allem?",o:["Objektivität","Reliabilität","Validität","Ökonomie"],a:2,e:"Validität: Misst die Arbeit, was sie messen soll? Nur Unterrichtetes prüfen."},
+ {q:"Was kennzeichnet formative Beurteilung?",o:["Am Ende, mit Note, bilanzierend","Während des Lernens, meist ohne Note, steuert den Lernprozess","Vor dem Lernen, um Voraussetzungen zu erkennen","Nur in der Abschlussprüfung"],a:1,e:"Diagnostisch = davor, formativ = fortlaufend, summativ = Schluss."},
+ {q:"Ein Schüler im Anzug, sehr selbstbewusst, bekommt trotz zwei Fachfehlern eine 1,3. Welcher Beurteilungsfehler liegt vor allem vor?",o:["Milde-Fehler","Halo-Effekt","Recency-Effekt","Kontrasteffekt"],a:1,e:"Ein Merkmal (Auftreten, Kleidung) überstrahlt das Urteil. Gegenmittel: Kriterienraster mit getrennten Kriterien."}],
+ fall:{t:"Eine Lehrerin bewertet den Vortrag eines selbstbewussten Schülers im Anzug mit 1,3, obwohl zwei Fachfehler vorkamen. Ein stiller Schüler im zerknitterten Shirt bekommt für einen fachlich gleichwertigen Vortrag 2,7.",k:["Halo-Effekt benannt (Auftreten überstrahlt)","ggf. logischer Fehler / Sympathie","Validität verletzt: nicht die Fachleistung gemessen","Bewertungsbogen mit getrennten Kriterien + Gewichtung vorab","Fehler notieren, Urteil kriterial begründen"]}},
+{id:"P4",f:"paed",sp:true,n:"Schriftl. & mündl. Bewertung",isl:"Notenschlüssel-Riff",ic:"📝",
+ merk:"Feedback = Navi: Wo will ich hin (Feed Up), wo bin ich (Feed Back), wie biege ich ab (Feed Forward). Ein Navi, das nur „falsch!“ ruft, hilft niemandem.",
+ esel:"Feedback-Ebenen A-P-S: Aufgabe, Prozess, Selbstregulation – „Aber Persönlich Schimpfen nie“.",
+ drei:["§ 7 NVO und Transparenz","Erwartungshorizont und Korrektur","Lernförderliches Feedback und mündliche Noten"],
+ links:["Weiner-Attribution","Beurteilungsfehler (Primacy/Recency)","Inklusion (Nachteilsausgleich)"],
+ q:[
+ {q:"Was regelt § 7 NVO im Kern?",o:["Grundlage sind alle im Zusammenhang mit dem Unterricht erbrachten Leistungen; Notenbildung transparent machen","Nur Klassenarbeiten zählen","Gruppennoten sind erlaubt","Die Klassenkonferenz setzt jede Note fest"],a:0,e:"Alle Unterrichtsleistungen, Transparenzpflicht, pädagogisch-fachliche Gesamtwertung."},
+ {q:"Auf welcher Ebene sollte Feedback nach Hattie & Timperley gerade NICHT ansetzen?",o:["Aufgabe","Prozess","Selbstregulation","Person („Du bist halt schlau“)"],a:3,e:"Feedback zur Person bringt kaum Lernzuwachs. Besser: Aufgabe, Prozess, Selbstregulation."},
+ {q:"Wie bildest du mündliche Noten am fairsten?",o:["Am Halbjahresende aus dem Gesamteindruck","Kriterien offenlegen, zeitnah dokumentieren, Lern- und Leistungssituation trennen","Nach Anzahl der Meldungen","Nur Referate zählen"],a:1,e:"Qualität vor Quantität, Beobachtungsbogen, Fehler in Übungsphasen zählen nicht negativ."}],
+ fall:{t:"Ein Azubi beschwert sich: „Ich habe überall was hingeschrieben und kriege nur 9 von 20 Punkten. Bei Ihrer Kollegin hätte ich eine 2!“",k:["ruhig bleiben, Frust spiegeln (aktiv zuhören)","Erwartungshorizont zeigen, Punkte aufgabenweise begründen (§ 7 NVO, Objektivität)","„etwas hinschreiben“ ≠ Operator erfüllt","Vergleich sachlich: kriteriale Bewertung, ggf. Zweitkorrektur anbieten","Feed Forward: nächster Schritt, individueller Fortschritt"]}},
+{id:"P5",f:"paed",sp:true,n:"Sprache & Textvereinfachung",isl:"Rampen-Riff",ic:"🛝",
+ merk:"Ein vereinfachter Text ist eine Rampe neben der Treppe: gleiches Stockwerk, mehr Menschen kommen hoch. Fachwörter sind Stufen, die bleiben.",
+ esel:"I-W-S-T: Ich Will Schnell Texte verstehen (Inhalt, Wort, Satz, Text).",
+ drei:["Warum vereinfachen (Teilhabe, Validität)","Regeln auf Wort-, Satz-, Textebene","Drei Einsatzvarianten im Unterricht"],
+ links:["Arbeitsgedächtnis","Validität","Inklusion (FS Lernen)","Scaffolding/DI"],
+ q:[
+ {q:"Was gilt bei der Vereinfachung für Fachwörter?",o:["Durch Alltagswörter ersetzen","Bleiben, werden sofort erklärt; lange Komposita mit Bindestrich","Komplett streichen","Nur auf Englisch angeben"],a:1,e:"„Blitzstrom-Ableiter-Kombination“: Fachwort bleibt, wird gegliedert und erklärt."},
+ {q:"Woher stammt die Idee der Textvereinfachung?",o:["Aus der Werbung der 1990er","Aus der People-First-Bewegung (USA, 1960er) für Teilhabe","Aus der DIN-Normung","Aus dem Fremdsprachenunterricht"],a:1,e:"Menschen mit Behinderung forderten verständliche Sprache für selbstständige Teilhabe."},
+ {q:"Was unterscheidet Textoptimierung vom sprachsensiblen Fachunterricht?",o:["Nichts","Textoptimierung zielt punktuell auf Verständlichkeit; sprachsensibler FU systematisch auf Fachsprachkompetenz","Textoptimierung ist nur für Deutsch","Sprachsensibler FU verbietet Fachwörter"],a:1,e:"Optimierung = einzelner Text, Verständlichkeit. Sprachsensibel = langfristiges Gesamtkonzept."}],
+ fall:{t:"Deine E2-Klasse soll einen Herstellertext zu Überspannungsschutz lesen. Drei Schüler mit DaZ scheitern schon an „Blitzstromableiterkombination“. Ein Kollege: „In der Prüfung kriegen die auch keinen einfacheren Text.“",k:["Variante 2/3: Original + vereinfachte Fassung","Wortebene: Bindestrich, Fachwort erklären, kurze Sätze, Schaubild","Vokabelliste mit Beispielsätzen","Argument: Validität – ich messe Elektrotechnik, nicht Lesetempo","Scaffolding: Hilfen schrittweise abbauen, später Original mit Lesestrategie"]}},
+{id:"P6",f:"paed",sp:true,n:"Lehr-Lern-Arrangements",isl:"Sandwich-Sandbank",ic:"🥪",
+ merk:"DI = Fahrschule (zeigen, Doppelpedal, allein). LdL = Nachhilfe geben. Gruppenpuzzle = ohne dein Teil kein Bild. SOL = Sandwich: allein – zusammen – allein.",
+ esel:"Kooperatives Lernen P-I-F-V-R-P: „Puzzle Ist Für Viele Richtig Prima“. DI-Prinzipien KADS.",
+ drei:["Direkte Instruktion","Kooperatives Lernen nach Helmke","SOL und Sandwich-Prinzip"],
+ links:["Tuckman-Gruppenphasen","Selbstbestimmungstheorie","Mehrspeichermodell"],
+ q:[
+ {q:"Wann gehst du in der direkten Instruktion vom angeleiteten zum selbstständigen Üben über?",o:["Wenn die Hälfte richtig antwortet","Wenn mindestens ca. 80 % richtig antworten","Nach genau 10 Minuten","Sobald der Erste fertig ist"],a:1,e:"Erst weiter, wenn alle sicher sind – mindestens 80 % richtig. Dazu einzeln aufrufen, differenziert rückmelden und ruhig „überlernen“."},
+ {q:"Welches Merkmal kooperativen Lernens wirkt am direktesten gegen Trittbrettfahrer (free rider)?",o:["Förderliche Interaktion","Individuelle Verantwortlichkeit","Prozessfokus","Vorausgesetzte Kompetenzen"],a:1,e:"Eigener Beitrag bleibt sichtbar, jeder muss präsentieren können → kein free rider, kein sucker effect."},
+ {q:"Was beschreibt das Sandwich-Prinzip im SOL?",o:["Lehrer – Schüler – Lehrer","Geplanter Wechsel individuell – kooperativ – kollektiv, vor der Kooperation steht individuelle Aneignung","Theorie – Praxis – Theorie","Drei Gruppenarbeiten hintereinander"],a:1,e:"Brot (allein) – Belag (zusammen) – Brot (Plenum/allein). Ohne individuelle Vorphase gibt es nichts zum Austauschen."}],
+ fall:{t:"In einer Gruppenarbeit zu Schutzmaßnahmen arbeiten in jeder Gruppe zwei Schüler, die anderen schauen aufs Handy. Präsentiert wird immer vom Fleißigsten.",k:["free rider + sucker effect benannt","fehlende individuelle Verantwortlichkeit / positive Interdependenz","Gruppenpuzzle: jeder ist Experte für eine Maßnahme","Rollen + Präsentierende auslosen + individueller Kurztest","Querbezug Tuckman / Prozessreflexion"]}},
+{id:"P7",f:"paed",sp:true,n:"Erziehungsauftrag",isl:"Bergführer-Gipfel",ic:"⛰️",
+ merk:"Du bist Bergführer, nicht Seilbahn: vorausgehen (Vorbild), sichern (Regeln), laufen müssen die anderen selbst.",
+ esel:"Hanisch S-V-E: „Sozial Verhalten Entsteht“ – Selbstzuschreibung, Vorbilder, Erlebnisse.",
+ drei:["Rechtsrahmen § 1 SchG und Handlungskompetenz","Hanischs drei Bedingungen","Erziehungsmuster und eigene Rolle"],
+ links:["Modelllernen (Bandura)","Ich-Botschaften/GfK","Klassenführung","Selbstbestimmungstheorie","Schulentwicklung"],
+ q:[
+ {q:"Wo ist der Erziehungs- und Bildungsauftrag in BW geregelt?",o:["§ 7 NVO","§ 1 Abs. 2 SchG","§ 90 SchG","SGB IX"],a:1,e:"§ 1 Abs. 2 SchG: u. a. Menschlichkeit, Achtung der Würde, Leistungswille, Eigenverantwortung, FDGO."},
+ {q:"Unter welchen drei Bedingungen verhalten sich Jugendliche nach Hanisch wertorientiert?",o:["Strafe, Belohnung, Kontrolle","Altruistische Selbstzuschreibung, Vorbilder, einschneidende Erlebnisse","Intelligenz, Elternhaus, Schulform","Regeln, Rituale, Routinen"],a:1,e:"S-V-E. Unterrichtsidee: BG-Unfallbericht als einschneidendes Erlebnis."},
+ {q:"Welches Erziehungsmuster beschreibt „Freiheiten + klare Regeln, Konsequenzen ohne Moralpredigt, Ziel Selbstverantwortung“?",o:["Fürsorge","Entspannung","Coach","Regelorientierung"],a:2,e:"Coach. Selbstbilder sind oft verzerrt → Fremdfeedback einholen."}],
+ fall:{t:"Im Werkstattunterricht macht ein Azubi abfällige Witze über Kolleginnen in seinem Betrieb. Einige lachen. Er sagt: „Ist doch nur Spaß, und Sie sind nicht mein Erziehungsberechtigter.“",k:["sofort ruhig Grenze setzen, kein Machtkampf","Ich-Botschaft mit Bezug zu Würde (§ 1 SchG)","Erziehungsauftrag gilt unabhängig vom Alter","später Einzelgespräch mit aktivem Zuhören","Lachende als Verstärker mitdenken / Thema Respekt im Betrieb aufgreifen"]}},
+{id:"P8",f:"paed",sp:true,n:"Inklusion & Nachteilsausgleich",isl:"Rampen-Leuchtturm",ic:"♿",
+ merk:"Inklusion = Gebäude mit Rampe und Aufzug von Anfang an – nicht ein Hintereingang, den man nachträglich aufschließt. Und: ohne Antrag keine Rampe.",
+ esel:"Stufen E-S-I-I. SGB-Definition: „6 Monate – Abweichung – Teilhabe“.",
+ drei:["Begriffe und Rechtsrahmen (UN-BRK, SchG 2015)","Drei Säulen des Förderbedarfs","Eine Beeinträchtigung + Nachteilsausgleich"],
+ links:["Klassenführung (Struktur)","Leistungsmotivation","Sprache","Mobbing","Lehrergesundheit"],
+ q:[
+ {q:"Was gehört zur Definition von Behinderung nach SGB IX § 2?",o:["Abweichung mit hoher Wahrscheinlichkeit länger als sechs Monate, Teilhabe beeinträchtigt","Ärztliches Attest über drei Monate","Nur körperliche Einschränkungen","Schwerbehindertenausweis"],a:0,e:"Körperliche Funktion, geistige Fähigkeit oder seelische Gesundheit, > 6 Monate, Teilhabe beeinträchtigt."},
+ {q:"Was verändert ein Nachteilsausgleich?",o:["Das Anforderungsniveau","Die äußeren Bedingungen (Zeit, Pausen, Raum, Hilfsmittel) – nicht das Niveau; nur auf Antrag","Den Abschluss","Die Notenskala"],a:1,e:"Der Abschluss bleibt gleichwertig. Bei Kammerprüfungen entscheidet die Kammer."},
+ {q:"BVE- und KoBV-Klassen an beruflichen Schulen ordnet das Seminarskript welcher Stufe zu?",o:["Exklusion","Separation","Integration","Inklusion"],a:2,e:"Einbindung, aber eigene Gruppe = Integration. Inklusion wäre z. B. das Qualitätssiegel inklusivBS."}],
+ fall:{t:"Ein Schüler mit ADHS in deiner E1 ruft ständig dazwischen, verliert Werkzeug und ist nach 15 Minuten raus. Ein Kollege: „Der gehört nicht hierher.“",k:["besonderer Förderbedarf, zielgleich – Anspruch auf Beschulung","Vorfeld: Gespräch Schüler/Eltern/Betrieb, Unterstützungssysteme","Unterricht: Rituale, 10–15-Min.-Sequenzen, Platz, Checkliste, Bewegung","Leistung: NTA auf Antrag (Zeit, Pausen)","Maßnahmen helfen der ganzen Klasse / Querbezug Klassenführung"]}},
+{id:"P9",f:"paed",sp:false,n:"Schulentwicklung",isl:"Ruder-Riff",ic:"🚣",
+ merk:"Lehrkraft allein = Ruderer im Achter: Ohne passendes Boot, Steuermann und Team kommt er kaum voran – und denkt, es liege nur an ihm.",
+ esel:"Helmke I-R-R-A-E: „In Ruhe Reflektieren, Aber Endlich handeln.“",
+ drei:["Sequenzmodell nach Helmke","Gute Schule und Gelingensbedingungen","OES-Qualitätskreis"],
+ links:["Lehrergesundheit","Tuckman","Linzer Diagnosebogen","subjektive Theorien"],
+ q:[
+ {q:"Wie lautet das Sequenzmodell nach Helmke?",o:["Planung – Durchführung – Kontrolle","Information – Rezeption – Reflexion – Aktion – Evaluation","Leitbild – Ziel – Maßnahme","Forming – Storming – Norming"],a:1,e:"I-R-R-A-E. Feedback darf nicht versickern."},
+ {q:"An wen richtet sich Selbstevaluation (im Unterschied zu Individualfeedback)?",o:["An die einzelne Lehrkraft","An die Schule als Ganzes","An die Schulaufsicht","An die Eltern"],a:1,e:"Selbstevaluation = institutionelles Lernen; Individualfeedback = „Ich und meine Klasse“."},
+ {q:"Was gehört zum OES-Qualitätskreis?",o:["Notenkonferenz","Leitbild – Selbstevaluation – Ziele – Umsetzung – Fremdevaluation – Zielvereinbarung mit dem RP","Nur die Fremdevaluation","Schulordnung"],a:1,e:"Kreislauf seit 2007 an beruflichen Schulen in BW."}],
+ fall:{t:"Deine Klasse gibt dir bei „Der Unterricht ist klar strukturiert“ schlechte Werte. Was machst du damit?",k:["Information im Sinne Helmkes, nicht versickern lassen","mit der Klasse nachfragen: Was genau fehlt?","gezielte Maßnahme (AO, Ablauf an der Tafel, Zwischenfazit)","Kollegin hospitieren lassen","nach 6–8 Wochen erneut evaluieren"]}},
+{id:"Ψ1",f:"psy",sp:true,n:"Klassenführung",isl:"Verkehrs-Insel",ic:"🚦",
+ merk:"Klassenführung = Verkehrsplanung: gute Straßen und Schilder verhindern Unfälle. Polizei am Unfallort ist nötig – aber eine Stadt nur mit Polizei hat ein Problem.",
+ esel:"Dreikurs A-M-R-U: „Alle Mögen Ruhige Unterrichtsstunden“. Dein Bauchgefühl ist der Detektor: genervt – herausgefordert – verletzt – hilflos.",
+ drei:["Prävention nach Kounin","Ziele von Störverhalten nach Dreikurs","Subjektive Theorien und Linzer Diagnosebogen"],
+ links:["Erziehungsauftrag","Inklusion (Struktur)","Unterrichtsplanung","Schulentwicklung (Feedback)"],
+ q:[
+ {q:"Was ist Kounins zentraler Befund?",o:["Erfolgreiche Lehrkräfte reagieren härter auf Störungen","Gute Klassenführung zeigt sich vor allem in der Prävention, kaum in der Reaktion","Strafen sind am wirksamsten","Lob ist wirkungslos"],a:1,e:"Allgegenwärtigkeit, Überlappung, Reibungslosigkeit, Gruppenmobilisierung …"},
+ {q:"Du fühlst dich herausgefordert, der Schüler legt nach der Ermahnung nach. Welches Ziel nach Dreikurs?",o:["Aufmerksamkeit","Macht","Rache","Unzulänglichkeit"],a:1,e:"Macht → aus dem Machtkampf aussteigen, Wahl anbieten, Gespräch unter vier Augen."},
+ {q:"Welche drei Bereiche erfasst der Linzer Diagnosebogen?",o:["Lob, Tadel, Strafe","Beziehungsförderung, Kontrolle/Verhaltenssteuerung, Unterrichtsgestaltung","Kognition, Affekt, Psychomotorik","Forming, Norming, Performing"],a:1,e:"Allrounder sind am erfolgreichsten; Selbst- vs. Fremdbild zeigt blinde Flecken."}],
+ fall:{t:"Kevin kommentiert seit Wochen laut („Langweilig!“). Auf Ermahnung grinst er: „Machen Sie doch was!“ Die Klasse lacht, Herr M. hält wütend eine Standpauke.",k:["Disziplinproblem, Ziel Macht (Gefühl + Reaktion)","Standpauke = Machtkampf, Bühne","aussteigen: ruhig, nonverbal, kurze Ich-Botschaft, Wahl","Einzelgespräch mit aktivem Zuhören","Prävention: Mitbestimmung, Berufsbezug, Fallbesprechungsgruppe"]}},
+{id:"Ψ2",f:"psy",sp:true,n:"Gruppenentwicklung & Störungen",isl:"Storming-Strand",ic:"🌪️",
+ merk:"Neues Fußballteam: vorstellen (Forming), streiten wer wo spielt (Storming), Taktik (Norming), spielen (Performing), Abschied (Adjourning).",
+ esel:"„Frische Schüler Nerven Pausenlos Alle“ = F-S-N-P-A.",
+ drei:["Fünf Phasen nach Tuckman","Aufgabe der Lehrkraft je Phase","Fallbesprechungsgruppe"],
+ links:["Kooperatives Lernen (vom Seminar genannt!)","Schulentwicklung","Mobbing"],
+ q:[
+ {q:"Welche Reihenfolge hat das Modell nach Tuckman?",o:["Forming – Norming – Storming – Performing – Adjourning","Forming – Storming – Norming – Performing – Adjourning","Storming – Forming – Norming – Performing – Adjourning","Norming – Forming – Storming – Performing – Adjourning"],a:1,e:"F-S-N-P-A. Storming kommt vor Norming!"},
+ {q:"Eine neue Klasse ist nach drei Wochen unruhig, Cliquen streiten. Was ist die beste Deutung?",o:["Die Klasse ist ungeeignet für Gruppenarbeit","Typische Storming-Phase – jetzt Regeln und Rollen vereinbaren","Performing-Phase","Ein Zeichen für Mobbing"],a:1,e:"Storming ist normal. Wer Konflikte unterdrückt, verhindert Norming."},
+ {q:"Was tut der Fallgeber in der Hypothesenphase der Fallbesprechung?",o:["Er korrigiert falsche Hypothesen","Er hört nur zu","Er moderiert","Er schreibt Protokoll"],a:1,e:"Phasen strikt trennen; danach nimmt der Fallgeber Stellung und wählt Ideen aus."}],
+ fall:{t:"Eine neue E1-Klasse ist nach drei Wochen unruhig, Cliquen, Streit um Werkstattplätze. Eine Kollegin: „Die Gruppenarbeit lass ich jetzt bleiben.“",k:["Storming-Phase erkannt, normal","nicht abschaffen, sondern Rahmen geben","Regeln (Werkstattplätze) gemeinsam vereinbaren → Norming","Rollen, gemischte Zufallsgruppen, individuelle Verantwortlichkeit","Querbezug kooperatives Lernen"]}},
+{id:"Ψ3",f:"psy",sp:true,n:"Lernen & Gedächtnis",isl:"Gedächtnis-Flughafen",ic:"✈️",
+ merk:"Gedächtnis = Flughafen: viele Reisende, eine schmale Sicherheitskontrolle (Arbeitsgedächtnis) und ins Terminal kommt nur, wer Anschlussflüge hat (Vorwissen).",
+ esel:"Matrix: plus = dazu, minus = weg; Verstärkung = mehr, Strafe = weniger. Bandura A-B-R-M. Vergessen S-I-A-E-M.",
+ drei:["Mehrspeichermodell und Netzwerk","Vergessen und Gegenmittel","Konditionierung und Modelllernen"],
+ links:["Lehrervortrag/DI","Einstieg/AO","Sprache","formative Tests","Vorbild (Erziehung)"],
+ q:[
+ {q:"„Wenn ihr jetzt ruhig arbeitet, entfällt der Test.“ Die Klasse arbeitet ruhiger. Was ist das?",o:["Positive Verstärkung","Negative Verstärkung","Positive Bestrafung","Negative Bestrafung"],a:1,e:"Etwas Unangenehmes fällt weg → Verhalten nimmt zu. Negative Verstärkung ist keine Strafe!"},
+ {q:"Du lernst nach dem LS-Schalter den RCD und verwechselst jetzt beim LS Details. Welche Vergessensform?",o:["Spurenzerfall","Proaktive Interferenz","Retroaktive Interferenz","Motiviertes Vergessen"],a:2,e:"Retroaktiv: Neues stört Altes. Gegenmittel: bewusst kontrastieren."},
+ {q:"Welche Phasen hat das Modelllernen nach Bandura?",o:["Aufmerksamkeit – Behalten – Reproduktion – Motivation","Reiz – Reaktion – Verstärkung","Sehen – Hören – Tun","Forming – Storming – Norming – Performing"],a:0,e:"A-B-R-M: „Azubis Beobachten Richtig Motiviert“."}],
+ fall:{t:"Murat verursachte beim Vorführen einen Kurzschluss, die Klasse lachte („Knallfrosch!“). Seitdem Herzrasen bei jeder Präsentation, er meldet sich krank. Lehrkraft: „Stell dich nicht so an.“",k:["klassische Konditionierung: CS Vorführen, UCS Auslachen, CR Angst","Generalisierung auf alle Präsentationen","Krankmelden = negativ verstärkt → keine Löschung","systematische Desensibilisierung in kleinen Stufen","„Stell dich nicht so an“ = Kommunikationssperre; Klassenregel zur Fehlerkultur"]}},
+{id:"Ψ4",f:"psy",sp:true,n:"Kommunikation I",isl:"Eisberg-Bucht",ic:"🧊",
+ merk:"Jede Nachricht = Paket mit vier Etiketten; der Empfänger wählt, welches er liest. Darunter schwimmt ein Eisberg aus Gefühlen und Bedürfnissen.",
+ esel:"Watzlawick N-I-I-D-S: „Niemand Ist Immer Der Schuldige“.",
+ drei:["Fünf Axiome nach Watzlawick","Vier Seiten einer Nachricht","Eisberg und subjektive Wahrnehmung"],
+ links:["Kommunikation II","Beurteilungsfehler","Erziehungsauftrag","Klassenführung (Machtkampf)"],
+ q:[
+ {q:"„Ich schimpfe, weil du störst.“ – „Ich störe, weil du schimpfst.“ Welches Axiom?",o:["Man kann nicht nicht kommunizieren","Inhalts- und Beziehungsaspekt","Interpunktion","digital und analog"],a:2,e:"Axiom 3: Jeder setzt Ursache und Wirkung anders → Teufelskreis."},
+ {q:"Welche vier Seiten hat eine Nachricht nach Schulz von Thun?",o:["Sache, Selbstoffenbarung, Beziehung, Appell","Sender, Empfänger, Kanal, Code","Inhalt, Form, Ton, Gestik","Fakt, Meinung, Gefühl, Bitte"],a:0,e:"Vier Schnäbel, vier Ohren."},
+ {q:"Du sagst: „Die Schaltung ist ja immer noch nicht fertig.“ Der Azubi pampt zurück. Auf welchem Ohr hat er vermutlich gehört?",o:["Sachohr","Selbstoffenbarungsohr","Beziehungsohr","Appellohr"],a:2,e:"Er hört „Du traust mir nichts zu“ → Gegenangriff, symmetrische Eskalation."}],
+ fall:{t:"Du sagst zu einem Azubi: „Die Schaltung ist ja immer noch nicht fertig.“ Er: „Dann machen Sie's doch selber!“ Analysiere mit beiden Modellen.",k:["vier Seiten der Nachricht konkret aufgeschlüsselt","Azubi hört auf dem Beziehungsohr","Watzlawick: Beziehung bestimmt Inhalt / symmetrische Eskalation","Interpunktion erkannt","besser: Ich-Botschaft + nachfragen, wo es hakt"]}},
+{id:"Ψ5",f:"psy",sp:true,n:"Kommunikation II",isl:"Spiegel-See",ic:"🪞",
+ merk:"Ich-Botschaft = Spiegel, den ich hochhalte. Aktives Zuhören = Spiegel, den ich dem anderen hinhalte. Wer das Problem hat, bekommt den Spiegel.",
+ esel:"Ich-Botschaft V-W-G (Verhalten – Wirkung – Gefühl). GfK B-G-B-B: „Bitte Ganz Behutsam Bleiben“.",
+ drei:["Problembesitz nach Gordon","Ich-Botschaft mit primärem Gefühl","Aktives Zuhören und Einzelgespräch"],
+ links:["Erziehungsauftrag","Klassenführung","Feedback nach KA","Lehrergesundheit"],
+ q:[
+ {q:"Ein Schüler ist traurig, weil sein Betrieb ihn nicht übernimmt. Welches Werkzeug passt nach Gordon?",o:["Ich-Botschaft","Aktives Zuhören","Konsequenz","Belehren"],a:1,e:"Der Schüler besitzt das Problem → aktiv zuhören. Hat die Lehrkraft es → Ich-Botschaft."},
+ {q:"Woraus besteht eine Ich-Botschaft?",o:["Verhalten – Wirkung – Gefühl","Lob – Kritik – Lob","Regel – Verstoß – Strafe","Frage – Antwort – Feedback"],a:0,e:"Am besten mit dem primären Gefühl (Sorge, Angst), nicht nur dem sekundären Ärger."},
+ {q:"Welcher Satz ist eine verkleidete Du-Botschaft?",o:["Ich mache mir Sorgen, wenn du ohne Freischalten arbeitest.","Ich finde, du bist total respektlos.","Ich verliere den Faden, wenn du reinredest.","Ich freue mich über deine Lösung."],a:1,e:"Beginnt mit „Ich“, enthält aber ein Urteil über die Person."}],
+ fall:{t:"Ben arbeitet während deiner Erklärung der fünf Sicherheitsregeln an einem Schaltschrank unter Spannung. Du rufst: „Bist du lebensmüde? Du hörst nie zu!“ Formuliere besser.",k:["erst Gefahr stoppen („Stopp – Hände weg!“)","Du-Botschaft + Verallgemeinerung („nie“) erkannt","Ich-Botschaft: Verhalten – Wirkung – Gefühl","primäres Gefühl (Angst um dich) statt sekundärer Wut","Bei Abwehr umschalten auf aktives Zuhören"]}},
+{id:"Ψ6",f:"psy",sp:true,n:"Leistungsmotivation",isl:"Motivations-Tankstelle",ic:"⛽",
+ merk:"Motivation = Auto mit Tank (Grundbedürfnisse) und Navi (Erwartungen). Wer glaubt, die Straße ist gesperrt, fährt gar nicht erst los.",
+ esel:"Weiner F-A-S-Z: „Fleiß Arbeitet, Schwierigkeit und Zufall nicht“. Anstrengung ist die Wunderwaffe: internal, aber veränderbar.",
+ drei:["Grundbedürfnisse und Regulationsstufen","Heckhausen und Weiner","Atkinson und individuelle Bezugsnorm"],
+ links:["Bezugsnormen/Feedback","SOL/LLA","Einstieg (Sinn)","Inklusion","Gewaltprävention"],
+ q:[
+ {q:"Welche Attribution eines Misserfolgs ist am günstigsten?",o:["„Ich bin zu blöd“","„Ich habe zu wenig geübt“","„Der Lehrer mag mich nicht“","„Die Aufgabe war unfair“"],a:1,e:"Anstrengung: internal und variabel → ich kann es ändern."},
+ {q:"Wie wählen Misserfolgsmotivierte nach Atkinson Aufgaben?",o:["Immer mittelschwer","Sehr leicht oder sehr schwer","Nur zufällig","Immer die schwerste"],a:1,e:"Beides schützt den Selbstwert: leicht = sicherer Erfolg, schwer = Misserfolg ist entschuldigt."},
+ {q:"Welche drei Grundbedürfnisse nennen Deci & Ryan?",o:["Sicherheit, Liebe, Anerkennung","Autonomie, Kompetenz, soziale Eingebundenheit","Verstehbarkeit, Handhabbarkeit, Bedeutsamkeit","Macht, Leistung, Anschluss"],a:1,e:"Antonovsky wäre Verstehbarkeit, Handhabbarkeit, Bedeutsamkeit."}],
+ fall:{t:"Lena: „Ich bin halt zu blöd für Mathe. Und wenn ich mal eine 3 hab, war's Glück.“ Bei Wahlaufgaben nimmt sie die leichteste oder schwerste. Ihre Lehrerin: „Wieder unter dem Klassenschnitt.“",k:["Misserfolgsmotiv, ungünstige Attribution (Weiner)","extreme Aufgabenwahl (Atkinson)","soziale Bezugsnorm verstärkt den Teufelskreis","Interventionsansatz: individuelle Bezugsnorm, realistische Ziele, Reattribution","konkrete Elemente: Fortschrittskurve, gestufte Wahlaufgaben, Übung ohne Note"]}},
+{id:"Ψ7",f:"psy",sp:true,n:"Gewalt & Mobbing",isl:"Theater-Insel",ic:"🎭",
+ merk:"Mobbing = Theaterstück mit Hauptdarstellern, Nebendarstellern, klatschendem Publikum und Schweigenden. Wer nur mit dem Hauptdarsteller redet, ändert das Stück nicht.",
+ esel:"Olweus W-L-M-S: „Wer Lange Mobbt, Schadet“. Farsta = Fester Täter-Fokus, No Blame = Niemand wird beschuldigt.",
+ drei:["Gewaltbegriff und Frustrations-Aggressions-Theorie","Mobbing: Definition, Rollen, Dynamik","Farsta vs. No Blame, Fallstricke"],
+ links:["Inklusion","Erziehungsauftrag","Gruppenphasen","Leistungsmotivation","Kommunikation"],
+ q:[
+ {q:"Welche Merkmale hat Mobbing nach Olweus?",o:["Einmaliger heftiger Streit","Wiederholt, über längere Zeit, Machtungleichgewicht, Schadensabsicht","Streit unter Gleichstarken","Nur körperliche Gewalt"],a:1,e:"W-L-M-S. Cybermobbing zählt dazu."},
+ {q:"Warum ist Mediation bei Mobbing ungeeignet?",o:["Sie dauert zu lange","Sie setzt Machtgleichgewicht und Freiwilligkeit voraus – beides fehlt","Sie ist verboten","Weil Lehrkräfte keine Mediatoren sind"],a:1,e:"Das Opfer säße dem Stärkeren „auf Augenhöhe“ gegenüber, die es nicht gibt."},
+ {q:"Was ist typisch für den No-Blame-Approach?",o:["Unangekündigte Einzelgespräche mit den Tätern","Unterstützergruppe ohne das Opfer, niemand wird beschuldigt, Ich-Vorschläge","Klassenkonferenz mit Schulausschluss","Opfer und Täter vor der Klasse versöhnen"],a:1,e:"Farsta wäre der konfrontative Täter-Fokus."}],
+ fall:{t:"Tim wird seit Monaten im Klassenchat verspottet, sein Werkzeug versteckt, niemand will mit ihm arbeiten. Drei machen aktiv mit, viele lachen. Die Klassenlehrerin plant eine Mediation zwischen Tim und dem Haupttäter.",k:["eindeutig Mobbing (Olweus-Kriterien)","Rollen: Täter, Assistenten, Verstärker, Außenstehende","Mediation = Fallstrick (Machtungleichgewicht)","No-Blame-Approach (oder Farsta) begründet","Schulleitung bei strafbaren Inhalten, Nachkontrolle, Tim schützen"]}},
+{id:"Ψ8",f:"psy",sp:true,n:"Lehrerbelastung",isl:"Kerzen-Kap",ic:"🕯️",
+ merk:"G = Ausdauerläufer, S = Sparflamme, A = Kerze an beiden Enden, B = ausgebrannte Kerze. Belastung ist der Wind – wie sehr die Flamme flackert, hängt vom Windschutz ab.",
+ esel:"Bewältigung I-M-R-S: „Ich Mache Regelmäßig Schluss“ – instrumentell, mental, regenerativ, sozial.",
+ drei:["Rudow und Lazarus","AVEM-Muster nach Schaarschmidt","Bewältigungsstrategien"],
+ links:["Schulentwicklung","Klassenführung","Inklusion","Kommunikation (Selbstempathie)"],
+ q:[
+ {q:"Welches AVEM-Muster: höchste Bedeutsamkeit der Arbeit, Perfektion, kaum Distanzierung, hohe Resignation?",o:["G – Gesundheit","S – Schonung","A – Selbstüberforderung","B – Burnout"],a:2,e:"Muster A: Ansprüche korrigieren, Distanzierung lernen, soziale Unterstützung."},
+ {q:"Was passiert bei Lazarus in der sekundären Bewertung?",o:["Einschätzung, ob die Situation bedrohlich ist","Einschätzung der eigenen Ressourcen zur Bewältigung","Die körperliche Stressreaktion","Die Neubewertung nach dem Coping"],a:1,e:"Primär: Ist es relevant/bedrohlich? Sekundär: Reichen meine Ressourcen?"},
+ {q:"Was entlastet nach Schaarschmidt am stärksten?",o:["Höheres Gehalt","Selbstwirksamkeitserfahrung und gutes soziales Klima","Weniger Ferien","Mehr Konferenzen"],a:1,e:"Dazu Aussprache mit Nahestehenden und Ausgleich. Belastung Nr. 1: schwierige Schüler."}],
+ fall:{t:"Referendarin Frau S. plant bis tief in die Nacht, auch am Wochenende, will „alles perfekt“, grübelt abends und denkt vor dem UB: „Das schaffe ich nie“ – obwohl die Mentorin sie lobt.",k:["Muster A (Selbstüberforderung) begründet","Lazarus: Bedrohung, Ressourcen unterschätzt","instrumentell: Zeitbudget, Feierabend, Material teilen","mental: „gut genug“, umdeuten; regenerativ: Sport, PMR","sozial: Tandem, Mentorin, Fallberatung"]}}
+];
+const BYID = Object.fromEntries(T.map(t=>[t.id,t]));
+const EXAM = (()=>{try{const v=localStorage.getItem("kolloquium-datum");return v?new Date(v+"T09:00:00"):null}catch(e){return null}})();
+
+const LABS = [
+ {ic:"🎯",t:"Testen schlägt Lesen",d:"Abrufen festigt Wissen stärker als nochmal Lesen (Testing-Effekt). Darum ist diese App fast nur Fragen.",h:"Nach jedem Skript-Kapitel: Buch zu, 3 Leitfragen aus dem Kopf beantworten."},
+ {ic:"🧭",t:"Vortesten hilft – auch falsch",d:"Wer eine Frage zu einem Thema beantwortet, bevor er es lernt, lernt es danach besser – sogar wenn er falsch geraten hat (Pretesting-Effekt).",h:"Die Expedition ist dein Vortest. Fehler hier sind Gold, kein Makel."},
+ {ic:"⚡",t:"Sicher und falsch? Perfekt!",d:"Fehler, bei denen du dir sicher warst, werden nach Feedback besonders gut korrigiert (Hyperkorrektur-Effekt). Deshalb fragt die App nach deiner Sicherheit.",h:"Sicher-falsch-Karten kommen automatisch in deine Leitner-Kiste."},
+ {ic:"📆",t:"Verteilen statt Pauken",d:"Wiederholen mit wachsenden Abständen (1–2–4–7–14 Tage) schlägt Pauken deutlich. Am stärksten: so lange abrufen, bis es einmal sitzt – und das an mehreren Tagen (successive relearning).",h:"Täglich 10 Minuten Training statt Sonntags-Marathon."},
+ {ic:"🔀",t:"Mischen statt Blöcke",d:"Themen gemischt üben (Interleaving) fühlt sich schwerer an, trainiert aber genau das, was die Prüfung will: erkennen, WELCHE Theorie zum Fall passt.",h:"Das Training mischt Päd und PädPsy absichtlich."},
+ {ic:"🪞",t:"Dein Gefühl lügt (manchmal)",d:"Flüssig gelesener Stoff fühlt sich gekonnt an – die „Illusion of Fluency“. Der Abgleich Selbstbild vs. Quiz zeigt, wo du dich verschätzt.",h:"Rote Kalibrierung = gefühlt gut, gemessen schwach → zuerst nacharbeiten."},
+ {ic:"🗣️",t:"Laut erklären",d:"Wer Inhalte sich selbst oder anderen erklärt (Self-Explanation, Lernen durch Lehren), verarbeitet tiefer – und übt gleichzeitig die Prüfungssituation.",h:"Fall-Training mit Timer: laut sprechen, nicht nur denken."},
+ {ic:"😴",t:"Schlaf ist Lernzeit",d:"Im Schlaf wird Gelerntes konsolidiert. Eine kurze Abrufrunde am Abend + Schlaf ist eine starke Kombination.",h:"Am 30.11.: Einstieg üben, Schaubilder zeichnen, früh ins Bett."}
+];
+
+/* ====================== STATE ====================== */
+const KEY="seminarinsel_orakel_v1";
+let S = load();
+function blank(){return {self:{},quiz:{},fall:{},leit:{},stats:{sessions:0,streak:0,last:null},psySP:true,hours:"3-6",chosen:null,intro:false};}
+function load(){try{const r=localStorage.getItem(KEY);if(r)return Object.assign(blank(),JSON.parse(r));}catch(e){}return blank();}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+let view="start", sub=null, tmp={};
+
+/* ====================== HELPERS ====================== */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const today=()=>{const d=new Date();d.setHours(0,0,0,0);return d.getTime();};
+const DAY=864e5;
+function toast(m){const d=document.createElement("div");d.className="toast";d.textContent=m;document.body.appendChild(d);setTimeout(()=>d.remove(),2600);}
+function dlg(who,name,txt){return `<div class="dlg fade"><div class="who">${who}</div><div><b class="n">${name}</b>${txt}</div></div>`;}
+function bar(p,col){p=Math.max(0,Math.min(100,p||0));return `<div class="bar"><i style="width:${p}%;background:${col||colFor(p)}"></i></div>`;}
+function colFor(p){return p>=70?"var(--ok)":p>=45?"var(--mid)":"var(--bad)";}
+function fTag(t){return t.f==="paed"?'<span class="tag t-paed">Päd</span>':'<span class="tag t-psy">PädPsy</span>';}
+function daysLeft(){if(!EXAM)return "?";return Math.max(0,Math.ceil((EXAM-new Date())/DAY));}
+
+function selfPct(id){const s=S.self[id];return s?((s.w-1)/4)*100:null;}
+function quizPct(id){const q=S.quiz[id];if(!q)return null;return Math.round(q.right/q.total*100);}
+function fallPct(id){const f=S.fall[id];return f?Math.round(f.hit/f.tot*100):null;}
+function komp(id){const q=quizPct(id),f=fallPct(id);if(q==null&&f==null)return null;if(q!=null&&f!=null)return Math.round(q*.6+f*.4);return q!=null?q:f;}
+function calib(id){const s=selfPct(id),k=komp(id);if(s==null||k==null)return null;return Math.round(s-k);}
+function spScore(id){const t=BYID[id],k=komp(id),s=S.self[id];if(k==null||!s)return null;
+ const inter=(s.i-1)/4*100,prax=s.p/2*100,net=Math.min(100,t.links.length/5*100);
+ return Math.round(k*.4+inter*.25+prax*.2+net*.15);}
+function eligible(t){return t.sp && (t.f==="paed"||S.psySP);}
+
+/* ====================== NAV ====================== */
+const NAV=[["start","🗺️","Karte"],["self","🪞","Selbstbild"],["quiz","⚔️","Expedition"],["fall","🎙️","Fälle"],["orakel","🔮","Orakel"],["train","🗃️","Training"]];
+function renderNav(){$("#nav").innerHTML=NAV.map(([v,i,l])=>`<button class="${view===v?"on":""}" onclick="go('${v}')"><span>${i}</span>${l}</button>`).join("");}
+function go(v,s){view=v;sub=s||null;tmp={};render();window.scrollTo(0,0);}
+
+/* ====================== VIEWS ====================== */
+function render(){renderNav();const a=$("#app");a.innerHTML=(V[view]||V.start)();}
+const V={};
+
+V.start=()=>{
+ const nSelf=Object.keys(S.self).length,nQ=Object.keys(S.quiz).length,nF=Object.keys(S.fall).length;
+ const due=dueCards().length;
+ let h=`<h1>🏝️ SEMINAR-INSEL<br>Das Orakel der Schwerpunkte</h1><p class="sub">${EXAM?`Noch <b>${daysLeft()} Tage</b> bis zum Kolloquium`:`Tipp: Trage im Launcher deinen Prüfungstermin ein – dann zählt hier ein Countdown.`}</p>`;
+ if(!S.intro){
+  h+=dlg("🦜","PAPAGEI PÄDAGOGIUS","Kraaah! Landratte! Du bist auf Seminar-Island gestrandet – mit 17 Themen-Inseln und nur EINEM Schwerpunkt, den du wählen darfst. Das Orakel hilft dir, aber es verlangt drei Opfergaben: dein <b>Selbstbild</b>, deine <b>Expedition</b> (Quiz) und deine <b>Fälle</b>.");
+  h+=dlg("🧭","HAFENMEISTER EISELE","Strukturiert vorgehen, junger Mann. Erst ehrlich einschätzen, dann testen, dann entscheiden. Und bitte: kein Redeschwall. Erst Überblick, dann vertiefen.");
+  h+=dlg("🗺️","DR. JÄGER, KARTOGRAF","*wirft den Pferdeschwanz zurück* Und experimentier ruhig! Falsche Antworten sind hier Kartenmaterial. Die Wissenschaft sagt: Wer vorher rät, lernt danach besser.");
+  h+=`<div class="card"><h3>⚠️ Kleine Seekarten-Korrektur</h3><p class="mut" style="margin:0">Laut Prüfungshinweisen dauert das Kolloquium im <b>gehobenen Dienst 20 Min.</b> (je 10 pro Fach), nur im höheren Dienst 30. Der Schwerpunkt-Fall nimmt höchstens ein Drittel ein, alles andere ist trotzdem prüfbar. Das Orakel rechnet deshalb mit „Schwerpunkt tief + Rest breit“.</p></div>`;
+  h+=`<button onclick="S.intro=true;save();render()">Anker lichten ⚓</button>`;
+  return h;
+ }
+ h+=`<div class="card"><h3>Deine Route</h3>
+ <div class="row" style="justify-content:space-between"><span>1 · Selbstbild 🪞</span><span class="pill">${nSelf}/17</span></div>${bar(nSelf/17*100,"var(--paed)")}
+ <div class="row" style="justify-content:space-between"><span>2 · Expedition ⚔️</span><span class="pill">${nQ}/17</span></div>${bar(nQ/17*100,"var(--acc)")}
+ <div class="row" style="justify-content:space-between"><span>3 · Fall-Training 🎙️ <span class="mut">(mind. Top-Kandidaten)</span></span><span class="pill">${nF}/17</span></div>${bar(nF/17*100,"var(--psy)")}
+ <div class="row" style="justify-content:space-between"><span>4 · Orakel befragen 🔮</span><span class="pill">${nSelf>=17&&nQ>=17?"bereit":"gesperrt"}</span></div>
+ </div>`;
+ let next = nSelf<17?["self","Selbstbild abgeben 🪞"]:nQ<17?["quiz","Weiter zur Expedition ⚔️"]:["orakel","Das Orakel befragen 🔮"];
+ h+=`<button onclick="go('${next[0]}')">${next[1]}</button>${due?`<button class="sec" onclick="go('train')">🗃️ ${due} Karten fällig</button>`:""}`;
+ if(S.chosen) h+=`<div class="card"><h3>🏁 Gewählter Schwerpunkt</h3><div class="big">${BYID[S.chosen].ic} ${BYID[S.chosen].id} ${esc(BYID[S.chosen].n)}</div><button class="sec" onclick="go('plan')">Zum Lernplan 📜</button></div>`;
+ h+=`<h2>Die Inselkarte</h2><p class="mut">Farbe = gemessene Kompetenz (Quiz + Fälle). Tippen öffnet die Insel.</p><div class="grid">`;
+ T.forEach(t=>{const k=komp(t.id);const c=k==null?"var(--sea3)":colFor(k);
+  h+=`<div class="isl" style="border-color:${c}" onclick="go('insel','${t.id}')"><div class="id" style="color:${t.f==="paed"?"var(--paed)":"var(--psy)"}">${t.ic} ${t.id}</div><div class="nm">${esc(t.n)}</div><div class="st">${esc(t.isl)}${k!=null?` · ${k} %`:""}${!t.sp?" · kein SP":""}</div></div>`;});
+ h+=`</div><h2>🧪 Lern-Labor</h2><p class="mut">Warum die App so gebaut ist – Befunde aus der Lernforschung:</p>`;
+ LABS.forEach(l=>h+=`<details class="card" style="padding:10px 14px"><summary>${l.ic} ${l.t}</summary><p style="margin:6px 0">${l.d}</p><p class="mut" style="margin:0">👉 ${l.h}</p></details>`);
+ h+=`<p style="margin-top:24px"><button class="ghost" onclick="resetAll()">Spielstand löschen</button></p>`;
+ return h;
+};
+
+V.insel=()=>{
+ const t=BYID[sub];const k=komp(t.id),s=selfPct(t.id),c=calib(t.id);
+ let h=`<button class="ghost" onclick="go('start')">← Karte</button><h1>${t.ic} ${t.id} ${esc(t.n)}</h1><p class="sub">${fTag(t)} ${esc(t.isl)} ${t.sp?"":"· <b>kein eigener Schwerpunkt</b>, aber prüfbar"}</p>`;
+ h+=`<div class="card"><div class="row" style="justify-content:space-between"><span>Selbstbild</span><span class="pill">${s==null?"–":Math.round(s)+" %"}</span></div>${bar(s,"var(--paed)")}
+ <div class="row" style="justify-content:space-between"><span>Gemessen</span><span class="pill">${k==null?"–":k+" %"}</span></div>${bar(k)}
+ ${c!=null?`<p class="mut" style="margin:6px 0 0">${calText(c)}</p>`:""}</div>`;
+ h+=`<div class="merk">◆ <b>Merkbild:</b> ${esc(t.merk)}</div><div class="esel">✎ <b>Eselsbrücke:</b> ${esc(t.esel)}</div>`;
+ h+=`<div class="card"><h3>⇄ Brücken zu anderen Inseln</h3>${t.links.map(l=>`<span class="tag t-mid">${esc(l)}</span>`).join("")}</div>`;
+ h+=`<button onclick="startQuiz(['${t.id}'])">⚔️ Quiz dieser Insel</button><button class="sec" onclick="go('fallrun','${t.id}')">🎙️ Fall üben</button>`;
+ return h;
+};
+function calText(c){if(c>25)return"🔴 Du schätzt dich hier deutlich besser ein als gemessen – mögliche Fluency-Illusion. Zuerst nacharbeiten!";if(c<-25)return"💎 Du unterschätzt dich – versteckter Schatz! Kann ein guter Schwerpunkt sein.";return"🟢 Selbstbild und Messung passen gut zusammen.";}
+
+/* ---------- SELBSTBILD ---------- */
+V.self=()=>{
+ let h=`<h1>🪞 Der Spiegel der Selbsterkenntnis</h1>`;
+ h+=dlg("🦜","PAPAGEI PÄDAGOGIUS","Sei ehrlich, Kraaah! Später vergleicht das Orakel dein Gefühl mit deinen Antworten. Schummeln schadet nur dir. Drei Regler pro Insel, ohne vorher nachzuschlagen!");
+ h+=`<div class="card"><label class="chk"><input type="checkbox" ${S.psySP?"checked":""} onchange="S.psySP=this.checked;save()"><span>PädPsy-Themen als Schwerpunkt mitberücksichtigen <span class="mut">(Die Prüfungshinweise listen Schwerpunkte 1–8 für Pädagogik; dein Skript sagt, der Schwerpunkt sei in einem der beiden Fächer wählbar – bitte im Formblatt prüfen.)</span></span></label></div>`;
+ T.forEach(t=>{const s=S.self[t.id]||{w:3,i:3,p:1};const done=!!S.self[t.id];
+  h+=`<div class="card" id="c_${t.id}"><h3>${t.ic} ${t.id} ${esc(t.n)} ${done?"✅":""}</h3>${fTag(t)}
+  <div class="sl"><label>Wissen <span id="w_${t.id}">${s.w}</span></label><input type="range" min="1" max="5" value="${s.w}" oninput="setSelf('${t.id}','w',this.value)"><div class="hint">1 = Totale Nebelbank · 5 = Ich könnte einen Vortrag halten</div></div>
+  <div class="sl"><label>Interesse <span id="i_${t.id}">${s.i}</span></label><input type="range" min="1" max="5" value="${s.i}" oninput="setSelf('${t.id}','i',this.value)"><div class="hint">1 = Gähn · 5 = Darüber rede ich auch freiwillig</div></div>
+  <div class="sl"><label>Eigene Praxisbeispiele <span id="p_${t.id}">${["keins","eins","mehrere"][s.p]}</span></label><input type="range" min="0" max="2" value="${s.p}" oninput="setSelf('${t.id}','p',this.value)"><div class="hint">Hast du ein Beispiel aus deinen E-Klassen / AVdual?</div></div>
+  </div>`;});
+ h+=`<button onclick="T.forEach(t=>{if(!S.self[t.id])S.self[t.id]={w:3,i:3,p:1}});save();toast('Spiegel versiegelt! 🪞');go('quiz')">Alle bestätigen → Expedition ⚔️</button>`;
+ return h;
+};
+function setSelf(id,k,v){S.self[id]=S.self[id]||{w:3,i:3,p:1};S.self[id][k]=+v;save();const el=document.getElementById(k+"_"+id);if(el)el.textContent=k==="p"?["keins","eins","mehrere"][+v]:v;}
+
+/* ---------- QUIZ ---------- */
+V.quiz=()=>{
+ if(tmp.run) return quizRun();
+ let h=`<h1>⚔️ Die große Expedition</h1>`;
+ h+=dlg("🗺️","DR. JÄGER, KARTOGRAF","51 Fragen, 17 Inseln, absichtlich gemischt. Nach jeder Antwort sagst du, wie sicher du warst – das ist kein Ego-Test, das ist Datenerhebung! Und du kannst jederzeit pausieren, der Fortschritt bleibt.");
+ const open=T.filter(t=>!S.quiz[t.id]).map(t=>t.id);
+ h+=`<div class="card"><p style="margin-top:0">Offen: <b>${open.length}</b> Inseln</p>
+ ${open.length?`<button onclick="startQuiz(${JSON.stringify(open).replace(/"/g,"'")},true)">Expedition starten (gemischt) 🔀</button>`:"<p>Alle Inseln erkundet! 🎉</p><button onclick=\"go('orakel')\">Zum Orakel 🔮</button>"}
+ <button class="sec" onclick="startQuiz(T.map(t=>t.id),true,true)">Alles nochmal (zählt nicht neu)</button></div>`;
+ h+=`<h2>Einzelne Inseln</h2>`;
+ T.forEach(t=>{const p=quizPct(t.id);h+=`<div class="card" style="padding:10px 14px" onclick="startQuiz(['${t.id}'])"><div class="row" style="justify-content:space-between"><span>${t.ic} <b>${t.id}</b> ${esc(t.n)}</span><span class="pill">${p==null?"neu":p+" %"}</span></div></div>`;});
+ return h;
+};
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function startQuiz(ids,mix,practice){
+ let items=[];ids.forEach(id=>BYID[id].q.forEach((q,i)=>items.push({id,i})));
+ if(mix)shuffle(items);
+ view="quiz";tmp={run:true,items,pos:0,pick:null,phase:"ask",res:{},practice:!!practice};render();window.scrollTo(0,0);
+}
+function quizRun(){
+ const it=tmp.items[tmp.pos];const t=BYID[it.id];const q=t.q[it.i];
+ let h=`<div class="row" style="justify-content:space-between"><span class="prog">FRAGE ${tmp.pos+1}/${tmp.items.length}</span><button class="ghost" onclick="finishQuiz(true)">Pause ⏸</button></div>${bar((tmp.pos)/tmp.items.length*100,"var(--acc)")}`;
+ h+=`<div class="card fade"><div>${fTag(t)}<span class="tag t-mid">${t.ic} ${esc(t.isl)}</span></div><p class="big" style="margin:8px 0">${esc(q.q)}</p>`;
+ const order=tmp.order||(tmp.order=shuffle(q.o.map((_,i)=>i)));
+ order.forEach(oi=>{let cls="opt";if(tmp.phase==="fb"){if(oi===q.a)cls+=" right";else if(oi===tmp.pick)cls+=" wrong";}else if(oi===tmp.pick)cls+=" sel";
+  h+=`<button class="${cls}" ${tmp.phase==="fb"?"disabled":""} onclick="tmp.pick=${oi};render()">${esc(q.o[oi])}</button>`;});
+ if(tmp.phase==="ask"){
+  h+=`<p class="mut" style="margin:12px 0 4px">Wie sicher bist du?</p><div class="row"><button ${tmp.pick==null?"disabled":""} onclick="answer(true)">🔒 Sicher</button><button class="sec" ${tmp.pick==null?"disabled":""} onclick="answer(false)">🤔 Eher geraten</button></div>`;
+ }else{
+  const ok=tmp.pick===q.a;
+  let msg=ok?(tmp.conf?"✅ Treffer – und du wusstest es. Solide Planke!":"✅ Richtig geraten! Achtung: Glückstreffer zählen, aber das Orakel merkt sich die Unsicherheit."):(tmp.conf?"⚡ <b>Hyperkorrektur-Moment!</b> Sicher und falsch – genau diese Fehler merkt sich dein Gehirn nach Korrektur besonders gut. Lies die Erklärung zweimal.":"❌ Nicht ganz – aber durch das Raten vorher ist dein Kopf jetzt „vorgewärmt“ für die richtige Antwort.");
+  h+=`<div class="${ok?"say":"esel"}" style="margin-top:10px">${msg}</div><div class="merk">💡 ${esc(q.e)}</div>`;
+  h+=`<button onclick="nextQ()">${tmp.pos+1<tmp.items.length?"Weiter ➜":"Expedition beenden 🏁"}</button>`;
+ }
+ return h+"</div>";
+}
+function answer(conf){
+ const it=tmp.items[tmp.pos];const q=BYID[it.id].q[it.i];const ok=tmp.pick===q.a;
+ tmp.conf=conf;tmp.phase="fb";
+ const r=tmp.res[it.id]||(tmp.res[it.id]={right:0,total:0,confWrong:0,guessRight:0});
+ r.total++;if(ok)r.right++;if(!ok&&conf)r.confWrong++;if(ok&&!conf)r.guessRight++;
+ const key=it.id+"_"+it.i;
+ if(!ok||!conf){S.leit[key]={box:1,due:today()};}
+ else if(!S.leit[key]){S.leit[key]={box:2,due:today()+2*DAY};}
+ save();render();
+ if(!ok)setTimeout(()=>{const c=document.querySelector(".card");c&&c.classList.add("shake");},10);
+}
+function nextQ(){
+ const it=tmp.items[tmp.pos];
+ // Insel fertig?
+ if(!tmp.practice){const r=tmp.res[it.id];if(r&&r.total===BYID[it.id].q.length&&!S.quiz[it.id]){S.quiz[it.id]=r;save();toast(`${BYID[it.id].ic} ${BYID[it.id].isl} kartiert!`);}}
+ tmp.pos++;tmp.pick=null;tmp.phase="ask";tmp.order=null;
+ if(tmp.pos>=tmp.items.length)return finishQuiz(false);
+ render();window.scrollTo(0,0);
+}
+function finishQuiz(paused){
+ if(!tmp.practice)Object.entries(tmp.res).forEach(([id,r])=>{if(r.total===BYID[id].q.length&&!S.quiz[id])S.quiz[id]=r;});
+ save();const n=Object.keys(S.quiz).length;
+ tmp={};view="quiz";render();
+ if(!paused&&n>=17)toast("Alle Inseln kartiert! Das Orakel erwacht 🔮");else if(paused)toast("Fortschritt gespeichert ⚓");
+}
+
+/* ---------- FÄLLE ---------- */
+V.fall=()=>{
+ let h=`<h1>🎙️ Das Fall-Theater</h1>`;
+ h+=dlg("🧭","HAFENMEISTER EISELE","In der Prüfung beginnt der Schwerpunkt mit einem Fall. Also: Fall lesen, 3 Minuten laut antworten – wirklich laut, die Möwen hören weg –, dann ehrlich abhaken, was drin war. Mindestens für deine drei Favoriten, besser für alle.");
+ h+=`<div class="card"><h3>Fall-Schema (immer gleich)</h3><p style="margin:0">1 Beschreiben · 2 Analysieren (Theorie!) · 3 Bewerten · 4 Handeln · 5 Vernetzen</p></div>`;
+ const ranked=T.slice().sort((a,b)=>(spScore(b.id)||0)-(spScore(a.id)||0));
+ ranked.forEach(t=>{const p=fallPct(t.id);h+=`<div class="card" style="padding:10px 14px" onclick="go('fallrun','${t.id}')"><div class="row" style="justify-content:space-between"><span>${t.ic} <b>${t.id}</b> ${esc(t.n)}</span><span class="pill">${p==null?"offen":p+" %"}</span></div></div>`;});
+ return h;
+};
+let timerInt=null;
+V.fallrun=()=>{
+ const t=BYID[sub];
+ let h=`<button class="ghost" onclick="stopTimer();go('fall')">← Fälle</button><h1>${t.ic} Fall ${t.id}</h1>${fTag(t)}<div class="card fade"><p class="big" style="margin-top:0">${esc(t.fall.t)}</p></div>`;
+ if(!tmp.stage){
+  h+=`<div class="say">► Starte mit dem Universal-Einstieg: „Ich würde die Situation zunächst so verstehen, dass … Aus meiner Sicht spielen drei Aspekte eine Rolle …“</div>
+  <div class="timer" id="tm">3:00</div><button onclick="startTimer()">▶ Timer starten & laut sprechen</button><button class="sec" onclick="stopTimer();tmp.stage='check';render()">Ich bin fertig ✔</button>`;
+ }else{
+  h+=`<div class="card"><h3>Was hattest du drin?</h3>${t.fall.k.map((k,i)=>`<label class="chk"><input type="checkbox" id="k${i}"><span>${esc(k)}</span></label>`).join("")}
+  <h3 style="margin-top:12px">Und formal?</h3>
+  <label class="chk"><input type="checkbox" id="kx1"><span>Mit Überblick begonnen (1., 2., 3.) statt Redeschwall</span></label>
+  <label class="chk"><input type="checkbox" id="kx2"><span>Fachbegriffe/Autoren genannt</span></label>
+  <button onclick="saveFall('${t.id}')">Auswerten 📊</button></div>`;
+  h+=`<div class="merk">◆ ${esc(t.merk)}</div>`;
+ }
+ return h;
+};
+function startTimer(){stopTimer();let s=180;const el=()=>document.getElementById("tm");timerInt=setInterval(()=>{s--;if(el())el().textContent=Math.floor(s/60)+":"+String(s%60).padStart(2,"0");if(s<=0){stopTimer();tmp.stage="check";render();toast("⏰ Zeit! Jetzt ehrlich abhaken.");}},1000);}
+function stopTimer(){if(timerInt)clearInterval(timerInt);timerInt=null;}
+function saveFall(id){const t=BYID[id];let hit=0;t.fall.k.forEach((_,i)=>{if(document.getElementById("k"+i).checked)hit++;});
+ const f1=document.getElementById("kx1").checked,f2=document.getElementById("kx2").checked;const tot=t.fall.k.length+2;hit+=(f1?1:0)+(f2?1:0);
+ S.fall[id]={hit,tot};save();const p=Math.round(hit/tot*100);
+ toast(p>=70?"Applaus aus dem Möwen-Publikum! 👏":p>=45?"Ordentlich – die Lücken kommen in die Kiste.":"Das Theater übt noch – kein Problem, genau dafür ist es da.");
+ if(p<70)S.leit["F_"+id]={box:1,due:today()};save();go("insel",id);}
+
+/* ---------- ORAKEL ---------- */
+V.orakel=()=>{
+ const nS=Object.keys(S.self).length,nQ=Object.keys(S.quiz).length;
+ let h=`<h1>🔮 Das Orakel der Schwerpunkte</h1>`;
+ if(nS<17||nQ<17){
+  h+=dlg("🔮","DAS ORAKEL","Hmmm. Ich sehe… Nebel. Bring mir dein vollständiges Selbstbild (" +nS+"/17) und alle Inseln der Expedition ("+nQ+"/17). Ein Orakel ohne Daten ist nur ein Horoskop.");
+  h+=`<button onclick="go('${nS<17?"self":"quiz"}')">Weiter sammeln</button>`;
+  return h;
+ }
+ const el=T.filter(eligible).map(t=>({t,sc:spScore(t.id)})).sort((a,b)=>b.sc-a.sc);
+ const top=el.slice(0,3);
+ h+=dlg("🔮","DAS ORAKEL","Die Kristallkugel hat gesprochen! Gewichtet habe ich: <b>40 % gemessene Kompetenz</b>, <b>25 % Interesse</b>, <b>20 % eigene Praxisbeispiele</b>, <b>15 % Vernetzungspotenzial</b>. Denn: Ein Schwerpunkt muss sitzen, aber du musst auch gern und mit Beispielen darüber reden – und Brücken bauen, die die Prüfer sehen wollen.");
+ const medals=["🥇","🥈","🥉"];
+ top.forEach((o,i)=>{const t=o.t,c=calib(t.id),s=S.self[t.id];
+  const why=[];const k=komp(t.id);
+  if(k>=70)why.push("starke Messwerte");else if(k<45)why.push("Messwerte noch schwach – Vertiefung nötig");
+  if(s.i>=4)why.push("hohes Interesse");if(s.p===2)why.push("mehrere eigene Praxisbeispiele");if(t.links.length>=5)why.push("viele Brücken zum anderen Fach");
+  h+=`<div class="card fade"><div class="rank"><div class="medal">${medals[i]}</div><div style="flex:1"><div class="big">${t.ic} ${t.id} ${esc(t.n)}</div>${fTag(t)}${t.f==="psy"?'<span class="tag t-mid">Formblatt prüfen</span>':""}</div><div class="pill">${o.sc}</div></div>${bar(o.sc,"var(--acc)")}
+  <p class="mut" style="margin:6px 0">${why.join(" · ")||"ausgewogenes Profil"}${c!=null&&c>25?" · ⚠️ <b>Achtung, du überschätzt dich hier</b>":""}</p>
+  <details><summary>Dein 3-Minuten-Einstieg</summary><div class="say">„Bei ${esc(t.n)} sehe ich drei zentrale Aspekte: erstens ${esc(t.drei[0])}, zweitens ${esc(t.drei[1])}, drittens ${esc(t.drei[2])}. Soll ich einen davon vertiefen? Eine Verbindung sehe ich übrigens zu ${esc(t.links[0])}.“</div></details>
+  <button class="${i?"sec":""}" onclick="S.chosen='${t.id}';save();toast('Schwerpunkt gewählt: ${t.id} 🏁');go('plan')">Das wird mein Schwerpunkt</button></div>`;});
+ h+=`<h2>📊 Kalibrierungs-Kompass</h2><p class="mut">Selbstbild vs. Messung. Δ > +25 = überschätzt (rot), Δ < −25 = unterschätzt (Schatz).</p><div class="card" style="overflow-x:auto"><table><tr><th>Insel</th><th>Gefühl</th><th>Gemessen</th><th>Δ</th><th>Sicher-falsch</th></tr>`;
+ T.forEach(t=>{const s=Math.round(selfPct(t.id)),k=komp(t.id),c=calib(t.id),q=S.quiz[t.id];
+  const ct=c>25?"t-bad":c<-25?"t-ok":"t-mid";
+  h+=`<tr onclick="go('insel','${t.id}')"><td>${t.ic} <b>${t.id}</b></td><td>${s}%</td><td><span style="color:${colFor(k)}">${k}%</span></td><td><span class="tag ${ct}">${c>0?"+":""}${c}</span></td><td>${q.confWrong?"⚡".repeat(q.confWrong):"–"}</td></tr>`;});
+ h+=`</table></div>`;
+ const weak=T.slice().sort((a,b)=>komp(a.id)-komp(b.id)).slice(0,4);
+ h+=`<h2>🚧 Deine Baustellen</h2>${dlg("🦜","PAPAGEI PÄDAGOGIUS","Diese vier Inseln brauchst du für den „breiten Rest“. Nicht vertiefen – nur sicher Leitfragen + Mini-Fall! Kraaah!")}`;
+ weak.forEach(t=>h+=`<div class="card" style="padding:10px 14px" onclick="go('insel','${t.id}')"><div class="row" style="justify-content:space-between"><span>${t.ic} <b>${t.id}</b> ${esc(t.n)}</span><span class="pill" style="color:${colFor(komp(t.id))}">${komp(t.id)} %</span></div></div>`);
+ const hidden=T.filter(t=>calib(t.id)<-25);
+ if(hidden.length)h+=`<h2>💎 Versteckte Schätze</h2><p class="mut">Hier bist du besser, als du denkst: ${hidden.map(t=>t.id+" "+esc(t.n)).join(", ")}.</p>`;
+ return h;
+};
+
+/* ---------- PLAN ---------- */
+V.plan=()=>{
+ if(!S.chosen)return `<h1>📜 Lernplan</h1><p>Erst das Orakel befragen und einen Schwerpunkt wählen.</p><button onclick="go('orakel')">Zum Orakel</button>`;
+ const sp=BYID[S.chosen];
+ const weak=T.filter(t=>t.id!==sp.id).sort((a,b)=>(komp(a.id)??50)-(komp(b.id)??50));
+ const w=weak.map(t=>`${t.id} ${t.n}`);
+ const mid=weak.slice(4,10).map(t=>t.id).join(", ");
+ const rest=weak.slice(10).map(t=>t.id).join(", ");
+ let h=`<h1>📜 Die Schatzkarte</h1><p class="sub">Schwerpunkt: <b>${sp.ic} ${sp.id} ${esc(sp.n)}</b> · ca. 3–6 Std./Woche · ${daysLeft()} Tage</p>`;
+ h+=dlg("🗺️","DR. JÄGER, KARTOGRAF","Vier Etappen. Jede Woche: <b>täglich 10 Min. Kisten-Training</b> (verteilt + gemischt) plus <b>3 Einheiten à 60 Min.</b> Das sind gut 4 Stunden – passt in dein Budget und lässt Puffer für Unterrichtsvorbereitung.");
+ h+=`<div class="card"><div class="week"><h3>Etappe 1 · 09.–15.11.</h3><ul>
+ <li>✍️ <b>Formblatt</b>: Schwerpunkt ${sp.id} eintragen/abgeben (Frist prüfen!)</li>
+ <li>📘 Schwerpunkt: Skript-Kapitel ${sp.id} mit Leitfragen-Methode, alle Leitfragen schriftlich aus dem Kopf</li>
+ <li>🚧 Baustelle 1+2: ${esc(w[0])}, ${esc(w[1])} – Leitfragen + Mini-Fall</li>
+ <li>🗃️ täglich Kisten-Training (10 Min.)</li></ul></div>
+ <div class="week"><h3>Etappe 2 · 16.–22.11.</h3><ul>
+ <li>🎯 Schwerpunkt vertiefen: 3-Minuten-Einstieg laut, drei Schaubilder aus dem Gedächtnis zeichnen, 2 eigene Praxisbeispiele aus deinen Klassen ausformulieren</li>
+ <li>⇄ Brücken üben: ${sp.links.slice(0,3).map(esc).join(" · ")}</li>
+ <li>🚧 Baustelle 3+4: ${esc(w[2])}, ${esc(w[3])}</li>
+ <li>🗃️ täglich Kisten-Training</li></ul></div>
+ <div class="week"><h3>Etappe 3 · 23.–29.11.</h3><ul>
+ <li>🎙️ Fall-Theater: alle Fälle einmal laut (ideal: Tandem mit Mitreferendar*in, sich gegenseitig prüfen)</li>
+ <li>🔀 Mittelfeld nur über Leitfragen: ${esc(mid)}</li>
+ <li>✅ Stärken kurz anschauen: ${esc(rest)}</li>
+ <li>🔁 Expedition „Alles nochmal“ – Ziel: überall ≥ 70 %</li></ul></div>
+ <div class="week"><h3>Finale · 30.11.</h3><ul>
+ <li>► Einstieg Schwerpunkt 3× laut</li><li>✏️ Querbezugs-Netz aus dem Gedächtnis zeichnen</li><li>😴 Früh schlafen – Konsolidierung ist Teil des Lernens</li></ul></div></div>`;
+ h+=`<div class="say">„Bei ${esc(sp.n)} sehe ich drei zentrale Aspekte: erstens ${esc(sp.drei[0])}, zweitens ${esc(sp.drei[1])}, drittens ${esc(sp.drei[2])}. Soll ich einen davon vertiefen?“</div>`;
+ h+=`<button class="sec" onclick="go('orakel')">Schwerpunkt ändern</button>`;
+ return h;
+};
+
+/* ---------- TRAINING (Leitner) ---------- */
+const INT=[0,1,2,4,7,14];
+function dueCards(){const n=today();return Object.entries(S.leit).filter(([k,v])=>v.due<=n&&!k.startsWith("F_")).map(([k])=>k);}
+V.train=()=>{
+ if(tmp.tr)return trainRun();
+ const due=dueCards();const boxes=[1,2,3,4,5].map(b=>Object.values(S.leit).filter(v=>v.box===b).length);
+ const falls=Object.entries(S.leit).filter(([k,v])=>k.startsWith("F_")&&v.due<=today()).map(([k])=>k.slice(2));
+ let h=`<h1>🗃️ Die Leitner-Truhe</h1>`;
+ h+=dlg("🦜","PAPAGEI PÄDAGOGIUS","Jeden Tag ein paar Karten. Richtig → eine Kiste weiter, längere Pause. Falsch → zurück in Kiste 1 und <b>noch in derselben Runde nochmal</b>, bis es einmal sitzt. Das nennt man successive relearning. Klingt fancy, ist Papageien-Weisheit!");
+ h+=`<div class="card"><div class="row">${boxes.map((n,i)=>`<div style="flex:1;text-align:center"><div class="pill">K${i+1}</div><div class="big">${n}</div><div class="mut">${INT[i+1]} T</div></div>`).join("")}</div></div>`;
+ h+=due.length?`<button onclick="startTrain()">${due.length} fällige Karten trainieren 🔀</button>`:`<p>Heute nichts fällig. ${Object.keys(S.leit).length?"Morgen wieder! ☀️":"Starte zuerst die Expedition – deine Fehler füllen die Truhe."}</p>`;
+ if(falls.length)h+=`<h2>🎙️ Fälle zum Wiederholen</h2>`+falls.map(id=>`<div class="card" style="padding:10px 14px" onclick="delete S.leit['F_${id}'];save();go('fallrun','${id}')">${BYID[id].ic} <b>${id}</b> ${esc(BYID[id].n)}</div>`).join("");
+ return h;
+};
+function startTrain(){const items=shuffle(dueCards().map(k=>{const [id,i]=k.split("_");return {id,i:+i,k};}));view="train";tmp={tr:true,items,pos:0,pick:null,phase:"ask",ok:0,retry:{}};render();}
+function trainRun(){
+ if(tmp.pos>=tmp.items.length){return `<h1>🏆 Runde geschafft!</h1><div class="card"><p class="big">${tmp.ok} Karten aufgestiegen.</p><p class="mut">Pause machen. Das Vergessen bis morgen ist kein Bug, sondern Feature: Abrufen nach etwas Vergessen festigt stärker („wünschenswerte Erschwernis“).</p></div><button onclick="tmp={};go('train')">Zurück</button>`;}
+ const it=tmp.items[tmp.pos],t=BYID[it.id],q=t.q[it.i];
+ let h=`<div class="row" style="justify-content:space-between"><span class="prog">KARTE ${tmp.pos+1}/${tmp.items.length} · K${S.leit[it.k].box}</span><button class="ghost" onclick="tmp={};go('train')">Stopp</button></div>`;
+ h+=`<div class="card fade">${fTag(t)}<p class="big">${esc(q.q)}</p>`;
+ if(tmp.phase==="ask"&&!tmp.reveal){h+=`<p class="mut">Erst im Kopf beantworten (Generierungs-Effekt!), dann aufdecken.</p><button onclick="tmp.reveal=true;render()">Optionen zeigen</button>`;return h+"</div>";}
+ const order=tmp.order||(tmp.order=shuffle(q.o.map((_,i)=>i)));
+ order.forEach(oi=>{let cls="opt";if(tmp.phase==="fb"){if(oi===q.a)cls+=" right";else if(oi===tmp.pick)cls+=" wrong";}
+  h+=`<button class="${cls}" ${tmp.phase==="fb"?"disabled":""} onclick="trainAns(${oi})">${esc(q.o[oi])}</button>`;});
+ if(tmp.phase==="fb")h+=`<div class="merk">💡 ${esc(q.e)}</div><button onclick="tmp.pos++;tmp.phase='ask';tmp.reveal=false;tmp.order=null;render();window.scrollTo(0,0)">Weiter ➜</button>`;
+ return h+"</div>";
+}
+function trainAns(oi){const it=tmp.items[tmp.pos],q=BYID[it.id].q[it.i],L=S.leit[it.k];tmp.pick=oi;tmp.phase="fb";
+ if(oi===q.a){if(!tmp.retry[it.k]){L.box=Math.min(5,L.box+1);tmp.ok++;}L.due=today()+INT[L.box]*DAY;if(L.box===5&&!tmp.retry[it.k])toast("🏅 Karte gemeistert!");}
+ else{L.box=1;L.due=today()+DAY;if(!tmp.retry[it.k]){tmp.retry[it.k]=1;tmp.items.push({...it});}}
+ save();render();}
+
+function resetAll(){if(tmp.confirmReset){S=blank();save();tmp={};toast("Neustart ⚓");render();}else{tmp.confirmReset=true;toast("Nochmal tippen zum Löschen");}}
+
+render();
+</script>
+</body>
+</html>

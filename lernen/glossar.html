@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; connect-src 'self' data: blob:; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; manifest-src 'self'; worker-src 'self'; script-src 'self' 'sha256-GOabd9HpQHtGdWnjQWbavecD8Qw3NKM9esnOdJokUJM='">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glossar Kolloquium</title>
+<meta name="description" content="Glossar mit Suche: Fachbegriffe aus Unterrichtsplanung, Pädagogik und Pädagogischer Psychologie mit Kurzerklärung und Querverweisen.">
+<script src="../assets/app.js"></script>
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
+<style>
+:root{--bg:#f6f1e7;--surface:#fffdf8;--surface2:#f0e9db;--ink:#1f2a36;--muted:#5d6b78;--line:#ded4c2;--accent:#0f766e;--accent-ink:#fff;--up:#2b7fa8;--paed:#d9731c;--psy:#8e44ad;
+ --f-head:"Fraunces",Georgia,serif;--f-body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;--shadow:0 1px 0 rgba(0,0,0,.04),0 10px 26px -16px rgba(60,40,10,.4)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#12171d;--surface:#1b222b;--surface2:#232c37;--ink:#e8edf2;--muted:#9aa8b5;--line:#2f3a47;--accent:#2dd4bf;--accent-ink:#06201d;--up:#5fb3dd;--paed:#f59e4b;--psy:#c084fc;--shadow:0 10px 26px -14px rgba(0,0,0,.8)}}
+:root[data-theme="dark"]{--bg:#12171d;--surface:#1b222b;--surface2:#232c37;--ink:#e8edf2;--muted:#9aa8b5;--line:#2f3a47;--accent:#2dd4bf;--accent-ink:#06201d;--up:#5fb3dd;--paed:#f59e4b;--psy:#c084fc;--shadow:0 10px 26px -14px rgba(0,0,0,.8)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--f-body)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px 70px}
+header{padding:30px 0 6px}
+h1{font-family:var(--f-head);font-size:clamp(30px,5vw,46px);margin:0 0 6px;line-height:1.05}
+.lead{color:var(--muted);margin:0 0 14px;max-width:62ch}
+a{color:var(--accent)}
+.tools{position:sticky;top:0;z-index:3;background:var(--bg);padding:10px 0;border-bottom:1px solid var(--line);display:grid;gap:10px}
+.search{width:100%;font:inherit;font-size:17px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.search:focus{outline:3px solid var(--accent);outline-offset:1px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip,.btn{font:inherit;font-weight:800;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:6px 12px;border-radius:99px;cursor:pointer;text-decoration:none}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn{border-radius:10px}
+.count{margin-left:auto;color:var(--muted);font-size:14px;font-weight:700}
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;margin-top:16px}
+.term{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--up);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow);scroll-margin-top:150px}
+.term.paed{border-left-color:var(--paed)}.term.psy{border-left-color:var(--psy)}
+.term.flash{animation:fl 1.4s}
+@keyframes fl{from{box-shadow:0 0 0 4px var(--accent)}to{box-shadow:var(--shadow)}}
+.term h2{font-size:18px;margin:0 0 2px;font-weight:800}
+.cat{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.term p{margin:6px 0}
+.def.hidden{filter:blur(6px);cursor:pointer;user-select:none}
+.see{font-size:14px;color:var(--muted)}
+.see button{font:inherit;font-size:14px;font-weight:700;color:var(--accent);background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.where{font-size:13px;font-weight:800}
+mark{background:#ffe58a;color:inherit;border-radius:3px;padding:0 1px}
+.addc{font:inherit;font-size:13px;font-weight:800;border:1px solid var(--line);background:var(--surface2);color:var(--ink);padding:4px 10px;border-radius:99px;cursor:pointer;margin-top:4px}.addc[disabled]{opacity:.7;cursor:default}
+.empty{color:var(--muted);padding:30px 0;text-align:center}
+.themebtn{position:fixed;right:14px;bottom:14px;border-radius:99px;z-index:5}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+ <p class="cat"><a href="../index.html">← Launcher</a></p>
+ <h1>Glossar</h1>
+ <p class="lead">Die wichtigsten Fachbegriffe aus Unterrichtsplanung, Pädagogik und Pädagogischer Psychologie – kurz erklärt und miteinander verknüpft. Mit „Abfragemodus“ werden die Erklärungen verdeckt: erst selbst erklären, dann aufdecken.</p>
+</header>
+<div class="tools">
+ <label for="q" class="cat" style="position:absolute;left:-9999px">Suchen</label>
+ <input id="q" class="search" type="search" placeholder="Begriff, Name oder Stichwort suchen … (z. B. Klafki, Motivation, AFB)" autocomplete="off">
+ <div class="chips" role="group" aria-label="Bereich filtern">
+  <button class="chip" data-c="all" aria-pressed="true">Alle</button><button class="chip" data-c="up" aria-pressed="false">Unterrichtsplanung</button><button class="chip" data-c="paed" aria-pressed="false">Pädagogik</button><button class="chip" data-c="psy" aria-pressed="false">Päd. Psychologie</button>
+  <button class="btn" id="quiz" aria-pressed="false">🙈 Abfragemodus</button><button class="btn" id="addAll">🗂️ Angezeigte als Lernkarten</button>
+  <span class="count" id="count" aria-live="polite"></span>
+ </div>
+</div>
+<div class="list" id="list"></div>
+</div>
+<button class="btn themebtn" id="theme" aria-label="Hell/Dunkel umschalten">◐</button>
+<script>
+"use strict";
+const CAT={up:"Unterrichtsplanung",paed:"Pädagogik",psy:"Päd. Psychologie"};
+const LP="../lernen/unterrichtsplanung.html",LK="../training/lernkarten.html",DT="../spiele/querbezug-detektiv.html",OR="../spiele/orakel-der-schwerpunkte.html";
+/* [Begriff, Bereich, Erklärung, Querverweise, Synonyme/Suchwörter] */
+const G=[
+["Planungsinstrument (Klären · Entscheiden · Gestalten · Evaluieren)","up","Vier Schritte zur systematischen Unterrichtsplanung nach Zumsteg u. a. Die Schritte greifen ineinander; spätere Antworten können frühere Entscheidungen verändern.",["Didaktische Analyse (Klafki)","Berliner Modell","Prozessbeschreibung"],"KEGE Seminarmodell Zumsteg"],
+["Didaktische Analyse (Klafki)","up","Fragt nach Gegenwarts-, Zukunfts- und exemplarischer Bedeutung eines Inhalts, nach seiner Struktur und Zugänglichkeit. Steht im Hintergrund des Schritts Klären.",["Sinn & Bedeutung","Planungsinstrument (Klären · Entscheiden · Gestalten · Evaluieren)"],"Klafki Bildungstheorie Gegenwartsbedeutung Zukunftsbedeutung exemplarisch"],
+["Berliner Modell","up","Lerntheoretische Didaktik (Heimann, Otto, Schulz): Entscheidungsfelder Intention, Thematik, Methodik, Medien sowie Bedingungsfelder. Liefert die Denkweise für den Verlaufsplan.",["Verlaufsplan","Bedingungen klären"],"Heimann Schulz lerntheoretisch"],
+["Sinn & Bedeutung","up","Teil des Klärens: Wozu brauchen die Lernenden das – heute, im Beruf, exemplarisch? Liefert Lebenswelt- und Berufsbezug für Einstieg und Aufgaben.",["Didaktische Analyse (Klafki)","Ergebnis-Folge-Erwartung (Heckhausen)","Selbstbestimmungstheorie"],"Lebensweltbezug Berufsbezug"],
+["Bedingungen klären","up","Lernvoraussetzungen, Vorwissen, Heterogenität, Sprachniveau, Förderbedarf, Gruppenphase der Klasse und Rahmenbedingungen in die Planung einbeziehen.",["Gruppenphasen (Tuckman)","Mobbing","Inklusion"],"Bedingungsanalyse Lernvoraussetzungen"],
+["Thematik","up","Ergebnis des Klärens: Thema, Kompetenz bzw. Stundenziel, Arbeitsform, Lernprodukt und Charakter der Stunde.",["Hauptziel","Charakter der Stunde"],"Thema eingrenzen"],
+["Lernziel","up","Möglichst konkrete, beobachtbare Beschreibung einer Handlung, zu der die Lehrkraft die Lernenden veranlassen will. „Kennen“ und „verstehen“ sind nicht beobachtbar.",["I-B-H","Operatoren","Lernzieldimensionen"],"Ziel Mager"],
+["I-B-H","up","Formel für präzise Lernziele: Inhalt, Bedingung bzw. Hilfsmittel, beobachtbares Handeln. Beispiel: „… erklären anhand einer Prinzipskizze die Funktion des RCD.“",["Lernziel","Operatoren"],"Inhalt Bedingung Handlung Lernzielformulierung"],
+["Lernzieldimensionen","up","Kognitiv (Denken), affektiv (Fühlen, Werte) und psychomotorisch (Tun).",["Taxonomie (Anderson & Krathwohl)","Affektive Taxonomie"],"kognitiv affektiv psychomotorisch Bereiche"],
+["Taxonomie (Anderson & Krathwohl)","up","Sechs Stufen kognitiver Lernziele: Erinnern, Verstehen, Anwenden, Analysieren, Bewerten, Erschaffen – höhere setzen niedrigere voraus. Zweite Achse: Wissensarten (faktisch, konzeptuell, prozedural, metakognitiv).",["Anforderungsbereiche (AFB)","Netzwerkmodell","Wissensarten"],"Bloom Lernzieltaxonomie Stufen"],
+["Affektive Taxonomie","up","Krathwohl, Bloom & Masia: vom bloßen Aufmerksamwerden bis zur Verhaltensänderung aus Überzeugung. Maßstab: wie weit sich jemand einen Wert zu eigen macht.",["Lernzieldimensionen","Modelllernen (Bandura)"],"Werte Haltung Krathwohl Masia"],
+["Anforderungsbereiche (AFB)","up","AFB I Reproduktion (nennen, beschreiben), AFB II Reorganisation und Transfer (erklären, vergleichen), AFB III Reflexion und Problemlösung (beurteilen, begründen, entwerfen).",["Operatoren","Taxonomie (Anderson & Krathwohl)","Validität"],"EPA AFB I II III"],
+["Operatoren","up","Handlungsverben, die festlegen, was genau verlangt ist (nennen, erläutern, beurteilen …). Auch im Unterricht und auf Arbeitsblättern verwenden, nicht nur in Klassenarbeiten.",["Anforderungsbereiche (AFB)","Arbeitsaufträge erteilen"],"Aufgabenstellung Verben"],
+["Hauptziel","up","„Am Ende sollen alle … können.“ Entscheidend, weil dasselbe Thema mit anderen Zielen ganz anderen Unterricht ergibt.",["Zienern","Zielgerüst"],"Stundenziel"],
+["Zienern","up","Teilziele ableiten nach Gerhard Ziener mit der Frage: „Was kann jemand, der … kann?“ Die Liste ist noch kein Unterricht – kürzen, verteilen, ordnen.",["Zielgerüst","Hauptziel"],"Ziener Teilziele"],
+["Zielgerüst","up","Geordnete Auswahl der Teilziele für eine Stunde. Roter-Faden-Test: Den Gedankengang der Stunde in 1–2 Sätzen sagen können.",["Zienern","Hauptziel"],"roter Faden"],
+["Charakter der Stunde","up","Sloganhafte Festlegung, z. B. „Übungsstunde“, „Staun-Stunde“, „Werkzeug-Stunde“ – plus Schwerpunkt-Dimension.",["Lehr-Lern-Arrangement","Thematik"],""],
+["Lern-Evaluation","up","Woran wird erkannt, dass gelernt wurde – und wie erfahren es die Lernenden? Formativ oder summativ; Rückmeldung durch sich selbst, Peers oder Lehrkraft (z. B. Exit-Ticket).",["Feedback (Hattie & Timperley)","Gütekriterien"],"formativ summativ Exit-Ticket Lernzielkontrolle"],
+["Lehr-Lern-Arrangement","up","Grundbaumuster der Stunde, verortet zwischen Fremd- und Selbststeuerung sowie Nach- und Selbstkonstruktion: direkte Instruktion, LdL, kooperatives Lernen, Projektmethode, SOL. Das Arrangement folgt dem Ziel.",["Direkte Instruktion","Lernen durch Lehren (LdL)","Kooperatives Lernen","Projektmethode (Frey)","Selbstorganisiertes Lernen (SOL)"],"LLA"],
+["Verlaufsplan","up","„Wer macht was wann wie (warum) mit wem – und wie bleibt's hängen?“ Je Phase: Sozialform, Methode, Medien, Einstieg, Kontrollfragen.",["Sozialformen","Kontrollfragen","Zeitfresser"],"Stundenverlauf Phasen W-Fragen"],
+["Sozialformen","up","Einzel-, Partner-, Triaden-, Gruppenarbeit und Plenum. Wahl nach dem Ziel: Wer es allein können muss, braucht Einzel- oder Partnerphasen.",["Kooperatives Lernen","Gruppenphasen (Tuckman)"],"Einzelarbeit Partnerarbeit Gruppenarbeit Plenum Triade"],
+["Kontrollfragen","up","Vier Prüffragen je Phase: Zeit ↔ Ertrag? Reflexion über das Lernen? Ergebnissicherung passend zum Ziel? Individuelle Bedürfnisse berücksichtigt?",["Verlaufsplan","Sicherung"],"Inklusionscheck"],
+["Unterrichtseinstieg","up","Macht Ziel und Nutzen transparent, aktiviert, lässt ankommen. Grundformen: informierend (max. ca. 4 Min.), mit Verpackung und mit Lernsituation (je bis ca. 10 Min.).",["Informierender Unterrichtseinstieg","Advance Organizer","Aufmerksamkeit"],"Einstieg Verpackung Lernsituation"],
+["Informierender Unterrichtseinstieg","up","Nach Grell & Grell: Lehrkraft legt offen, was gelernt wird, wozu und wie – Hauptgedankengang, positive Erwartung, Bezug zu anderen Stunden.",["Unterrichtseinstieg","Advance Organizer"],"Grell"],
+["Zeitfresser","up","Typische Zeitverluste: Abschreiben, Umbauphasen, Gruppeneinteilung, fragend-entwickelnde Phasen, Technik-Anmeldung, lange Recherche.",["Verlaufsplan","Klassenführung (Kounin)","Prozessbeschreibung"],""],
+["Sicherung","up","Ergebnisse so festhalten, dass sie zum Ziel passen und weiterverwendet werden – aktiv statt nur abheften.",["Verteiltes Lernen","Kontrollfragen"],"Ergebnissicherung"],
+["Überraschungen (Mühlhausen)","up","Evaluieren: Was lief anders als geplant – und woran lag es? Vermeidbar (Entwurfsmängel, Inszenierungsschnitzer) oder unvermeidbar (Zielirritationen, Sperrigkeit, Niveauüberraschung).",["Planungsinstrument (Klären · Entscheiden · Gestalten · Evaluieren)","AVEM"],"Evaluieren Überraschungsoffenheit Knackstellen"],
+["Prozessbeschreibung","up","Neun Schritte der Vorbereitung: Zeitbudget, Zeitfresser meiden, Klärungen, Thema eingrenzen, Ziele, Recherche begrenzen, Evaluation/Einstieg/LLA, Notfallprogramm, Verlauf. „Gut begründet anders“ ist erlaubt.",["Zeitfresser","Planungsinstrument (Klären · Entscheiden · Gestalten · Evaluieren)"],"Unterrichtsvorbereitung neun Schritte"],
+["Direkte Instruktion","paed","Lehrkraftgesteuert, klar strukturiert, mit Modellieren, angeleitetem und selbstständigem Üben. Effizient für Nachkonstruktion und entlastet das Arbeitsgedächtnis.",["Lehr-Lern-Arrangement","Cognitive Load"],"DI"],
+["Lernen durch Lehren (LdL)","paed","Nach Jean-Pol Martin: Lernende erarbeiten Inhalte und vermitteln sie der Klasse. Lernen durch Erklären.",["Lehr-Lern-Arrangement"],"LdL Martin"],
+["Kooperatives Lernen","paed","Nach Helmke wirksam bei positiver Interdependenz und individueller Verantwortlichkeit – sonst drohen Trittbrettfahrer (free rider) und Gimpel-Effekt (sucker effect).",["Sozialformen","Gruppenphasen (Tuckman)"],"Gruppenarbeit free rider sucker Helmke"],
+["Projektmethode (Frey)","paed","Kooperative Projektmethode: Projektinitiative, Auseinandersetzung, gemeinsame Planung, Durchführung, Abschluss – mit Fixpunkten und Metainteraktion.",["Lehr-Lern-Arrangement"],"Projekt"],
+["Selbstorganisiertes Lernen (SOL)","paed","Lernende steuern Lernprozesse zunehmend selbst, oft im Sandwich-Prinzip (Wechsel aus Input, individueller und kooperativer Arbeit). Bedient Autonomie.",["Selbstbestimmungstheorie","Lehr-Lern-Arrangement"],"SOL Sandwich"],
+["Lehrervortrag","paed","Expertenwissen im Zusammenhang erläutern. Kurz, strukturiert, anschaulich, mit Pausen und Visualisierung.",["Cognitive Load","Advance Organizer"],"Vortrag Input"],
+["Fragend-entwickelnder Unterricht (FEU)","paed","Lehrkraft entwickelt den Stoff über Fragen im Unterrichtsgespräch. Risiko: Zeitfresser und „Erraten“ der Lehrerantwort.",["Zeitfresser","Lehrervortrag"],"FEU Unterrichtsgespräch"],
+["Arbeitsaufträge erteilen","paed","Klar, schriftlich, mit Operator, Zeit, Sozialform und erwartetem Produkt. Unklare Aufträge sind vermeidbare Inszenierungsschnitzer.",["Operatoren","Überraschungen (Mühlhausen)"],"Arbeitsauftrag"],
+["Gütekriterien","paed","Objektivität (unabhängig von der beurteilenden Person), Reliabilität (zuverlässig, genau) und Validität (misst, was es messen soll).",["Validität","Beurteilungsfehler"],"Objektivität Reliabilität Leistungsmessung"],
+["Validität","paed","Gültigkeit: Eine Prüfung misst, was sie messen soll – also das, was als Ziel unterrichtet wurde. Präzise Lernziele sind ihre Grundlage.",["Gütekriterien","Lernziel","Anforderungsbereiche (AFB)"],"Inhaltsvalidität"],
+["Bezugsnormen","paed","Sachliche (am Kriterium), soziale (an der Gruppe) und individuelle Bezugsnorm (am eigenen früheren Stand). Nur die individuelle zeigt Schwächeren ihren Fortschritt.",["Individuelle Bezugsnorm (Rheinberg & Krug)","Attribution (Weiner)"],"Rheinberg sachlich sozial individuell"],
+["Beurteilungsfehler","paed","Typische Verzerrungen, z. B. Halo-Effekt, Milde- und Strengefehler, Reihenfolgeeffekte, Erwartungseffekte.",["Gütekriterien","Pygmalion-Effekt"],"Halo Mildefehler Strengefehler"],
+["Vereinfachung","paed","Texte und Aufgaben sprachlich zugänglich machen, ohne den fachlichen Kern zu verfälschen – nach festen Regeln und mit gleichbleibenden Symbolen.",["Bedingungen klären","Inklusion"],"Sprache sprachsensibel"],
+["Erziehung im Fachunterricht","paed","Erziehungsauftrag der Schule. Nach Hanisch verhalten sich Jugendliche sozial über Vorbilder, Selbstzuschreibung und Erlebnisse. Werte anbieten, nicht indoktrinieren.",["Modelllernen (Bandura)","Affektive Taxonomie"],"Hanisch Werte Erziehungsauftrag"],
+["Inklusion","paed","Gemeinsames Lernen von Menschen mit und ohne Behinderung. Bedingungen und Förderbedarf früh klären; Nachteilsausgleich ändert die Form, nicht die Anforderung.",["Bedingungen klären","Validität"],"Nachteilsausgleich Förderbedarf"],
+["Sequenzmodell (Helmke)","paed","Feedback wirkt über Information → Rezeption → Reflexion → Aktion → Evaluation. Grundlage für Schülerfeedback und Unterrichtsentwicklung.",["Feedback (Hattie & Timperley)","Überraschungen (Mühlhausen)"],"Schulentwicklung Schülerfeedback Unterrichtsentwicklung"],
+["Klassenführung (Kounin)","psy","Präventive Techniken: Allgegenwärtigkeit, Überlappung, Reibungslosigkeit und Schwung, Gruppenmobilisierung, Rechenschaftsprinzip.",["Zeitfresser","Unterrichtsstörung vs. Disziplinproblem"],"Kounin Allgegenwärtigkeit Überlappung withitness"],
+["Unterrichtsstörung vs. Disziplinproblem","psy","Störung: Unterricht wird beeinträchtigt. Disziplinproblem: wiederholtes, bewusstes Regelverletzen. Prävention auf mehreren Ebenen.",["Klassenführung (Kounin)","Ziele störenden Verhaltens (Dreikurs)"],"Störung Disziplin"],
+["Ziele störenden Verhaltens (Dreikurs)","psy","Störendes Verhalten verfolgt oft ein Ziel: Aufmerksamkeit, Macht, Rache oder Rückzug aus Unzulänglichkeit. Das Gefühl der Lehrkraft verrät das Ziel.",["Unterrichtsstörung vs. Disziplinproblem"],"Dreikurs"],
+["Linzer Diagnosebogen (LDK)","psy","Fragebogen zur Klassenführung nach Mayr: vergleicht Selbst- und Fremdbild (Lehrkraft und Klasse).",["Klassenführung (Kounin)","Sequenzmodell (Helmke)"],"Mayr LDK"],
+["Selbstbestimmungstheorie","psy","Deci & Ryan: Intrinsische Motivation wächst, wenn Autonomie, Kompetenz und soziale Eingebundenheit erlebt werden. Kontinuum von extrinsisch bis intrinsisch.",["Korrumpierungseffekt","Sinn & Bedeutung"],"Deci Ryan intrinsisch extrinsisch Autonomie Grundbedürfnisse"],
+["Korrumpierungseffekt","psy","Erwartete äußere Belohnungen können vorhandene intrinsische Motivation verdrängen.",["Selbstbestimmungstheorie","Operante Konditionierung"],"Belohnung overjustification"],
+["Ergebnis-Folge-Erwartung (Heckhausen)","psy","Teil des kognitiven Motivationsmodells: Führt mein Ergebnis zu Folgen, die mir wichtig sind? Lebenswelt- und Berufsbezug stärken sie.",["Sinn & Bedeutung","Risiko-Wahl-Modell (Atkinson)"],"Heckhausen Erwartung Wert Leistungsmotivation"],
+["Attribution (Weiner)","psy","Ursachenerklärung für Erfolg und Misserfolg nach Lokation (intern/extern), Stabilität und Kontrollierbarkeit. Günstig: Misserfolg auf Anstrengung oder Strategie zurückführen.",["Bezugsnormen","Feedback (Hattie & Timperley)"],"Kausalattribution Weiner Reattribution"],
+["Risiko-Wahl-Modell (Atkinson)","psy","Erfolgsmotivierte wählen mittelschwere Aufgaben, Misserfolgsängstliche eher sehr leichte oder sehr schwere.",["Ergebnis-Folge-Erwartung (Heckhausen)","Bezugsnormen"],"Atkinson Leistungsmotiv Hoffnung auf Erfolg Furcht vor Misserfolg"],
+["Individuelle Bezugsnorm (Rheinberg & Krug)","psy","Interventionsansatz: Fortschritt am eigenen Stand zurückmelden, passende Aufgabenschwierigkeit, günstige Attributionen – stärkt besonders Misserfolgsängstliche.",["Bezugsnormen","Attribution (Weiner)"],"Rheinberg Krug"],
+["Klassische Konditionierung (Pawlow)","psy","Ein neutraler Reiz wird durch Kopplung mit einem unbedingten Reiz zum bedingten Reiz, der eine Reaktion auslöst – z. B. Prüfungsangst.",["Operante Konditionierung"],"Pawlow Angst"],
+["Operante Konditionierung","psy","Skinner, Thorndike: Verhalten wird durch Konsequenzen häufiger oder seltener. Vier-Felder-Matrix: positive/negative Verstärkung, Bestrafung Typ I/II.",["Korrumpierungseffekt","Modelllernen (Bandura)"],"Skinner Verstärkung Bestrafung Vier-Felder-Matrix"],
+["Modelllernen (Bandura)","psy","Lernen durch Beobachtung: Aufmerksamkeit, Behalten, Reproduktion, Motivation. Lehrkräfte sind Modelle – auch für Werte.",["Affektive Taxonomie","Erziehung im Fachunterricht"],"Bandura Lernen am Modell"],
+["Ich-Botschaft","psy","Gordon: eigene Wahrnehmung, Gefühl und Wirkung beschreiben statt Du-Vorwürfe. Bezieht sich auf primäre Emotionen.",["Aktives Zuhören","Gewaltfreie Kommunikation (Rosenberg)"],"Gordon"],
+["Aktives Zuhören","psy","Inhalt und Gefühl des Gegenübers verstehen und zurückmelden, ohne zu bewerten. Gegenstück zu Gordons Kommunikationssperren.",["Ich-Botschaft"],"Gordon Kommunikationssperren"],
+["Gewaltfreie Kommunikation (Rosenberg)","psy","Vier Schritte: Beobachtung, Gefühl, Bedürfnis, Bitte – jeweils sauber abgegrenzt von Bewertung, Interpretation, Strategie und Forderung.",["Ich-Botschaft","Mediation"],"GfK Rosenberg Giraffe"],
+["Mehrspeichermodell","psy","Sensorisches Register → Arbeitsgedächtnis (begrenzt) → Langzeitgedächtnis. Aufmerksamkeit entscheidet, was weiterverarbeitet wird.",["Cognitive Load","Netzwerkmodell"],"Gedächtnis Kurzzeitgedächtnis"],
+["Cognitive Load","psy","Das Arbeitsgedächtnis ist begrenzt. Zu viel Neues oder Ablenkendes auf einmal überlastet es – Input portionieren, Überflüssiges weglassen.",["Mehrspeichermodell","Direkte Instruktion"],"Arbeitsgedächtnis Aufmerksamkeit kognitive Belastung"],
+["Aufmerksamkeit","psy","Flaschenhals der Informationsverarbeitung. Einstiege bündeln sie, lange Verpackungen verbrauchen sie.",["Unterrichtseinstieg","Cognitive Load"],""],
+["Netzwerkmodell","psy","Wissen ist im Langzeitgedächtnis vernetzt gespeichert. Elaboration und Anknüpfen an Vorwissen erleichtern Speichern und Abruf.",["Advance Organizer","Taxonomie (Anderson & Krathwohl)"],"Langzeitgedächtnis Elaboration"],
+["Wissensarten","psy","Deklaratives Wissen („Wissen, dass“) und prozedurales Wissen („Wissen, wie“); dazu konzeptuelles und metakognitives Wissen.",["Taxonomie (Anderson & Krathwohl)","Netzwerkmodell"],"deklarativ prozedural"],
+["Advance Organizer","psy","Nach Ausubel: vorangestellte Orientierung über Ziel und Struktur, die Neues an Vorwissen anknüpfen hilft.",["Informierender Unterrichtseinstieg","Netzwerkmodell"],"Ausubel"],
+["Verteiltes Lernen","psy","Ebbinghaus: Ohne Wiederholung wird schnell vergessen. Verteiltes Üben und Abrufübungen (Testing-Effekt) sichern langfristiges Behalten.",["Sicherung","Vergessenstheorien"],"Ebbinghaus Vergessenskurve spacing Testing-Effekt Abrufübung"],
+["Vergessenstheorien","psy","Spurenzerfall, Interferenz (pro- und retroaktive Hemmung) und Abrufprobleme. Gegenmittel: verteilt wiederholen, elaborieren, Abrufhilfen.",["Verteiltes Lernen","Netzwerkmodell"],"Interferenz Spurenzerfall"],
+["Transaktionales Stressmodell (Lazarus)","psy","Stress entsteht aus der Bewertung: Ist die Situation bedrohlich (primär)? Reichen meine Ressourcen (sekundär)? Neubewertung als Herausforderung hilft.",["AVEM","Modell der Stressentstehung (Rudow)"],"Lazarus Bewertung Coping"],
+["Modell der Stressentstehung (Rudow)","psy","Belastungen wirken über die individuelle Widerspiegelung auf die Person und führen zu Beanspruchung mit positiven oder negativen Folgen.",["Transaktionales Stressmodell (Lazarus)"],"Rudow Belastung Beanspruchung"],
+["AVEM","psy","Arbeitsbezogenes Verhaltens- und Erlebensmuster (Potsdamer Lehrerstudie, Schaarschmidt): Muster G (gesund), S (Schonung), A (Selbstüberforderung), B (Burnout).",["Transaktionales Stressmodell (Lazarus)","Überraschungen (Mühlhausen)"],"Schaarschmidt Risikomuster Lehrergesundheit"],
+["Gruppenphasen (Tuckman)","psy","Forming, Storming, Norming, Performing (und Adjourning). Im Storming gibt es Machtkämpfe – Rollen und Regeln geben statt Gruppenarbeit abzuschaffen.",["Sozialformen","Kooperatives Lernen","Mobbing"],"Tuckman storming"],
+["Mobbing","psy","Wiederholte, längerfristige Schikane bei Machtungleichgewicht (Olweus). Beteiligte: Täter, Opfer, Assistenten, Verstärker, Verteidiger, Außenstehende.",["No-Blame-Approach","Gruppenphasen (Tuckman)"],"Olweus Cybermobbing"],
+["No-Blame-Approach","psy","Mobbing-Intervention ohne Schuldzuweisung: Gespräch mit dem Opfer, Unterstützergruppe (auch mit Beteiligten), Nachgespräche. Alternative: Farsta-Methode (konfrontativ).",["Mobbing","Mediation"],"Farsta Unterstützergruppe"],
+["Frustrations-Aggressions-Theorie","psy","Frustration erhöht die Wahrscheinlichkeit aggressiven Verhaltens – sie führt aber nicht zwangsläufig dazu.",["Mobbing","Mediation"],"Dollard Gewalt Aggression"],
+["Mediation","psy","Vermittlung durch eine allparteiliche dritte Person; freiwillig, vertraulich, die Parteien finden die Lösung selbst. Phasen von Einleitung bis Vereinbarung.",["Gewaltfreie Kommunikation (Rosenberg)","No-Blame-Approach"],"Streitschlichtung"],
+["Feedback (Hattie & Timperley)","psy","Wirksames Feedback beantwortet: Wo will ich hin (Feed Up)? Wo stehe ich (Feed Back)? Was ist der nächste Schritt (Feed Forward)? Am wirksamsten auf Aufgaben-, Prozess- und Selbstregulationsebene.",["Lern-Evaluation","Sequenzmodell (Helmke)","Attribution (Weiner)"],"Hattie Rückmeldung"],
+["Pygmalion-Effekt","psy","Erwartungen der Lehrkraft können über ihr Verhalten die Leistungen der Lernenden beeinflussen (Rosenthal & Jacobson).",["Beurteilungsfehler"],"Rosenthal Erwartungseffekt"],
+["Querbezug","psy","Verbindung des Schwerpunktthemas mit einem anderen Thema, idealerweise aus der Pädagogischen Psychologie. Selbst anbieten: „Das hängt mit … zusammen, weil … – soll ich das ausführen?“",["Klassenführung (Kounin)","Kooperatives Lernen","Validität"],"Kolloquium Prüfung Antwortschema"]];
+const WHERE={up:[["Lernpfad",LP],["Lernkarten",LK]],paed:[["Lernkarten",LK],["Orakel",OR]],psy:[["Querbezug-Detektiv",DT],["Lernkarten",LK]]};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const norm=s=>s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/ß/g,"ss");
+const slug=s=>"t-"+norm(s).replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+G.sort((a,b)=>a[0].localeCompare(b[0],"de"));
+let cat="all",quiz=false;
+function hl(t,q){const words=q.split(/\s+/).filter(w=>w.length>1);if(!words.length)return esc(t);
+ let ns="",map=[],out="";for(let k=0;k<t.length;k++){for(const ch of norm(t[k])){ns+=ch;map.push(k)}}
+ const marks=new Array(t.length).fill(false);for(const w of words){let p=0;while((p=ns.indexOf(w,p))>=0){for(let j=p;j<p+w.length;j++)marks[map[j]]=true;p+=w.length}}
+ let on=false;for(let k=0;k<t.length;k++){if(marks[k]&&!on){out+="<mark>";on=true}if(!marks[k]&&on){out+="</mark>";on=false}out+=esc(t[k])}if(on)out+="</mark>";return out}
+/* Glossar → eigene Lernkarten im Karteikasten */
+const MY="lernkarten-eigene";let lastRows=[];
+const myCards=()=>{try{return JSON.parse(localStorage.getItem(MY))||[]}catch(e){return []}};
+const cid=g=>"g-"+slug(g[0]).slice(2);
+const inCards=g=>myCards().some(c=>c.id===cid(g));
+function addCards(list){const m=myCards();let n=0;list.forEach(g=>{if(!g||m.some(c=>c.id===cid(g)))return;m.push({id:cid(g),deck:g[1],q:`Was bedeutet: ${g[0]}?`,a:g[2]});n++});try{localStorage.setItem(MY,JSON.stringify(m))}catch(e){}return n}
+function render(){const q=norm($("#q").value.trim());const words=q.split(/\s+/).filter(Boolean);
+ const rows=G.filter(g=>(cat==="all"||g[1]===cat)&&words.every(w=>norm(g[0]+" "+g[2]+" "+g[4]+" "+g[3].join(" ")).includes(w)));
+ $("#count").textContent=`${rows.length} von ${G.length} Begriffen`;
+ $("#list").innerHTML=rows.length?rows.map(g=>`<article class="term ${g[1]}" id="${slug(g[0])}"><span class="cat">${CAT[g[1]]}</span><h2>${hl(g[0],q)}</h2><p class="def ${quiz?"hidden":""}" ${quiz?'title="Antippen zum Aufdecken" tabindex="0" role="button"':""}>${hl(g[2],q)}</p>${g[3].length?`<p class="see">Siehe auch: ${g[3].map(s=>`<button data-go="${esc(s)}">${esc(s)}</button>`).join(" · ")}</p>`:""}<p class="where">Üben: ${WHERE[g[1]].map(([n,h])=>`<a href="${h}">${n}</a>`).join(" · ")}</p>${inCards(g)?`<button class="addc" disabled>✓ im Karteikasten</button>`:`<button class="addc" data-add="${esc(g[0])}">+ Als Lernkarte</button>`}</article>`).join(""):`<p class="empty">Nichts gefunden. Tipp: kürzeres Stichwort probieren.</p>`;
+ document.querySelectorAll(".def.hidden").forEach(d=>{const show=()=>d.classList.remove("hidden");d.onclick=show;d.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();show()}}});
+ document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
+ document.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>{addCards([G.find(g=>g[0]===b.dataset.add)]);render()});lastRows=rows}
+function go(name){$("#q").value="";cat="all";document.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",c.dataset.c==="all"));render();const e=document.getElementById(slug(name));if(e){e.scrollIntoView({behavior:"smooth",block:"start"});e.classList.remove("flash");void e.offsetWidth;e.classList.add("flash")}}
+$("#q").addEventListener("input",render);
+$("#addAll").onclick=()=>{const n=addCards(lastRows);render();$("#count").textContent=n?`${n} neue Lernkarten angelegt – im Karteikasten unter „Eigene“.`:"Alle angezeigten Begriffe sind schon im Karteikasten."};
+document.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{cat=c.dataset.c;document.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed",x===c));render()});
+$("#quiz").onclick=()=>{quiz=!quiz;$("#quiz").setAttribute("aria-pressed",quiz);$("#quiz").textContent=quiz?"👀 Alles aufdecken":"🙈 Abfragemodus";render()};
+const missing=G.flatMap(g=>g[3]).filter(s=>!G.some(g=>g[0]===s));if(missing.length)console.warn("Glossar: fehlende Querverweise",[...new Set(missing)]);
+const h=decodeURIComponent(location.hash.slice(1));if(h){$("#q").value=h}
+render();
+(function(){let t=null;try{t=JSON.parse(localStorage.getItem("lp-theme"))}catch(e){}if(t)document.documentElement.dataset.theme=t;
+$("#theme").onclick=()=>{const c=document.documentElement.dataset.theme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");const n=c==="dark"?"light":"dark";document.documentElement.dataset.theme=n;try{localStorage.setItem("lp-theme",JSON.stringify(n))}catch(e){}}})();
+</script>
+</body>
+</html>

@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; connect-src 'self' data: blob:; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; manifest-src 'self'; worker-src 'self'; script-src 'self' 'sha256-oOuoa3MfwwzY8ZFI1RszGQPbDWiI3+vws15cGpRB0DY='">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lernpfad Unterrichtsplanung</title>
+<meta name="description" content="Interaktiver Lernpfad zum Schwerpunkt Unterrichtsplanung: Klären, Entscheiden, Gestalten, Evaluieren – mit Übungen, Fällen und Selbsttest fürs Kolloquium.">
+<script src="../assets/app.js"></script>
+<link rel="stylesheet" href="../assets/fonts/fonts.css">
+<style>
+:root{
+  --bg:#f6f1e7; --surface:#fffdf8; --surface2:#f0e9db; --ink:#1f2a36; --muted:#5d6b78; --line:#ded4c2;
+  --accent:#0f766e; --accent-ink:#fff; --good:#1f8a4c; --bad:#c0392b; --warn:#b7791f;
+  --k:#2b7fa8; --e:#d9731c; --g:#23a35a; --v:#8e44ad;
+  --k-soft:#dbeaf3; --e-soft:#fae6d6; --g-soft:#dcf1e3; --v-soft:#ece0f3;
+  --shadow:0 1px 0 rgba(0,0,0,.04),0 6px 18px -10px rgba(60,40,10,.25);
+  --f-head:"Fraunces",Georgia,serif; --f-body:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12171d; --surface:#1b222b; --surface2:#232c37; --ink:#e8edf2; --muted:#9aa8b5; --line:#2f3a47;
+  --accent:#2dd4bf; --accent-ink:#06201d; --good:#4ade80; --bad:#f87171; --warn:#fbbf24;
+  --k:#5fb3dd; --e:#f59e4b; --g:#4ccf82; --v:#c084fc;
+  --k-soft:#1d3342; --e-soft:#3e2a19; --g-soft:#18352a; --v-soft:#30213d;
+  --shadow:0 1px 0 rgba(0,0,0,.3),0 8px 22px -12px rgba(0,0,0,.7);
+}}
+:root[data-theme="dark"]{
+  --bg:#12171d; --surface:#1b222b; --surface2:#232c37; --ink:#e8edf2; --muted:#9aa8b5; --line:#2f3a47;
+  --accent:#2dd4bf; --accent-ink:#06201d; --good:#4ade80; --bad:#f87171; --warn:#fbbf24;
+  --k:#5fb3dd; --e:#f59e4b; --g:#4ccf82; --v:#c084fc;
+  --k-soft:#1d3342; --e-soft:#3e2a19; --g-soft:#18352a; --v-soft:#30213d;
+  --shadow:0 1px 0 rgba(0,0,0,.3),0 8px 22px -12px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--f-body)}
+a{color:var(--accent)}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 80px}
+header.top{padding:28px 0 8px}
+.back{font-size:14px;font-weight:700;text-decoration:none;color:var(--muted)}
+.back:hover{color:var(--accent)}
+h1{font-family:var(--f-head);font-weight:800;font-size:clamp(28px,5vw,42px);line-height:1.1;margin:10px 0 6px;letter-spacing:-.01em}
+h2{font-family:var(--f-head);font-weight:800;font-size:clamp(22px,3.6vw,28px);margin:0 0 4px;line-height:1.2}
+h3{font-size:17px;margin:22px 0 8px;font-weight:800}
+.lead{color:var(--muted);font-size:17px;max-width:62ch;margin:0}
+.progress{display:flex;align-items:center;gap:12px;margin:18px 0 0;font-weight:700;font-size:14px;color:var(--muted)}
+.bar{flex:1;height:10px;background:var(--surface2);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--k),var(--e),var(--g),var(--v));transition:width .4s}
+nav.chips{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(6px);padding:10px 0;margin:14px 0 6px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin;border-bottom:1px solid var(--line)}
+nav.chips a{flex:0 0 auto;text-decoration:none;font-size:13px;font-weight:800;color:var(--ink);background:var(--surface);border:1px solid var(--line);padding:6px 11px;border-radius:99px;white-space:nowrap}
+nav.chips a.done{border-color:var(--good);color:var(--good)}
+nav.chips a.done::before{content:"✓ "}
+section.st{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px clamp(16px,3vw,28px);margin:18px 0;box-shadow:var(--shadow)}
+.st-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:10px}
+.num{flex:0 0 auto;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-family:var(--f-head);font-weight:800;font-size:20px;color:#fff;background:var(--accent)}
+.st[data-c="k"] .num{background:var(--k)} .st[data-c="e"] .num{background:var(--e)} .st[data-c="g"] .num{background:var(--g)} .st[data-c="v"] .num{background:var(--v)}
+.tag{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+p{margin:8px 0}
+ul.tight{margin:6px 0;padding-left:20px} ul.tight li{margin:3px 0}
+.box{border-radius:12px;padding:12px 14px;margin:14px 0;border-left:5px solid;background:var(--surface2)}
+.box b.lbl{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.merke{border-color:var(--k);background:var(--k-soft)} .merke b.lbl{color:var(--k)}
+.tipp{border-color:var(--bad)} .tipp b.lbl{color:var(--bad)}
+.falle{border-color:var(--e);background:var(--e-soft)} .falle b.lbl{color:var(--e)}
+.bruecke{border-color:var(--v);background:var(--v-soft)} .bruecke b.lbl{color:var(--v)}
+.laut{border-color:var(--g);background:var(--g-soft)} .laut b.lbl{color:var(--g)}
+.quer{border-color:var(--muted)} .quer b.lbl{color:var(--muted)}
+.btn{font:inherit;font-weight:800;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:8px 14px;border-radius:10px;cursor:pointer;min-height:40px}
+.btn:hover{border-color:var(--accent)}
+.btn.pri{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.sm{font-size:13px;padding:5px 10px;min-height:32px}
+.btn:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.speak{margin-top:8px}
+.donebox{display:flex;align-items:center;gap:10px;margin-top:18px;padding-top:14px;border-top:1px dashed var(--line);font-weight:800}
+.donebox input{width:22px;height:22px;accent-color:var(--good)}
+/* Werkzeuge */
+.tool{border:1px solid var(--line);border-radius:14px;padding:14px;margin:14px 0;background:var(--bg)}
+.tool h4{margin:0 0 4px;font-size:15px}
+.tool .hint{font-size:14px;color:var(--muted);margin:0 0 10px}
+.pool{display:flex;flex-wrap:wrap;gap:6px;min-height:40px}
+.item{font:inherit;font-size:14px;font-weight:600;text-align:left;background:var(--surface);border:1px solid var(--line);color:var(--ink);padding:7px 10px;border-radius:10px;cursor:pointer;line-height:1.3}
+.item.sel{outline:3px solid var(--accent);outline-offset:1px}
+.item.ok{border-color:var(--good);background:color-mix(in srgb,var(--good) 14%,var(--surface));cursor:default}
+.item.no{animation:shake .35s;border-color:var(--bad)}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin-top:10px}
+.bucket{border:2px dashed var(--line);border-radius:12px;padding:8px;min-height:80px;background:var(--surface);cursor:pointer}
+.bucket>b{display:block;font-size:13px;margin-bottom:6px}
+.bucket .item{display:block;width:100%;margin:4px 0;font-size:13px}
+.fb{font-weight:700;font-size:14px;margin-top:8px;min-height:1.4em}
+.fb.ok{color:var(--good)} .fb.no{color:var(--bad)}
+.q{margin:12px 0}
+.q .qt{font-weight:800}
+.opts{display:grid;gap:6px;margin-top:6px}
+.opt{font:inherit;text-align:left;font-size:15px;background:var(--surface);border:1px solid var(--line);color:var(--ink);padding:9px 12px;border-radius:10px;cursor:pointer}
+.opt.right{border-color:var(--good);background:color-mix(in srgb,var(--good) 16%,var(--surface))}
+.opt.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 14%,var(--surface))}
+.opt:disabled{cursor:default;opacity:1}
+.expl{font-size:14px;color:var(--muted);margin-top:6px}
+.seq{display:flex;flex-direction:column;gap:6px;margin-top:8px;counter-reset:s}
+.seq .item{counter-increment:s}
+.seq .item::before{content:counter(s) ". ";font-weight:800;color:var(--accent)}
+/* Planungsinstrument */
+.steps4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0}
+@media (max-width:640px){.steps4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.s4{font:inherit;cursor:pointer;border:none;border-radius:12px;padding:14px 8px;color:#fff;font-weight:800;font-size:15px;letter-spacing:.04em;text-transform:uppercase}
+.s4 small{display:block;text-transform:none;letter-spacing:0;font-weight:600;font-size:12px;opacity:.92;margin-top:3px}
+.s4[aria-pressed="true"]{outline:3px solid var(--ink);outline-offset:2px}
+.s4.k{background:var(--k)}.s4.e{background:var(--e)}.s4.g{background:var(--g)}.s4.v{background:var(--v)}
+.detail{border-radius:12px;padding:12px 14px;background:var(--surface2);min-height:90px}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:10px 0}
+th,td{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+th{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.tscroll{overflow-x:auto}
+/* Taxonomie-Treppe */
+.stairs{display:flex;align-items:flex-end;gap:5px;height:210px;margin:10px 0}
+.stair{flex:1;border:none;border-radius:8px 8px 0 0;cursor:pointer;color:#fff;font:inherit;font-weight:800;font-size:clamp(10px,1.8vw,13px);padding:6px 2px;display:flex;align-items:flex-start;justify-content:center;word-break:break-word;hyphens:auto}
+.stair[aria-pressed="true"]{outline:3px solid var(--ink);outline-offset:2px}
+/* LLA */
+.lla{position:relative;aspect-ratio:1.4/1;max-width:520px;margin:10px auto;border:2px solid var(--line);border-radius:12px;background:
+ linear-gradient(var(--line),var(--line)) center/2px 100% no-repeat,linear-gradient(var(--line),var(--line)) center/100% 2px no-repeat,var(--surface)}
+.lla .ax{position:absolute;font-size:12px;font-weight:800;color:var(--muted)}
+.lla .quad{position:absolute;width:50%;height:50%;border:none;background:transparent;cursor:pointer}
+.lla .quad:hover{background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.lla .dot{position:absolute;transform:translate(-50%,-50%);background:var(--accent);color:var(--accent-ink);font-size:12px;font-weight:800;padding:3px 7px;border-radius:99px;pointer-events:none;white-space:nowrap}
+/* Netz */
+.net{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.net .item{width:100%}
+.netd{margin-top:10px}
+.pill{display:inline-block;font-size:12px;font-weight:800;padding:2px 8px;border-radius:99px;background:var(--surface2);margin-right:4px}
+details{border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin:10px 0;background:var(--bg)}
+details summary{cursor:pointer;font-weight:800}
+details[open] summary{margin-bottom:8px}
+.timer{font-variant-numeric:tabular-nums;font-weight:800;font-size:20px;min-width:70px;display:inline-block}
+.sel-row{display:grid;gap:8px;grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:640px){.sel-row{grid-template-columns:1fr}}
+select{font:inherit;font-size:14px;padding:8px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);width:100%}
+.goalout{margin-top:10px;padding:12px;border-radius:10px;background:var(--surface);border:1px solid var(--line);font-weight:700}
+.themebtn{position:fixed;right:14px;bottom:14px;z-index:9;border-radius:99px}
+footer{color:var(--muted);font-size:13px;text-align:center;margin-top:30px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <a class="back" href="../index.html">← zurück zum Launcher</a>
+  <h1>Lernpfad Unterrichtsplanung</h1>
+  <p class="lead">Klären · Entscheiden · Gestalten · Evaluieren – in 14 Stationen mit Übungen, Prüfungsfällen und Sätzen zum Lautsprechen. Arbeite dich durch und hake jede Station ab.</p>
+  <div class="progress"><span id="pTxt">0 / 14 Stationen</span><div class="bar"><i id="pBar"></i></div><button class="btn sm" id="reset">Zurücksetzen</button></div>
+</header>
+<nav class="chips" id="chips" aria-label="Stationen"></nav>
+
+<!-- 0 -->
+<section class="st" id="s0" data-c="a">
+ <div class="st-head"><div class="num">0</div><div><span class="tag">Start</span><h2>Was im Kolloquium verlangt wird</h2></div></div>
+ <p>Die Prüfung beginnt mit deinem <b>Schwerpunkt</b> – ausgehend von einem vorgelegten <b>Fall</b>. Dafür ist höchstens etwa ein Drittel der Zeit vorgesehen (bei 20 Minuten also ca. 6–7 Minuten). Danach kommen alle übrigen Themen aus Pädagogik und Pädagogischer Psychologie.</p>
+ <div class="tscroll"><table>
+  <tr><th>Kriterium</th><th>Was das heißt</th></tr>
+  <tr><td>Fall erfassen</td><td>Situation richtig verstehen – oder kompetent nachfragen</td></tr>
+  <tr><td>Theorie ↔ Praxis</td><td>Theorie auf den Fall anwenden, Praxis theoretisch reflektieren</td></tr>
+  <tr><td>Bezüge herstellen</td><td>Querverbindungen Pädagogik ↔ Päd. Psychologie selbst anbieten</td></tr>
+  <tr><td>Strategie</td><td>Kein Redeschwall: erst schlagwortartiger Überblick, dann auf Nachfrage vertiefen</td></tr>
+ </table></div>
+ <h3>Verbindliche Wissensbestände im Schwerpunkt</h3>
+ <ul class="tight">
+  <li>eine Form des <b>Unterrichtseinstiegs</b> erläutern, die du für deinen Unterricht besonders geeignet hältst</li>
+  <li>die drei <b>Lernzieldimensionen</b> (kognitiv, affektiv, psychomotorisch)</li>
+  <li>Merkmale <b>präzise formulierter Lernziele</b></li>
+  <li><b>Strukturmerkmale der Taxonomie</b> nach Anderson/Krathwohl (Aufbau, nicht jede Stufe) – oder EPA</li>
+  <li>dein <b>Vorgehen beim Vorbereiten</b> – angelehnt an das Seminarmodell oder gut begründet anders</li>
+ </ul>
+ <div class="box bruecke"><b class="lbl">Eselsbrücken</b>
+  <b>K-E-G-E</b> – „<b>K</b>lug <b>E</b>ntscheiden, <b>G</b>ut <b>E</b>rleben“: Klären – Entscheiden – Gestalten – Evaluieren.<br>
+  <b>I-B-H</b> – „<b>I</b>ch <b>B</b>in <b>H</b>andlungsfähig“: Lernziel = Inhalt + Bedingung + Handeln.</div>
+ <div class="tool"><h4>Antwortschema für jeden Fall – bring es in die richtige Reihenfolge</h4><p class="hint">Tippe die Schritte in der richtigen Reihenfolge an.</p><div data-order="schema"></div></div>
+ <label class="donebox"><input type="checkbox" data-done="0"> Station erledigt</label>
+</section>
+
+<!-- 1 -->
+<section class="st" id="s1" data-c="a">
+ <div class="st-head"><div class="num">1</div><div><span class="tag">Überblick</span><h2>Das Planungsinstrument in vier Schritten</h2></div></div>
+ <p>Das Seminarmodell (nach Zumsteg u. a.) plant Unterricht in vier Schritten. Im Hintergrund steht <b>Klafkis didaktische Analyse</b> (Gegenwarts-, Zukunfts-, exemplarische Bedeutung, Zugänglichkeit); für den Verlaufsplan liefert das <b>Berliner Modell</b> die Denkweise. Tippe einen Schritt an:</p>
+ <div class="steps4" role="group" aria-label="Planungsschritte">
+  <button class="s4 k" data-step="0" aria-pressed="true">Klären<small>Worum, für wen, wozu?</small></button>
+  <button class="s4 e" data-step="1" aria-pressed="false">Entscheiden<small>Was können sie am Ende?</small></button>
+  <button class="s4 g" data-step="2" aria-pressed="false">Gestalten<small>Wer macht was wann wie?</small></button>
+  <button class="s4 v" data-step="3" aria-pressed="false">Evaluieren<small>Was lief anders?</small></button>
+ </div>
+ <div class="detail" id="stepDetail" aria-live="polite"></div>
+ <div class="box merke"><b class="lbl">Merke</b><ul class="tight"><li>Die Schritte greifen ineinander: Spätere Antworten können frühere Entscheidungen verändern (Wechselwirkung).</li><li>Trotzdem lohnt die Reihenfolge – sie spart Zeit und sichert den roten Faden.</li><li>Medien sind nie Selbstzweck und nie Ausgangspunkt der Planung.</li></ul></div>
+ <div class="box bruecke"><b class="lbl">Merkbild: Hausbau</b>Erst klärst du Grundstück, Budget und Bewohner (Klären), dann Grundriss und Bauweise (Entscheiden), dann wird Raum für Raum gebaut (Gestalten), nach dem Einzug prüfst du, was hakt (Evaluieren). Niemand kauft zuerst die Fliesen – und niemand plant eine Stunde vom Arbeitsblatt aus.</div>
+ <div class="tool"><h4>Zuordnen: Zu welchem Schritt gehört das?</h4><p class="hint">Tippe eine Karte an, dann den passenden Schritt.</p><div data-sort="steps"></div></div>
+ <label class="donebox"><input type="checkbox" data-done="1"> Station erledigt</label>
+</section>
+
+<!-- 2 -->
+<section class="st" id="s2" data-c="k">
+ <div class="st-head"><div class="num">2</div><div><span class="tag">Schritt 1</span><h2>Klären – die Thematik festlegen</h2></div></div>
+ <p>Im ersten Schritt befasst du dich mit dem Thema, <i>ohne</i> schon die Stunde zu planen. Drei Klärungsfelder münden in die Thematik. Die Reihenfolge der Fragen ist beliebig, nicht jede Frage passt zu jedem Thema, Redundanzen sind gewollt.</p>
+ <div class="tscroll"><table>
+  <tr><th>Feld</th><th>Leitfragen (Auswahl)</th></tr>
+  <tr><td><b>Sache</b></td><td>Fachwissenschaftlicher und fachdidaktischer Stand? Eigene Lücken? Struktur und Schwerpunkte des Stoffs? Eigener Bezug zum Thema? Passung zum Bildungsplan (Lernfeld, Zeitrichtwert)?</td></tr>
+  <tr><td><b>Bedingungen</b></td><td>Schulart und Klasse, Zeitpunkt (was lag davor?), Raum, Medien, Klassenklima, Gruppen und Außenseiter, einzelne Schüler (Förderbedarf, Sprache), Vorwissen – und wie erhebe ich es?</td></tr>
+  <tr><td><b>Bedeutung & Sinn</b></td><td>Anbindung an Lebens- und Berufswelt? Gegenwarts- und Zukunftsbedeutung (Klafki)? Veranschaulichungen, Phänomene, Versuche? Schüler an der Themenwahl beteiligen?</td></tr>
+ </table></div>
+ <p><b>Schlussfolgerung:</b> Die Thematik wird (vorläufig) aus vier Blickrichtungen festgelegt: <span class="pill">Sache</span><span class="pill">Kompetenz</span><span class="pill">Arbeitsform</span><span class="pill">Evaluation / Lernprodukt</span></p>
+ <div class="tool"><h4>Sortiere die Klärungsfragen</h4><p class="hint">Welche Frage gehört in welches Klärungsfeld?</p><div data-sort="klaeren"></div></div>
+ <div class="box quer"><b class="lbl">Querbezüge</b>
+  <b>Sinn & Lebensweltbezug ↔ Motivation:</b> Ergebnis-Folge-Erwartung (Heckhausen), Kompetenz/Autonomie/Eingebundenheit (Deci & Ryan).<br>
+  <b>Bedingungen ↔ Gruppenentwicklung/Mobbing:</b> In welcher Phase ist die Klasse (Tuckman)? Gibt es Außenseiter?<br>
+  <b>Bedingungen ↔ Inklusion/Sprache:</b> Förderbedarf und Sprachniveau früh klären – sonst misst man später Lesefähigkeit statt Fachkompetenz (Validität).</div>
+ <label class="donebox"><input type="checkbox" data-done="2"> Station erledigt</label>
+</section>
+
+<!-- 3 -->
+<section class="st" id="s3" data-c="e">
+ <div class="st-head"><div class="num">3</div><div><span class="tag">Schritt 2 · Entscheiden</span><h2>Lernziele: Dimensionen & präzise Formulierung</h2></div></div>
+ <div class="box merke"><b class="lbl">Definition</b>Ein <b>Lernziel</b> ist eine möglichst konkrete, beobachtbare Beschreibung einer Handlung, zu der die Lehrkraft ihre Schülerinnen und Schüler im Unterricht veranlassen will.<br><i>„Wer nicht weiß, wo er hin will, darf sich nicht wundern, wenn er ganz woanders ankommt.“</i> (sinngemäß nach Robert Mager)</div>
+ <p>Im zweiten Schritt fallen <b>drei Entscheidungen</b>: (I) Lernziele, (II) Form der Lern-Evaluation, (III) Lehr-Lern-Arrangement.</p>
+ <h3>Drei Dimensionen: Kopf – Herz – Hand</h3>
+ <div class="tscroll"><table>
+  <tr><th>Dimension</th><th>hat zu tun mit …</th><th>Beispiel</th></tr>
+  <tr><td><b>kognitiv</b> (Kopf)</td><td>Wissen, Erkennen, Denken, Beurteilen, Begründen</td><td>den Spannungsfall einer Leitung berechnen</td></tr>
+  <tr><td><b>affektiv</b> (Herz)</td><td>Gefühl, Einstellung, Wertschätzung</td><td>bereit sein, vor jeder Arbeit die fünf Sicherheitsregeln anzuwenden</td></tr>
+  <tr><td><b>psychomotorisch</b> (Hand)</td><td>Bewegungs- und Handfertigkeiten</td><td>eine Schaltung fachgerecht verdrahten</td></tr>
+ </table></div>
+ <p>Keine Dimension steht isoliert – für jede Stunde legst du einen <b>Schwerpunkt</b> fest.</p>
+ <div class="tool"><h4>Kopf, Herz oder Hand?</h4><p class="hint">Ordne die Lernziele der Dimension zu.</p><div data-sort="dim"></div></div>
+ <h3>Präzise Lernziele: Inhalt + Bedingung + Handeln</h3>
+ <p>Je eindeutiger und operationalisierter, desto präziser. Präzise Ziele erleichtern die Erfolgsprüfung, weil die Form der Überprüfung schon in der Formulierung steckt.</p>
+ <div class="tool"><h4>Lernziel-Baukasten</h4><p class="hint">Baue dir ein Lernziel zusammen – der Check sagt dir, ob es präzise ist.</p>
+  <div class="sel-row">
+   <label>Lerninhalt<select id="gI"></select></label>
+   <label>Bedingung<select id="gB"></select></label>
+   <label>Lernhandeln<select id="gH"></select></label>
+  </div>
+  <div class="goalout" id="gOut" aria-live="polite"></div>
+ </div>
+ <div class="box falle"><b class="lbl">Stolperfallen</b><ul class="tight"><li><b>wissen, kennen, verstehen, glauben</b> sind nicht beobachtbar → nicht überprüfbar.</li><li><b>erklären, unterscheiden</b> sind nur im Zusammenhang präzise („anhand der Skizze erklären“).</li><li>„Die SuS sollen motiviert mitarbeiten“ ist kein Lernziel, sondern eine <b>Verhaltenserwartung</b>.</li></ul></div>
+ <div class="tool"><h4>Verb-Check: beobachtbar oder nicht?</h4><p class="hint">Sortiere die Verben.</p><div data-sort="verbs"></div></div>
+ <label class="donebox"><input type="checkbox" data-done="3"> Station erledigt</label>
+</section>
+
+<!-- 4 -->
+<section class="st" id="s4" data-c="e">
+ <div class="st-head"><div class="num">4</div><div><span class="tag">Schritt 2 · Entscheiden</span><h2>Taxonomien: Anderson/Krathwohl, EPA, affektiv</h2></div></div>
+ <div class="box tipp"><b class="lbl">Prüfungstipp</b>Gefragt ist der <b>Aufbau</b>, nicht jede Stufe auswendig. Das Modell hat zwei Aspekte: (1) <b>Stufung</b> von einfachen zu komplexen Denkprozessen – höhere Stufen setzen niedrigere voraus; (2) Zuordnung zu <b>Wissensarten</b> (faktisch, konzeptuell, prozedural, metakognitiv – „Wissen, dass“ vs. „Wissen, wie“). Gegenüber Bloom (1956): Verben statt Nomen, „Erschaffen“ steht ganz oben.</div>
+ <p>Tippe eine Stufe an:</p>
+ <div class="stairs" id="stairs"></div>
+ <div class="detail" id="stairDetail" aria-live="polite"></div>
+ <h3>Alternative: EPA – drei Anforderungsbereiche</h3>
+ <div class="tscroll"><table>
+  <tr><th>AFB</th><th>umfasst</th><th>Operatoren</th></tr>
+  <tr><td><b>I</b> Reproduktion</td><td>Wiedergabe im gelernten Zusammenhang, geübte Arbeitstechniken</td><td>nennen, beschreiben, wiedergeben, entnehmen</td></tr>
+  <tr><td><b>II</b> Reorganisation & Transfer</td><td>Bekanntes selbstständig bearbeiten, ordnen, erklären, übertragen</td><td>erklären, erläutern, vergleichen, analysieren</td></tr>
+  <tr><td><b>III</b> Reflexion & Problemlösung</td><td>reflexiver Umgang mit neuen Problemen, begründete Urteile</td><td>beurteilen, bewerten, Stellung nehmen, begründen, entwerfen</td></tr>
+ </table></div>
+ <div class="tool"><h4>Operator → Anforderungsbereich</h4><p class="hint">Ordne die Operatoren dem AFB zu.</p><div data-sort="afb"></div></div>
+ <h3>Affektive Taxonomie (Krathwohl, Bloom & Masia)</h3>
+ <p>Ebenfalls hierarchisch – Maßstab ist, in welchem Ausmaß sich jemand einen Wert zu eigen macht: <span class="pill">Aufmerksamwerden</span>→<span class="pill">Reagieren</span>→<span class="pill">Werten</span>→<span class="pill">Wertordnung</span>→<span class="pill">Erfülltsein / Verhaltensänderung</span></p>
+ <details><summary>Zur Diskussion: Darf Schule affektive Ziele verfolgen?</summary>
+  <p><b>Ja</b> – Erziehungsauftrag (Schulgesetz, Bildungsauftrag: Handlungskompetenz inkl. Selbstkompetenz und Werthaltungen); bei Arbeitssicherheit unerlässlich. <b>Grenze:</b> Werte anbieten, nicht indoktrinieren (Überwältigungsverbot, Beutelsbacher Konsens). <b>Überprüfung</b> nur über Anzeichen: freiwilliges Verhalten, Argumentation in Dilemmata, Selbsteinschätzungen, Rückmeldung von Ausbildern. Affektive Ziele werden nicht benotet.</p></details>
+ <div class="box laut"><b class="lbl">Laut sprechen</b><span data-say>„Ich nutze die Taxonomie von Anderson und Krathwohl. Sie hat zwei Seiten: eine Stufung von einfachen Denkprozessen wie Erinnern bis zu komplexen wie Bewerten und Erschaffen, wobei höhere Stufen niedrigere voraussetzen – und die Unterscheidung von Wissensarten, also Wissen, dass und Wissen, wie. In Klassenarbeiten bilde ich das über die Anforderungsbereiche eins bis drei ab.“</span></div>
+ <label class="donebox"><input type="checkbox" data-done="4"> Station erledigt</label>
+</section>
+
+<!-- 5 -->
+<section class="st" id="s5" data-c="e">
+ <div class="st-head"><div class="num">5</div><div><span class="tag">Schritt 2 · Entscheiden</span><h2>Hauptziel, Charakter der Stunde, Zienern</h2></div></div>
+ <ol class="tight">
+  <li><b>Thema</b> steht fest (z. B. „Leitungsschutzschalter“).</li>
+  <li><b>Hauptziel</b> ableiten: „Am Ende sollen alle … können.“ – dasselbe Thema ergibt mit anderen Zielen ganz anderen Unterricht.</li>
+  <li><b>Charakter der Stunde</b> festlegen – gern kreativ: „Übungsstunde“, „Staun-Stunde“, „Werkzeug-Stunde“ – plus Schwerpunkt-Dimension.</li>
+  <li><b>Teilziele ableiten = zienern</b> (nach Gerhard Ziener): „Was kann jemand, der … kann?“ Danach streichen, verteilen, ordnen → <b>Zielgerüst</b>.</li>
+ </ol>
+ <div class="box merke"><b class="lbl">Roter-Faden-Test</b>Kannst du den Gedankengang der Stunde in 1–2 Sätzen sagen? „Am Ende sollen sie XY beherrschen. Dazu müssen sie zuerst … wissen, es dann von … unterscheiden … Zur Vertiefung wird es in einem anderen Zusammenhang geübt.“ Wenn nicht, findet auch die Klasse keinen roten Faden.</div>
+ <div class="tool"><h4>Zienern üben</h4><p class="hint"><b>Hauptziel:</b> „Am Ende können alle eine Wechselschaltung nach Stromlaufplan aufbauen und prüfen.“ – Welche Karten sind sinnvolle Teilziele, welche nicht?</p><div data-sort="ziener"></div></div>
+ <div class="tool"><h4>Zielgerüst ordnen</h4><p class="hint">Bring die Teilziele in eine sinnvolle Reihenfolge (vom Einfachen zum Komplexen).</p><div data-order="geruest"></div></div>
+ <h3>Operatoren helfen beim Aufgabenstellen</h3>
+ <p>Unklar: „Welche Schutzmaßnahmen gibt es?“ → präzise: „<b>Nenne</b> drei Schutzmaßnahmen“ (AFB I) · „<b>Erläutere</b> an je einem Beispiel …“ (AFB II) · „<b>Beurteile</b>, welche Maßnahme geeignet ist“ (AFB III). Operatoren auch im Unterricht verwenden, nicht nur in der Klassenarbeit.</p>
+ <label class="donebox"><input type="checkbox" data-done="5"> Station erledigt</label>
+</section>
+
+<!-- 6 -->
+<section class="st" id="s6" data-c="e">
+ <div class="st-head"><div class="num">6</div><div><span class="tag">Schritt 2 · Entscheiden</span><h2>Lern-Evaluation & Lehr-Lern-Arrangement</h2></div></div>
+ <p><b>Woran wird erkannt, dass gelernt wurde – und wie erfahren die Schüler das?</b> Rückmeldung in dieser Rangfolge: <span class="pill">1. jeder sich selbst</span><span class="pill">2. Peer</span><span class="pill">3. Lehrkraft</span></p>
+ <div class="tscroll"><table>
+  <tr><th></th><th>formativ</th><th>summativ</th></tr>
+  <tr><td>Zweck</td><td>Lernprozess steuern, Rückmeldung während des Lernens</td><td>Lernergebnis bilanzieren, oft benotet</td></tr>
+  <tr><td>Beispiele</td><td>Exit-Ticket, Ampel-Selbsteinschätzung, Lösungsblatt, Peer-Feedback</td><td>Klassenarbeit, Test, Lernprodukt am Ende der Einheit</td></tr>
+ </table></div>
+ <h3>Lehr-Lern-Arrangement: zwei Achsen</h3>
+ <p>Welchem Grundbaumuster folgt die Stunde? Achsen: <b>Fremd- vs. Selbststeuerung</b> und <b>Nach- vs. Selbstkonstruktion</b>. Das Arrangement folgt dem Ziel – nicht umgekehrt.</p>
+ <div class="tool"><h4>Wo liegt das Arrangement?</h4><p class="hint" id="llaQ"></p>
+  <div class="lla" id="lla">
+   <span class="ax" style="left:50%;top:4px;transform:translateX(-50%)">Selbststeuerung</span>
+   <span class="ax" style="left:50%;bottom:4px;transform:translateX(-50%)">Fremdsteuerung</span>
+   <span class="ax" style="left:6px;top:50%;transform:translateY(-140%)">Nach&shy;konstruktion</span>
+   <span class="ax" style="right:6px;top:50%;transform:translateY(-140%);text-align:right">Selbst&shy;konstruktion</span>
+   <button class="quad" data-q="tl" style="left:0;top:0" aria-label="Selbststeuerung, Nachkonstruktion"></button>
+   <button class="quad" data-q="tr" style="right:0;top:0" aria-label="Selbststeuerung, Selbstkonstruktion"></button>
+   <button class="quad" data-q="bl" style="left:0;bottom:0" aria-label="Fremdsteuerung, Nachkonstruktion"></button>
+   <button class="quad" data-q="br" style="right:0;bottom:0" aria-label="Fremdsteuerung, Selbstkonstruktion"></button>
+  </div>
+  <div class="fb" id="llaFb" aria-live="polite"></div>
+ </div>
+ <div class="box merke"><b class="lbl">Merke</b>Nicht „Ich mache eine LdL-Stunde“, sondern: „Ich stelle Thema XY in den Mittelpunkt, verfolge diese Ziele – dafür eignet sich LdL, weil …“</div>
+ <label class="donebox"><input type="checkbox" data-done="6"> Station erledigt</label>
+</section>
+
+<!-- 7 -->
+<section class="st" id="s7" data-c="g">
+ <div class="st-head"><div class="num">7</div><div><span class="tag">Schritt 3</span><h2>Gestalten: Verlaufsplan & Sozialformen</h2></div></div>
+ <p><b>„Wer macht was wann wie (warum) mit wem – und wie bleibt's hängen?“</b> Pro Phase fünf Planungsfragen (Anregungen aus dem Berliner Modell):</p>
+ <ol class="tight">
+  <li><b>Sozialform</b> – Wiederholung vor der Klassenarbeit → eher Einzelarbeit; Austausch sinnvoll → Partnerarbeit.</li>
+  <li><b>Methode</b> – Expertenwissen im Zusammenhang → Lehrervortrag; viele gleich große Info-Päckchen → Gruppenpuzzle. Tipp: von fachspezifischen Handlungen ausgehen (messen, prüfen, Fehler suchen, dokumentieren).</li>
+  <li><b>Medien</b> – nie Selbstzweck, nie Ausgangspunkt.</li>
+  <li><b>Einstieg</b> – macht Ziel und Nutzen transparent (→ Station 8).</li>
+  <li><b>Kontrollfragen</b> – Zeit ↔ Ertrag? Reflexion über das Lernen? Ergebnissicherung passend zum Ziel? Individuelle Bedürfnisse?</li>
+ </ol>
+ <div class="tool"><h4>Sozialform-Trainer</h4><p class="hint">Welche Sozialform passt am besten?</p><div data-mcq="sozial"></div></div>
+ <details><summary>Zur Diskussion: Was macht die Lehrkraft während der Gruppenarbeit?</summary><p>Hängt vom Lern- und Rollenverständnis ab. Herumgehen = Lernbegleitung, Diagnose, Rechenschaftsprinzip (Kounin) – aber Gefahr, zu stören oder Lösungen vorzusagen. Kompromiss: 3–5 Minuten ankommen lassen, dann gezielt beobachten, Fragen zurückgeben.</p></details>
+ <details><summary>Zur Diskussion: Feste Gruppen? Homogen oder heterogen?</summary><p><b>Feste Gruppen</b> – pro: Routinen, Vertrauen, Norming/Performing (Tuckman); contra: Rollen verfestigen sich, Außenseiter bleiben außen → Stammgruppen mit wechselnden Expertengruppen. <b>Leistung:</b> ruhig heterogen – Starke profitieren durch Erklären, Schwächere in gemischten Gruppen; bei Wahl- oder Differenzierungsaufgaben gelegentlich homogen.</p></details>
+ <h3>Beispiel-Verlaufsplan (90 Minuten)</h3>
+ <p class="hint">Thema: Leitungsschutzschalter auswählen · Hauptziel: Für einen Kundenauftrag mit dem Tabellenbuch einen passenden LS auswählen und begründen · Charakter: „Werkzeug-Stunde“ · LLA: direkte Instruktion mit Lernsituation</p>
+ <div class="tool"><h4>Verlaufsplan-Puzzle</h4><p class="hint">Bring die Phasen in die richtige Reihenfolge.</p><div data-order="verlauf"></div></div>
+ <div class="tscroll"><table>
+  <tr><th>Min.</th><th>Phase</th><th>Sozialform · Methode</th><th>Begründung</th></tr>
+  <tr><td>0–5</td><td>Einstieg: Kundenmail, Ziel & Ablauf an der Tafel</td><td>Plenum · Lernsituation + informierend</td><td>Transparenz, Berufsbezug</td></tr>
+  <tr><td>5–12</td><td>Vorwissen: „Was passiert bei Überlast/Kurzschluss?“</td><td>EA → PA · Think-Pair</td><td>Vorwissen aktivieren (Netzwerkmodell)</td></tr>
+  <tr><td>12–25</td><td>Erarbeitung am Lösungsbeispiel, laut vordenken</td><td>Plenum · Lehrervortrag, Tafelbild</td><td>Arbeitsgedächtnis entlasten, Modell</td></tr>
+  <tr><td>25–40</td><td>Angeleitetes Üben</td><td>Plenum · FEU</td><td>≥ 80 % richtig vor Weiterarbeit (DI)</td></tr>
+  <tr><td>40–65</td><td>Selbstständiges Üben, Basis- und Sternaufgaben</td><td>PA · Lösungsblatt</td><td>Differenzierung, Selbstkontrolle</td></tr>
+  <tr><td>65–80</td><td>Sicherung: Checkliste ins Heft, Begründung formulieren</td><td>EA → Plenum</td><td>Ergebnissicherung, AFB III</td></tr>
+  <tr><td>80–90</td><td>Reflexion: Exit-Ticket + Ampel</td><td>EA · Quiz</td><td>formative Evaluation</td></tr>
+ </table></div>
+ <div class="box falle"><b class="lbl">Zeitfresser</b>Abschreiben von der Tafel, Umbauphasen, Gruppeneinteilung, lange fragend-entwickelnde Phasen, Geräte anmelden und Dateien öffnen. Tipp: beim Hospitieren schätzen, wie lange ein Auftrag dauert – und mit der echten Dauer vergleichen.</div>
+ <label class="donebox"><input type="checkbox" data-done="7"> Station erledigt</label>
+</section>
+
+<!-- 8 -->
+<section class="st" id="s8" data-c="g">
+ <div class="st-head"><div class="num">8</div><div><span class="tag">Schritt 3 · Gestalten</span><h2>Unterrichtseinstiege</h2></div></div>
+ <div class="tscroll"><table>
+  <tr><th></th><th>Informierend (Grell & Grell)</th><th>Mit Verpackung</th><th>Mit Lernsituation</th></tr>
+  <tr><td>Motto</td><td>„Karten auf den Tisch!“</td><td>„Guck mal, ist das nicht bemerkenswert?“</td><td>„Der Reifen ist platt – am Ende könnt ihr ihn flicken.“</td></tr>
+  <tr><td>Kern</td><td>Lehrkraft legt offen, was gelernt wird, wozu, wie gearbeitet wird</td><td>Aufmerksamkeitserregendes präsentieren, Problemfrage erarbeiten</td><td>Knifflige Situation, die die Klasse noch nicht bewältigen kann</td></tr>
+  <tr><td>Motivation</td><td>Ziele erfahren und lohnend finden</td><td>lebensnah, witzig, kontrovers</td><td>Aussicht auf Kompetenzzuwachs</td></tr>
+  <tr><td>Dauer</td><td>max. 4 Min. · deduktiv</td><td>bis 10 Min. · induktiv</td><td>bis 10 Min. · induktiv</td></tr>
+ </table></div>
+ <div class="box merke"><b class="lbl">Was immer geht</b>Sag, <b>worum</b> es geht, <b>wozu</b> es gut ist und <b>wie</b> gearbeitet wird. Minimalform: „Mein Ziel für heute ist … Deshalb werden wir erstens …, zweitens …“</div>
+ <div class="box falle"><b class="lbl">Stolperfallen</b><ul class="tight"><li>Thema erraten lassen („Na, was machen wir heute wohl?“)</li><li>Stummer Impuls – und dann eine ganz bestimmte Antwort erwarten</li><li>Verpackung zu lang → Aufmerksamkeit verbraucht, bevor gelernt wird</li><li>Lernsituation ohne Lernprodukt, das genau das Gelernte abbildet</li></ul></div>
+ <div class="tool"><h4>Einstiege bewerten</h4><div data-mcq="einstieg"></div></div>
+ <div class="box laut"><b class="lbl">Laut sprechen</b><span data-say>„Für meine Klassen halte ich den Einstieg mit Lernsituation für besonders geeignet: Der Lernfeldunterricht ist handlungsorientiert, und ein kurzer Kundenauftrag knüpft an die Berufswelt an. Ich halte am Anfang das Stundenziel fest und plane ein Lernprodukt, das genau das abbildet. Bei Klassen, die viel Struktur brauchen, ergänze ich einen informierenden Teil mit sichtbarem Ablauf.“</span></div>
+ <details><summary>Zur Diskussion: Wozu überhaupt Einstiege?</summary><p>Transparenz und Sinn steigern Motivation (Heckhausen: Ergebnis-Folge-Erwartung), Vorwissen aktivieren erleichtert Enkodierung (Advance Organizer, Netzwerkmodell), Aufmerksamkeit wird gebündelt, Ankommen strukturiert (Klassenführung).</p></details>
+ <label class="donebox"><input type="checkbox" data-done="8"> Station erledigt</label>
+</section>
+
+<!-- 9 -->
+<section class="st" id="s9" data-c="v">
+ <div class="st-head"><div class="num">9</div><div><span class="tag">Schritt 4</span><h2>Evaluieren</h2></div></div>
+ <p>Nach der Stunde vergleichst du realen Verlauf und Planung. Leitfrage (nach Ulf Mühlhausen): <b>Was lief anders als geplant (2–3 Situationen) – und woran kann es gelegen haben?</b></p>
+ <div class="tool"><h4>Überraschungen sortieren</h4><p class="hint">Vermeidbar oder unvermeidbar?</p><div data-sort="ueber"></div></div>
+ <div class="box merke"><b class="lbl">Überraschungsoffen sein</b>Gute Lehrkräfte sind neugierig auf ihre Schüler und nicht beleidigt, wenn diese anders reagieren als erwartet. <b>Knackstellen-Analyse:</b> Wann ging deine Präsenzkurve nach oben – und was lernst du daraus?</div>
+ <h3>Feedback-Fragen zur Planung</h3>
+ <ul class="tight"><li>Ist die Sozialform stimmig? Passt die Methode zum Ziel? Sind die Medien stimmig?</li><li>Stehen Ergebnisse und Zeit in gutem Verhältnis?</li><li>Passt die Ergebnissicherung zu den Zielen?</li><li>Wird zum Nachdenken über Lernprozesse angeregt? Gibt es Individualisierung?</li></ul>
+ <div class="box quer"><b class="lbl">Querbezüge</b><b>Schulentwicklung:</b> Schülerfeedback im Sequenzmodell nach Helmke (Information → Rezeption → Reflexion → Aktion → Evaluation). <b>Lehrergesundheit:</b> Perfektionismus und fehlende Distanzierung = Risikomuster A (AVEM); Überraschungen als Herausforderung umdeuten (Lazarus).</div>
+ <label class="donebox"><input type="checkbox" data-done="9"> Station erledigt</label>
+</section>
+
+<!-- 10 -->
+<section class="st" id="s10" data-c="a">
+ <div class="st-head"><div class="num">10</div><div><span class="tag">Pflichtteil</span><h2>Deine Prozessbeschreibung der Vorbereitung</h2></div></div>
+ <p>Du sollst darstellen können, wie <i>du</i> beim Vorbereiten vorgehst – angelehnt an das Seminarmodell oder gut begründet anders.</p>
+ <div class="tool"><h4>Neun Schritte ordnen</h4><p class="hint">Tippe die Schritte der Seminar-Prozessbeschreibung in der richtigen Reihenfolge an.</p><div data-order="prozess"></div></div>
+ <div class="box laut"><b class="lbl">60-Sekunden-Version – anpassen und auswendig üben</b><span data-say>„Ich plane in vier Schritten nach dem Seminarmodell. Zuerst setze ich mir ein Zeitbudget. Dann kläre ich kurz Sache, Bedingungen und Sinn – vor allem den Bezug zur Berufswelt und was die Klasse mitbringt. Daraus lege ich das Hauptziel fest und leite durch Zienern Teilziele ab, bis ich den roten Faden in zwei Sätzen sagen kann. Danach entscheide ich, wie der Lernerfolg sichtbar wird – am liebsten erst durch Selbstkontrolle – und welches Lehr-Lern-Arrangement passt. Ich mache zuerst eine Notfallversion der Stunde fertig und plane dann jede Phase mit Sozialform, Methode und Medien, prüfe Zeit, Sicherung, Reflexion und Differenzierung. Nach der Stunde notiere ich zwei, drei Überraschungen und was ich daraus für die nächste Stunde ableite.“</span>
+  <div style="margin-top:10px;display:flex;gap:8px;align-items:center;flex-wrap:wrap"><button class="btn sm" id="t60">▶ 60-Sekunden-Timer</button><span class="timer" id="t60v">1:00</span></div></div>
+ <div class="box tipp"><b class="lbl">„Gut begründet anders“</b>Z. B. beim Lernfeld bzw. der Lernsituation starten (Bildungsplan → Handlungssituation → Lernprodukt → rückwärts planen, „Backward Design“) – und zeigen, dass Klären, Ziele und Evaluation trotzdem drinstecken.</div>
+ <label class="donebox"><input type="checkbox" data-done="10"> Station erledigt</label>
+</section>
+
+<!-- 11 -->
+<section class="st" id="s11" data-c="a">
+ <div class="st-head"><div class="num">11</div><div><span class="tag">Netz im Kopf</span><h2>Querbezüge</h2></div></div>
+ <p>Prüfende erwarten Querbezüge, fragen aber meist nicht danach. Unterrichtsplanung ist ideal, weil jedes andere Thema irgendwo in der Planung auftaucht. Tippe ein Thema an:</p>
+ <div class="net" id="net"></div>
+ <div class="detail netd" id="netD" aria-live="polite">Wähle ein Thema.</div>
+ <label class="donebox"><input type="checkbox" data-done="11"> Station erledigt</label>
+</section>
+
+<!-- 12 -->
+<section class="st" id="s12" data-c="a">
+ <div class="st-head"><div class="num">12</div><div><span class="tag">Training</span><h2>Prüfungsfälle mit Musterantwort</h2></div></div>
+ <p>Schema: (1) Fall erfassen / nachfragen → (2) schlagwortartiger Überblick → (3) Vertiefung auf Nachfrage → (4) Querbezug anbieten. <b>Erst selbst laut antworten (3 Minuten), dann aufdecken.</b></p>
+ <div id="cases"></div>
+ <h3>Formulierungshilfen</h3>
+ <div class="tscroll"><table>
+  <tr><td>Fall erfassen</td><td>„Ich verstehe die Situation so, dass … – darf ich kurz nachfragen, ob …?“</td></tr>
+  <tr><td>Überblick</td><td>„Ich sehe hier drei Aspekte: erstens …“ · „Ich würde das entlang der vier Planungsschritte analysieren.“</td></tr>
+  <tr><td>Theorie anwenden</td><td>„Nach Anderson und Krathwohl liegt das Ziel auf der Stufe Anwenden, die Aufgabe verlangt aber Bewerten.“</td></tr>
+  <tr><td>Bewerten</td><td>„Positiv ist …, problematisch ist …, weil …“</td></tr>
+  <tr><td>Lösungsideen</td><td>„Eine Minimallösung wäre …, eine ausgearbeitete …“</td></tr>
+  <tr><td>Themenangebot</td><td>„Hier sehe ich eine Verbindung zur Päd. Psychologie, nämlich … – soll ich das ausführen?“</td></tr>
+  <tr><td>Ehrlich bei Lücken</td><td>„Den genauen Begriff habe ich gerade nicht parat – inhaltlich geht es darum, dass …“</td></tr>
+ </table></div>
+ <label class="donebox"><input type="checkbox" data-done="12"> Station erledigt</label>
+</section>
+
+<!-- 13 -->
+<section class="st" id="s13" data-c="a">
+ <div class="st-head"><div class="num">✓</div><div><span class="tag">Abschluss</span><h2>Selbsttest</h2></div></div>
+ <p>15 gemischte Fragen quer durch den Schwerpunkt. Jede Runde wird neu gemischt.</p>
+ <div id="final"></div>
+ <div style="display:flex;gap:8px;align-items:center;margin-top:10px"><button class="btn pri" id="newFinal">Neue Runde</button><span id="finalScore" class="fb"></span></div>
+ <label class="donebox"><input type="checkbox" data-done="13"> Station erledigt</label>
+</section>
+
+<footer>Lernmaterial zur Vorbereitung auf das Kolloquium Pädagogik / Pädagogische Psychologie. Fachbeispiele dienen der Veranschaulichung und sind keine Seminarvorgaben.</footer>
+</div>
+<button class="btn themebtn" id="theme" aria-label="Hell/Dunkel umschalten">◐</button>
+
+<script>
+"use strict";
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const el=(t,a={},...c)=>{const e=document.createElement(t);for(const[k,v] of Object.entries(a)){if(k==="class")e.className=v;else if(k.startsWith("on"))e.addEventListener(k.slice(2),v);else e.setAttribute(k,v)}for(const x of c)e.append(x);return e};
+
+/* Theme */
+(function(){const t=store.get("lp-theme",null);if(t)document.documentElement.dataset.theme=t;
+$("#theme").onclick=()=>{const cur=document.documentElement.dataset.theme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");const n=cur==="dark"?"light":"dark";document.documentElement.dataset.theme=n;store.set("lp-theme",n)}})();
+
+/* Fortschritt */
+const TOTAL=14, PKEY="lernpfad-up";
+let prog=store.get(PKEY,{});
+const titles=["Start","Instrument","Klären","Lernziele","Taxonomie","Zienern","Evaluation & LLA","Verlaufsplan","Einstiege","Evaluieren","Prozess","Querbezüge","Fälle","Selbsttest"];
+function renderProg(){const n=Object.values(prog).filter(Boolean).length;$("#pTxt").textContent=n+" / "+TOTAL+" Stationen";$("#pBar").style.width=(n/TOTAL*100)+"%";
+ $$("#chips a").forEach((a,i)=>a.classList.toggle("done",!!prog[i]));$$("[data-done]").forEach(c=>c.checked=!!prog[c.dataset.done])}
+$("#chips").append(...titles.map((t,i)=>el("a",{href:"#s"+i},t)));
+$$("[data-done]").forEach(c=>c.addEventListener("change",()=>{prog[c.dataset.done]=c.checked;store.set(PKEY,prog);renderProg()}));
+$("#reset").onclick=()=>{if(confirm("Fortschritt dieser Seite zurücksetzen?")){prog={};store.set(PKEY,prog);renderProg()}};
+renderProg();
+
+/* Vorlesen */
+$$("[data-say]").forEach(s=>{if(!("speechSynthesis" in window))return;const b=el("button",{class:"btn sm speak"},"🔊 Vorlesen");b.onclick=()=>{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(s.textContent.replace(/[„“]/g,""));u.lang="de-DE";u.rate=1;speechSynthesis.speak(u)};s.after(el("br"),b)});
+
+/* Sortier-Werkzeug */
+const SORTS={
+ steps:{buckets:["Klären","Entscheiden","Gestalten","Evaluieren"],items:[
+  ["Was bringt die Klasse an Vorwissen mit?",0],["Welche Bedeutung hat das Thema für den Beruf?",0],["Was sollen alle am Ende können?",1],["Woran erkenne ich, dass gelernt wurde?",1],["Welche Sozialform passt zur Übungsphase?",2],["Wie sichere ich das Ergebnis?",2],["Was lief anders als geplant?",3],["Welche Knackstelle nehme ich in die nächste Stunde mit?",3]]},
+ klaeren:{buckets:["Sache","Bedingungen","Bedeutung & Sinn"],items:[
+  ["Wo habe ich selbst fachliche Lücken?",0],["Wie ist der Stoff strukturiert?",0],["Was sagt der Bildungsplan dazu?",0],["Gibt es Außenseiter in der Klasse?",1],["Was war in der Stunde davor (Klassenarbeit?)",1],["Wie ist das Sprachniveau der Klasse?",1],["Wo begegnet das Thema im Berufsalltag?",2],["Welche Bedeutung hat es in Zukunft (Klafki)?",2],["Mit welchem Phänomen wird es erfahrbar?",2]]},
+ dim:{buckets:["kognitiv (Kopf)","affektiv (Herz)","psychomotorisch (Hand)"],items:[
+  ["die Gesamtspannung einer Reihenschaltung berechnen",0],["die Funktion eines RCD anhand einer Skizze erklären",0],["ein Prüfprotokoll beurteilen",0],["bereit sein, die Sicherheitsregeln einzuhalten",1],["Freude daran entwickeln, eine Schaltung zum Laufen zu bringen",1],["Wertschätzung für die Arbeit im Team zeigen",1],["Leitungen fachgerecht abisolieren",2],["eine Aderendhülse sauber verpressen",2]]},
+ verbs:{buckets:["beobachtbar ✓","nicht beobachtbar ✗"],items:[["nennen",0],["berechnen",0],["skizzieren",0],["beurteilen",0],["messen und protokollieren",0],["wissen",1],["kennen",1],["verstehen",1],["glauben",1],["sich bewusst sein",1]]},
+ afb:{buckets:["AFB I","AFB II","AFB III"],items:[["nennen",0],["beschreiben",0],["entnehmen",0],["erklären",1],["vergleichen",1],["erläutern",1],["beurteilen",2],["Stellung nehmen",2],["begründet auswählen",2],["entwerfen",2]]},
+ ziener:{buckets:["sinnvolles Teilziel","gehört nicht dazu"],items:[
+  ["Symbole im Stromlaufplan benennen",0],["Funktion der Wechselschalter erklären",0],["Stromlaufplan in einen Verdrahtungsplan übertragen",0],["Leitungen fachgerecht anschließen",0],["Schaltung nach Sicherheitsregeln in Betrieb nehmen und prüfen",0],["Die SuS sollen motiviert mitarbeiten",1],["Die SuS kennen Schalter",1],["Ein Plakat über die Geschichte der Elektrizität gestalten",1]]},
+ ueber:{buckets:["vermeidbar: Entwurf/Konzept","vermeidbar: Inszenierung","unvermeidbar"],items:[
+  ["Zeitplanung offensichtlich unrealistisch",0],["falsche Vorstellung, was die Klasse motiviert",0],["Arbeitsauftrag schludrig vorgetragen",1],["vom Thema abgeschweift, lange Anekdote",1],["eine wirklich wichtige, unerwartete Schülerfrage",2],["Missverständnis trotz klarer Erklärung",2],["Klasse heute völlig unkonzentriert (Sperrigkeit)",2],["Niveau-Überraschung: alle können es schon",2]]}
+};
+function makeSort(host,cfg){
+ let sel=null,placed=0;const pool=el("div",{class:"pool"}),bk=el("div",{class:"buckets"}),fb=el("div",{class:"fb","aria-live":"polite"});
+ const bEls=cfg.buckets.map((b,i)=>{const d=el("div",{class:"bucket",role:"button",tabindex:"0","aria-label":"Ablegen in "+b},el("b",{},b));d.onclick=()=>drop(i,d);d.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();drop(i,d)}};return d});
+ bk.append(...bEls);
+ shuffle(cfg.items).forEach(([t,b])=>{const it=el("button",{class:"item"},t);it.dataset.b=b;it.onclick=e=>{e.stopPropagation();if(it.classList.contains("ok"))return;$$(".item.sel",host).forEach(x=>x.classList.remove("sel"));sel=it;it.classList.add("sel")};pool.append(it)});
+ function drop(i,d){if(!sel)return;if(+sel.dataset.b===i){sel.classList.remove("sel");sel.classList.add("ok");d.append(sel);placed++;fb.className="fb ok";fb.textContent=placed===cfg.items.length?"Alles richtig zugeordnet! 🎉":"Richtig!";sel=null}else{const s=sel;s.classList.add("no");setTimeout(()=>s.classList.remove("no"),400);fb.className="fb no";fb.textContent="Noch nicht – überleg noch mal."}}
+ const again=el("button",{class:"btn sm",style:"margin-top:8px"},"Neu mischen");again.onclick=()=>{host.innerHTML="";makeSort(host,cfg)};
+ host.append(pool,bk,fb,again);
+}
+$$("[data-sort]").forEach(h=>makeSort(h,SORTS[h.dataset.sort]));
+
+/* Reihenfolge-Werkzeug */
+const ORDERS={
+ schema:["Fall erfassen bzw. kompetent nachfragen","Schlagwortartiger Überblick","Vertiefung auf Nachfrage","Querbezug anbieten"],
+ geruest:["Symbole im Stromlaufplan benennen","Funktion der Wechselschalter erklären","Stromlaufplan in Verdrahtungsplan übertragen","Leitungen fachgerecht anschließen","Schaltung in Betrieb nehmen und prüfen"],
+ verlauf:["Einstieg mit Kundenmail, Ziel und Ablauf","Vorwissen aktivieren (Think-Pair)","Erarbeitung am Lösungsbeispiel","Angeleitetes Üben im Plenum","Selbstständiges Üben in Partnerarbeit","Sicherung: Checkliste ins Heft","Reflexion: Exit-Ticket + Ampel"],
+ prozess:["Zeitbudget festlegen","Zeitfresser meiden","Klärungen (Sache, Bedingungen, Sinn)","Thema eingrenzen (Thematik)","Ziele: Hauptziel → zienern → Zielgerüst","Recherche begrenzen","Evaluation, vorläufiger Einstieg, LLA","Notfallprogramm: Stunde einmal komplett","Verlauf je Phase ausplanen"]
+};
+function makeOrder(host,list){
+ let next=0;const pool=el("div",{class:"pool"}),seq=el("div",{class:"seq"}),fb=el("div",{class:"fb","aria-live":"polite"});
+ shuffle(list.map((t,i)=>[t,i])).forEach(([t,i])=>{const it=el("button",{class:"item"},t);it.onclick=()=>{if(i===next){it.classList.add("ok");seq.append(it);next++;fb.className="fb ok";fb.textContent=next===list.length?"Perfekte Reihenfolge! 🎉":"Richtig – weiter."}else{it.classList.add("no");setTimeout(()=>it.classList.remove("no"),400);fb.className="fb no";fb.textContent="Das kommt später (oder früher)."}};pool.append(it)});
+ const again=el("button",{class:"btn sm",style:"margin-top:8px"},"Neu mischen");again.onclick=()=>{host.innerHTML="";makeOrder(host,list)};
+ host.append(seq,pool,fb,again);
+}
+$$("[data-order]").forEach(h=>makeOrder(h,ORDERS[h.dataset.order]));
+
+/* Multiple Choice */
+const MCQ={
+ sozial:[
+  {q:"Kurz vor der Klassenarbeit: Jede/r soll den Spannungsfall sicher berechnen können.",o:["Gruppenarbeit mit Plakat","Einzelarbeit mit Lösungsblatt","Plenum"],a:1,e:"Wenn jede/r es allein können muss, braucht es Einzelarbeit (Selbstkontrolle über Lösungsblatt)."},
+  {q:"Ein neues, komplexes Verfahren soll erstmals angewendet werden – gegenseitige Hilfe ist wahrscheinlich.",o:["Partnerarbeit","Einzelarbeit","Triade"],a:0,e:"Partnerarbeit: gegenseitige Hilfe bei neuen Inhalten, alle sind aktiv."},
+  {q:"Schüler sollen ein Kundengespräch üben und sich gegenseitig Feedback geben.",o:["Plenum","Triade (A und B spielen, C beobachtet)","Gruppenarbeit"],a:1,e:"Triade: Mini-Rollenspiel mit Beobachter, Trittbrettfahren fast unmöglich."},
+  {q:"Ein umfangreiches Thema mit vier gleich großen Teilaspekten.",o:["Gruppenpuzzle","Einzelarbeit","Lehrervortrag"],a:0,e:"Gruppenarbeit/Gruppenpuzzle für komplexe, umfangreiche Aufgaben – mit Rollen und klarer Ergebniserwartung."},
+  {q:"Alle sollen mitbekommen, worum es heute geht und wie gearbeitet wird.",o:["Partnerarbeit","Plenum","Triade"],a:1,e:"Plenum – und: Frontalunterricht muss nicht lehrerzentriert sein."},
+  {q:"Ideen sammeln für ein kreatives Produkt.",o:["Zuerst Einzelarbeit","Sofort große Gruppe","Plenum"],a:0,e:"Allein ist man oft kreativer – Gruppenarbeit ist eher ungeeignet für Kreativphasen (danach austauschen)."}],
+ einstieg:[
+  {q:"Ein Video zeigt 8 Minuten einen Wohnungsbrand. Danach: „Na, was könnte heute unser Thema sein?“ Nach 10 Minuten Raten nennt die Lehrkraft es selbst. Hauptproblem?",o:["Das Video ist emotional","Zu lang, Ratenlassen, kein transparentes Ziel","Es fehlt Gruppenarbeit"],a:1,e:"Einstieg mit Verpackung: emotionaler Aufhänger ist gut – aber 18 Minuten, Raten und kein Ziel. Besser: 60–90 s Ausschnitt, beschreiben lassen, Problemfrage festhalten, Ziel und Ablauf offenlegen."},
+  {q:"„Heute lernt ihr, einen Schutzschalter auszuwählen – das braucht ihr bei jedem Kundenauftrag. Erst … dann … am Ende …“ Welche Form?",o:["Informierend","Mit Verpackung","Mit Lernsituation"],a:0,e:"Informierender Einstieg: Ziel, Nutzen, Ablauf – max. 4 Minuten, deduktiv."},
+  {q:"„Bei einer Kundin fliegt jedes Mal die Sicherung, wenn Wasserkocher und Mikrowelle laufen. Am Ende der Stunde könnt ihr ihr helfen.“ Welche Form – und was braucht sie unbedingt?",o:["Verpackung – ein lustiges Video","Lernsituation – ein Lernprodukt, das genau das Gelernte abbildet","Informierend – eine Folie mit Teilzielen"],a:1,e:"Lernsituation: Aussicht auf Kompetenzzuwachs. Ohne passendes Lernprodukt (z. B. begründete Auswahl für die Kundin) läuft sie ins Leere."},
+  {q:"Was geht beim Einstieg immer – auch ohne gute Idee?",o:["Ein stummer Impuls","Sagen, worum es geht, wozu es gut ist und wie gearbeitet wird","Thema erraten lassen"],a:1,e:"Die Minimalform: Ziel, Nutzen, Ablauf transparent machen."}]
+};
+function makeMcq(host,qs){qs.forEach(it=>{const box=el("div",{class:"q"},el("div",{class:"qt"},it.q));const opts=el("div",{class:"opts"});const ex=el("div",{class:"expl","aria-live":"polite"});
+ it.o.forEach((o,i)=>{const b=el("button",{class:"opt"},o);b.onclick=()=>{$$("button",opts).forEach((x,j)=>{x.disabled=true;if(j===it.a)x.classList.add("right")});if(i!==it.a)b.classList.add("wrong");ex.textContent=(i===it.a?"✓ ":"✗ ")+it.e;host.dispatchEvent(new CustomEvent("answered",{detail:i===it.a}))};opts.append(b)});box.append(opts,ex);host.append(box)})}
+$$("[data-mcq]").forEach(h=>makeMcq(h,MCQ[h.dataset.mcq]));
+
+/* Planungsinstrument */
+const STEPS=[
+ ["Klären","Worum geht es, für wen, wozu?","Sache, Bedingungen, Bedeutung/Sinn klären → Thematik (vorläufig) festlegen."],
+ ["Entscheiden","Was sollen sie am Ende können – und woran sehe ich es?","Lernziele (Haupt-/Teilziele), Form der Lern-Evaluation, Lehr-Lern-Arrangement (Charakter der Stunde)."],
+ ["Gestalten","Wer macht was wann wie (warum) mit wem – und wie bleibt's hängen?","Verlaufsplan: Phasen mit Sozialform, Methode, Medien, Einstieg, Sicherung, Reflexion; Kontrollfragen."],
+ ["Evaluieren","Was lief anders als geplant – und warum?","Überraschungen und Knackstellen → Planung der nächsten Stunde (Kreislauf)."]];
+function showStep(i){$$(".s4").forEach((b,j)=>b.setAttribute("aria-pressed",i===j));const s=STEPS[i];$("#stepDetail").innerHTML=`<b>${i+1}. ${s[0]}</b><br><i>${s[1]}</i><br>Ergebnis: ${s[2]}`}
+$$(".s4").forEach(b=>b.onclick=()=>showStep(+b.dataset.step));showStep(0);
+
+/* Lernziel-Baukasten */
+const GI=["die fünf Sicherheitsregeln","die Funktion eines RCD","den Isolationswiderstand eines Stromkreises","das Prüfprotokoll eines Kollegen"];
+const GB=["– (keine Bedingung)","auswendig, in der richtigen Reihenfolge","anhand einer Prinzipskizze","mit einem Installationstester nach Prüfanleitung","unter Zuhilfenahme der Grenzwerttabelle"];
+const GH=["kennen","verstehen","nennen können","erklären können","messen und protokollieren können","beurteilen können"];
+const GOOD={"0-1-2":"AFB I / Erinnern","1-2-3":"AFB II / Verstehen","2-3-4":"Anwenden (psychomotorisch + kognitiv)","3-4-5":"AFB III / Bewerten"};
+[["#gI",GI],["#gB",GB],["#gH",GH]].forEach(([s,a])=>a.forEach((t,i)=>$(s).append(el("option",{value:i},t))));
+function goal(){const i=+$("#gI").value,b=+$("#gB").value,h=+$("#gH").value;const txt=`Die SuS sollen ${GI[i]}${b?" "+GB[b]:""} ${GH[h]}.`;let msg;
+ if(h<2)msg=`<span style="color:var(--bad)">✗ „${GH[h]}“ ist nicht beobachtbar – nimm ein Verb, das man sehen oder hören kann.</span>`;
+ else if(!b)msg=`<span style="color:var(--warn)">◐ Handlung ok, aber die Bedingung fehlt – unter welchen Umständen / womit?</span>`;
+ else if(GOOD[`${i}-${b}-${h}`])msg=`<span style="color:var(--good)">✓ Präzise! Inhalt + Bedingung + Handeln. Einordnung: ${GOOD[`${i}-${b}-${h}`]}</span>`;
+ else msg=`<span style="color:var(--good)">✓ Formal präzise (I-B-H vollständig).</span> <span style="color:var(--muted)">Passt die Bedingung inhaltlich zum Inhalt? Probier die „klassischen“ Kombinationen.</span>`;
+ $("#gOut").innerHTML=`„${txt}“<br>${msg}`}
+["#gI","#gB","#gH"].forEach(s=>$(s).onchange=goal);$("#gB").value=0;$("#gH").value=0;goal();
+
+/* Taxonomie-Treppe */
+const TAX=[["Erinnern","nennen, aufzählen, wiedergeben","die fünf Sicherheitsregeln nennen"],["Verstehen","erklären, beschreiben, zusammenfassen","die Funktion eines RCD erklären"],["Anwenden","berechnen, durchführen, anwenden","den Spannungsfall einer Leitung berechnen"],["Analysieren","untersuchen, vergleichen, Fehler eingrenzen","bei einer Fehlfunktion den Fehler eingrenzen"],["Bewerten","beurteilen, prüfen, begründen","ein Prüfprotokoll anhand der Grenzwerte beurteilen"],["(Er)Schaffen","entwerfen, planen, entwickeln","eine Installation für einen Kundenauftrag planen"]];
+const tc=["#7fb3d5","#5499c7","#2e86c1","#2874a6","#1f618d","#154360"];
+TAX.forEach((t,i)=>{const b=el("button",{class:"stair","aria-pressed":"false",style:`height:${28+i*14}%;background:${tc[i]}`},t[0]);b.onclick=()=>{$$(".stair").forEach(x=>x.setAttribute("aria-pressed","false"));b.setAttribute("aria-pressed","true");$("#stairDetail").innerHTML=`<b>Stufe ${i+1}: ${t[0]}</b><br>Operatoren: ${t[1]}<br>Beispiel: „${t[2]}“<br><span style="color:var(--muted)">${i?"Setzt die Stufen darunter voraus.":"Einfachster Denkprozess – Grundlage für alles Weitere."}</span>`};$("#stairs").append(b)});
+$("#stairDetail").textContent="Tippe eine Stufe an – von Erinnern (einfach) bis Erschaffen (komplex).";
+
+/* LLA-Quiz */
+const LLA=[["Direkte Instruktion","bl","Fremdgesteuert, Nachkonstruktion: Lehrkraft modelliert, angeleitetes Üben – effizient für bestehende Modelle."],["Lehrervortrag","bl","Klar fremdgesteuert, die Klasse konstruiert nach."],["Selbstorganisiertes Lernen (SOL)","tl","Selbstgesteuert (Sandwich aus Input und Eigenarbeit), aber meist Nachkonstruktion vorgegebener Inhalte."],["Projektmethode (Frey)","tr","Gruppe plant selbst und erzeugt eigene Lösungen – Selbststeuerung und Selbstkonstruktion."],["Lernen durch Lehren (LdL)","tl","Schüler steuern Teile des Unterrichts selbst, erarbeiten aber vorgegebene Inhalte nach."],["Problemorientierte Lernsituation mit enger Anleitung","br","Die Lehrkraft steuert, die Lernenden konstruieren aber eigene Lösungswege."]];
+let llaI=0;function llaAsk(){const it=LLA[llaI%LLA.length];$("#llaQ").innerHTML=`Tippe den Quadranten an: <b>${it[0]}</b>`}
+$$("#lla .quad").forEach(q=>q.onclick=()=>{const it=LLA[llaI%LLA.length];const pos={tl:[25,25],tr:[75,25],bl:[25,75],br:[75,75]}[it[1]];
+ const ok=q.dataset.q===it[1];$("#llaFb").className="fb "+(ok?"ok":"no");$("#llaFb").textContent=(ok?"✓ ":"✗ Eher anders: ")+it[2];
+ const d=el("span",{class:"dot",style:`left:${pos[0]+(Math.random()*16-8)}%;top:${pos[1]+(Math.random()*16-8)}%`},it[0].split(" (")[0]);$("#lla").append(d);llaI++;if(llaI>=LLA.length){$("#llaQ").textContent="Alle eingeordnet. Tippe erneut für eine neue Runde.";llaI=0;setTimeout(()=>{$$("#lla .dot").forEach(x=>x.remove());llaAsk()},4000)}else llaAsk()});
+llaAsk();
+
+/* 60-Sek-Timer */
+let tInt=null;$("#t60").onclick=()=>{if(tInt){clearInterval(tInt);tInt=null;$("#t60").textContent="▶ 60-Sekunden-Timer";$("#t60v").textContent="1:00";return}let s=60;$("#t60").textContent="■ Stopp";tInt=setInterval(()=>{s--;$("#t60v").textContent=`0:${String(s).padStart(2,"0")}`;if(s<=0){clearInterval(tInt);tInt=null;$("#t60v").textContent="Zeit! ⏰";$("#t60").textContent="▶ 60-Sekunden-Timer"}},1000)};
+
+/* Querbezugs-Netz */
+const NET=[
+ ["Unterrichtsmethoden (LV, FEU, Arbeitsaufträge)","Päd","Gestalten: Methode je Phase; Lehrervortrag 5–20 Min. mit sichtbarer Struktur; FEU mit weiten Fragen und Wartezeit; Arbeitsauftrag: Was – Zeit – Sozialform – Hilfsmittel – Ergebnisform – Präsentation.","„Für die Erarbeitungsphase würde ich einen kurzen Lehrervortrag mit sichtbarer Struktur planen …“"],
+ ["Leistungsmessung","Päd","Entscheiden: Lern-Evaluation (diagnostisch, formativ, summativ); Validität hängt an präzisen Lernzielen; Operatoren ↔ AFB ↔ Erwartungshorizont.","„Weil das Ziel präzise ist, ist schon klar, wie ich es überprüfe – das sichert die Validität.“"],
+ ["Sprache / Textvereinfachung","Päd","Bedingungen: Sprachniveau; Gestalten: Arbeitsaufträge sprachlich entlasten, Fachwörter erklären statt ersetzen.","„Ich vereinfache die Sprache, nicht das Fach.“"],
+ ["Lehr-Lern-Arrangements","Päd","Entscheiden: DI, LdL, kooperatives Lernen, Projekt, SOL (Sandwich) – das Arrangement folgt dem Ziel.","„Für ein bestehendes Modell wähle ich direkte Instruktion, weil …“"],
+ ["Erziehungsauftrag","Päd","Affektive und überfachliche Ziele; Handlungskompetenz (Fach-, Selbst-, Sozialkompetenz).","„Arbeitssicherheit ist für mich ein affektives Ziel mit Erziehungsauftrag.“"],
+ ["Inklusion & Nachteilsausgleich","Päd","Bedingungen: Förderbedarf klären; Gestalten: Individualisierung und Struktur (hilft allen).","„Die Kontrollfrage nach individuellen Bedürfnissen ist mein Inklusionscheck.“"],
+ ["Schulentwicklung","Päd","Evaluieren: Feedback, Helmke-Sequenz; Material im Fachteam teilen.","„Planung wird leichter, wenn das Fachteam Lernsituationen teilt.“"],
+ ["Lernen & Gedächtnis","Psy","Einstieg/Advance Organizer aktiviert Vorwissen (Netzwerkmodell); Input portionieren (Arbeitsgedächtnis); Sicherung und verteiltes Wiederholen gegen das Vergessen; Wissensarten ↔ Taxonomie.","„Mit Blick auf das Mehrspeichermodell halte ich den Input kurz und sichere sofort.“"],
+ ["Leistungsmotivation","Psy","Klären/Einstieg: Sinn und Transparenz (Heckhausen); Deci & Ryan: Kompetenz, Autonomie, Eingebundenheit; Evaluation mit individueller Bezugsnorm.","„Der Einstieg zeigt, wozu es gut ist – das stärkt die Ergebnis-Folge-Erwartung.“"],
+ ["Gruppenentwicklung","Psy","Sozialformwahl hängt von der Phase der Klasse ab (Tuckman) – das Seminar nennt diesen Bezug ausdrücklich.","„Eine Klasse im Storming braucht in der Gruppenarbeit klare Rollen.“"],
+ ["Klassenführung","Psy","Reibungslosigkeit und Schwung: Übergänge, Material, Arbeitsaufträge planen (Kounin); Prävention statt Reaktion.","„Gute Planung ist die beste Prävention von Störungen.“"],
+ ["Kommunikation","Psy","Einstieg und Aufträge klar (Inhalts- und Beziehungsebene); Feedback in der Evaluation; Ich-Botschaften.","„Beim Feedback achte ich auf die Beziehungsebene.“"],
+ ["Gewalt / Mobbing","Psy","Bedingungen: Außenseiter, Cliquen → Gruppenbildung bewusst steuern.","„Ich bilde Gruppen per Zufall, damit niemand übrig bleibt.“"],
+ ["Lehrergesundheit","Psy","Zeitbudget, Zeitfresser meiden, Notfallprogramm, Perfektionismus (AVEM Muster A).","„Die Prozessbeschreibung schützt auch vor Selbstüberforderung.“"]];
+NET.forEach(n=>{const b=el("button",{class:"item"},(n[1]==="Päd"?"📘 ":"🧠 ")+n[0]);b.onclick=()=>{$$("#net .item").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");$("#netD").innerHTML=`<span class="pill">${n[1]==="Päd"?"Pädagogik":"Päd. Psychologie"}</span><b>${n[0]}</b><p><b>Wo in der Planung?</b> ${n[2]}</p><p><b>So sagst du es:</b> <i>${n[3]}</i></p>`};$("#net").append(b)});
+
+/* Fälle */
+const CASES=[
+ ["Lernziele analysieren","Ein Kollege legt seinen Entwurf zum Fehlerstromschutzschalter vor. Ziele: (a) „Die SuS sollen den RCD kennen.“ (b) „… verstehen, warum Schutzmaßnahmen wichtig sind.“ (c) „… motiviert mitarbeiten.“ Beurteilen Sie die Lernziele.",
+  "„Ich sehe drei Probleme: unpräzise Verben, fehlende Bedingungen und bei (c) eine Verwechslung von Lernziel und Verhaltenserwartung.“",
+  "(a) „kennen“ nicht beobachtbar → „anhand einer Prinzipskizze die Funktion erklären“ (AFB II). (b) mischt kognitiv und affektiv → getrennt formulieren; affektiv nur über Anzeichen überprüfbar. (c) kein Lernziel. Außerdem fehlen Hauptziel und Zielgerüst (zienern).",
+  "„Präzise Ziele legen die Überprüfung fest – das hängt direkt mit der Validität der Klassenarbeit zusammen. Soll ich das ausführen?“"],
+ ["Zielgerüst entwickeln","Hauptziel: „Am Ende können die SuS eine Wechselschaltung nach Stromlaufplan aufbauen und prüfen.“ (a) Entwickeln Sie ein Zielgerüst. (b) Welche Ideen ergeben sich für die Gestaltung?",
+  "„Ich würde zienern: Was kann jemand, der eine Wechselschaltung aufbauen und prüfen kann? Daraus ergeben sich kognitive und psychomotorische Teilziele.“",
+  "(a) Symbole benennen (Erinnern) · Funktion erklären (Verstehen) · Stromlaufplan → Verdrahtungsplan (Anwenden) · fachgerecht anschließen (psychomotorisch) · in Betrieb nehmen und prüfen · Fehler eingrenzen (Analysieren) – dann reduzieren. (b) Lernsituation (Treppenhaus beim Kunden), Demonstration mit lautem Denken, Partnerarbeit mit Checkliste, Prüfprotokoll; Sternaufgabe Kreuzschaltung.",
+  "„Hier passen Bruners Abfolge enaktiv – ikonisch – symbolisch und das Modelllernen nach Bandura.“"],
+ ["Einstieg bewerten","Ein Referendar zeigt ein achtminütiges Video eines Wohnungsbrandes und fragt: „Na, was könnte heute unser Thema sein?“ Nach zehn Minuten Raten nennt er es selbst. Bewerten Sie den Einstieg.",
+  "„Ein Einstieg mit Verpackung. Positiv ist der emotionale Aufhänger, problematisch sind Dauer, Ratenlassen und fehlendes Ziel.“",
+  "18 statt max. 10 Minuten; Raten ufert aus; Aufmerksamkeit verbraucht; kein Lernzielbezug. Besser: 60–90 s Ausschnitt, beschreiben, Problemfrage festhalten, Ziel und Ablauf offenlegen. Alternative: Lernsituation mit Lernprodukt Kundenberatung.",
+  "„Aus Sicht der Gedächtnispsychologie ist Aufmerksamkeit der Flaschenhals – und ein transparentes Ziel stärkt die Ergebnis-Folge-Erwartung.“"],
+ ["Sozialform begründen","Ziel: „Die SuS können den Spannungsfall berechnen“ – das wird in der Klassenarbeit abgefragt. Die Kollegin plant 45 Minuten Gruppenarbeit mit Plakat. Was meinen Sie?",
+  "„Die Sozialform passt nicht ganz zum Ziel: Wenn jede/r es allein können muss, braucht es Phasen in Einzel- oder Partnerarbeit.“",
+  "Gruppenarbeit eignet sich für komplexe Aufgaben; hier droht Trittbrettfahren. Besser: Lösungsbeispiel → Partnerarbeit → Einzelarbeit mit Lösungsblatt. Wenn Gruppenarbeit, dann mit individueller Verantwortlichkeit (alle rechnen, Präsentierende werden ausgelost).",
+  "„Das ist das Problem von free rider und sucker effect aus dem kooperativen Lernen – das Sandwich-Prinzip wäre eine Lösung.“"],
+ ["Gesprächssituation","Dein Mentor sagt im Flur kurz vor der Stunde: „Ich plane immer vom Arbeitsblatt aus – das ist effizient. Warum sollte ich mit Lernzielen anfangen?“",
+  "Rahmen beachten: kurz, wertschätzend, keine Belehrung zwischen Tür und Angel.",
+  "„Ich verstehe den Gedanken. Mir hilft es, zuerst das Ziel festzulegen, weil ich dann schneller entscheiden kann, welches Material ich brauche – das spart sogar Recherche. Und ich weiß gleich, wie ich prüfe, ob es geklappt hat. Wollen wir uns das mal an einer Ihrer Stunden anschauen?“",
+  "Theorie dahinter: „Medien nie Ausgangspunkt“; Ich-Botschaft statt Kritik (Beziehungsebene)."],
+ ["Knifflige Situation analysieren","Heterogene Klasse mit vielen Misserfolgserfahrungen, 90 Min. Reihenschaltung: 30 Min. Lehrervortrag mit Formeln, dann 40 Min. Arbeitsblatt mit 12 Aufgaben. Nach 15 Min. Unruhe, nach 60 Min. haben nur vier Schüler mehr als zwei Aufgaben gelöst.",
+  "Nachfrage: „Gab es ein formuliertes Stundenziel, das die Klasse kannte?“ – Überblick: „Probleme in drei Planungsschritten: Klären, Entscheiden, Gestalten.“",
+  "Bedingungen nicht berücksichtigt; kein Zielgerüst, kein Sinn, keine Lern-Evaluation; Vortrag zu lang, Kontrollfragen verletzt. Ideen: informierender Einstieg mit sichtbarem Ablauf, Messen vor Rechnen, Input max. 10 Min., angeleitetes Üben bis ≥ 80 %, gestufte Aufgaben, Lösungskarten, Exit-Ticket.",
+  "„Hier spielen Furcht vor Misserfolg (Atkinson), individuelle Bezugsnorm, Klassenführung nach Kounin und die direkte Instruktion hinein. Welchen Aspekt soll ich vertiefen?“"],
+ ["Prozessbeschreibung","„Stellen Sie dar, wie Sie bei der Vorbereitung einer Unterrichtsstunde vorgehen.“",
+  "60-Sekunden-Version aus Station 10 – dann Vertiefung anbieten: „Soll ich auf das Zienern oder auf den Einstieg näher eingehen?“",
+  "Pluspunkte: Zeitbudget und Notfallprogramm (realistisch, gesundheitsbewusst), ein konkretes Beispiel aus dem eigenen Fach.",
+  "Querbezug: Lehrergesundheit (Zeitbudget) oder Gedächtnis (roter Faden, Sicherung)."],
+ ["Diskussionsfrage","„Darf Schule überhaupt affektive Lernziele verfolgen – und woran merken Sie, ob sie erreicht sind?“",
+  "„Ja, sie darf und muss es sogar – aber mit Grenzen, und die Überprüfung ist nur über Anzeichen möglich.“",
+  "Legitimation über Schulgesetz und Bildungsauftrag (Handlungskompetenz). Grenze: Werte anbieten, nicht überwältigen. Anzeichen: Verhalten in der Werkstatt, Argumentation in Dilemmata, Selbsteinschätzung, Ausbilder-Feedback. Nicht benoten.",
+  "„Nach Hanisch wirken Vorbilder, positive Zuschreibungen und Erlebnisse – und Banduras Modelllernen erklärt, warum mein Verhalten mehr zählt als Appelle.“"]];
+CASES.forEach((c,i)=>{const d=el("details");d.append(el("summary",{},`Fall ${i+1}: ${c[0]}`));d.append(el("p",{},c[1]));
+ const ctrl=el("div",{style:"display:flex;gap:8px;flex-wrap:wrap;align-items:center"});const tv=el("span",{class:"timer"},"3:00");const tb=el("button",{class:"btn sm"},"▶ 3 Min. antworten");let iv=null;
+ tb.onclick=()=>{if(iv){clearInterval(iv);iv=null;tb.textContent="▶ 3 Min. antworten";return}let s=180;tb.textContent="■ Stopp";iv=setInterval(()=>{s--;tv.textContent=`${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`;if(s<=0){clearInterval(iv);iv=null;tv.textContent="Zeit!";tb.textContent="▶ 3 Min. antworten"}},1000)};
+ const parts=[["Überblick",c[2]],["Vertiefung",c[3]],["Querbezug",c[4]]];let k=0;const out=el("div");const nb=el("button",{class:"btn sm pri"},"Musterantwort: Überblick zeigen");
+ nb.onclick=()=>{out.append(el("div",{class:"box "+(k===2?"quer":"laut")},el("b",{class:"lbl"},parts[k][0]),parts[k][1]));k++;if(k<3)nb.textContent=`Weiter: ${parts[k][0]} zeigen`;else nb.remove()};
+ ctrl.append(tb,tv,nb);d.append(ctrl,out);$("#cases").append(d)});
+
+/* Abschlusstest */
+const FINAL=[
+ {q:"Welche drei Entscheidungen fallen im Schritt „Entscheiden“?",o:["Lernziele · Lern-Evaluation · Lehr-Lern-Arrangement","Sozialform · Methode · Medien","Sache · Bedingungen · Sinn"],a:0,e:"Sozialform/Methode/Medien gehören zum Gestalten, Sache/Bedingungen/Sinn zum Klären."},
+ {q:"Welche Bestandteile hat ein präzises Lernziel?",o:["Thema · Zeit · Note","Lerninhalt · Bedingung · Lernhandeln","Kopf · Herz · Hand"],a:1,e:"I-B-H: Inhalt, Bedingung, (beobachtbares) Handeln."},
+ {q:"Was ist bei Anderson/Krathwohl gegenüber Bloom neu?",o:["Es gibt nur drei Stufen","Verben statt Nomen, „Erschaffen“ steht oben, zweite Achse Wissensarten","Affektive Ziele stehen oben"],a:1,e:"Dazu kommt die Matrix mit vier Wissensarten."},
+ {q:"„zienern“ bedeutet …",o:["aus dem Hauptziel Teilziele ableiten: „Was kann jemand, der … kann?“","Ziele benoten","Ziele nach AFB sortieren"],a:0,e:"Nach Gerhard Ziener – danach reduzieren und ordnen → Zielgerüst."},
+ {q:"In welcher Rangfolge wird Rückmeldung gegeben?",o:["Lehrkraft → Peer → selbst","jeder sich selbst → Peer → Lehrkraft","Peer → Lehrkraft → selbst"],a:1,e:"Selbstkontrolle zuerst – entlastet und fördert Selbststeuerung."},
+ {q:"Achsen des LLA-Diagramms?",o:["Fremd-/Selbststeuerung und Nach-/Selbstkonstruktion","formativ/summativ","kognitiv/affektiv"],a:0,e:"Darin lassen sich DI, LdL, SOL, Projekt usw. verorten."},
+ {q:"Wie lange darf ein informierender Einstieg höchstens dauern?",o:["ca. 4 Minuten","ca. 10 Minuten","20 Minuten"],a:0,e:"Verpackung und Lernsituation bis ca. 10 Minuten."},
+ {q:"Welche Kontrollfrage gehört NICHT zu den vier Kontrollfragen?",o:["Zeit ↔ Ertrag?","Ergebnissicherung passend?","Ist das Arbeitsblatt schön formatiert?"],a:2,e:"Die vier: Zeit/Ertrag, Reflexion über das Lernen, Ergebnissicherung, individuelle Bedürfnisse."},
+ {q:"Was ist das „Notfallprogramm“?",o:["Ein Plan B bei Feueralarm","Die Stunde im ersten Durchgang zügig komplett und haltbar vorbereiten, dann verfeinern","Ein Vertretungsplan"],a:1,e:"Schützt vor dem Hängenbleiben am Einstieg – und vor Überlastung."},
+ {q:"Welche Überraschung ist unvermeidbar?",o:["Unrealistische Zeitplanung","Schludriger Arbeitsauftrag","Eine wirklich wichtige, unerwartete Schülerfrage"],a:2,e:"Nach Mühlhausen: Zielirritationen, Missverständnisse, Sperrigkeit, Niveauüberraschung."},
+ {q:"„Die SuS sollen motiviert mitarbeiten“ ist …",o:["ein affektives Lernziel","eine Verhaltenserwartung, kein Lernziel","ein psychomotorisches Lernziel"],a:1,e:"Nicht beobachtbar als Lernhandlung – ein Wunsch an das Verhalten."},
+ {q:"Welchen Querbezug nennt das Seminar ausdrücklich als Beispiel?",o:["Gruppenphasen (Tuckman) ↔ kooperatives Lernen","Pawlow ↔ Notengebung","Mediation ↔ Taxonomie"],a:0,e:"Sozialformwahl hängt von der Phase der Klasse ab."},
+ {q:"Gruppenarbeit eignet sich besonders …",o:["für Kreativphasen","für komplexe, umfangreiche Aufgaben","kurz vor der Klassenarbeit"],a:1,e:"Mit Rollen, enger Zeit, klarer Ergebniserwartung; gegen Trittbrettfahren."},
+ {q:"Wovon sollte die Planung NIE ausgehen?",o:["Vom Lernziel","Von einem Medium (Arbeitsblatt, Film)","Von den Bedingungen der Klasse"],a:1,e:"Medien sind nie Selbstzweck und nie Ausgangspunkt."},
+ {q:"Was zeigt der Roter-Faden-Test?",o:["Ob man den Gedankengang der Stunde in 1–2 Sätzen sagen kann","Ob genug Medien eingeplant sind","Ob die Stunde 90 Minuten füllt"],a:0,e:"Wenn du es nicht kannst, findet auch die Klasse keinen roten Faden."},
+ {q:"Affektive Lernziele überprüft man …",o:["mit einer Klassenarbeit","nur über Anzeichen (Verhalten, Argumentation, Selbsteinschätzung)","gar nicht – sie sind verboten"],a:1,e:"Und: affektive Ziele werden nicht benotet."},
+ {q:"Welche Einstiegs-Stolperfalle ist typisch?",o:["Ziel transparent machen","Thema erraten lassen","Ablauf an die Tafel schreiben"],a:1,e:"„Na, was machen wir heute wohl?“ ufert aus – gelernt wird nichts."},
+ {q:"Welches Modell steht beim Klären im Hintergrund?",o:["Klafkis didaktische Analyse","Watzlawicks Axiome","Rudows Stressmodell"],a:0,e:"Gegenwarts-, Zukunfts-, exemplarische Bedeutung, Zugänglichkeit."}];
+let fScore=0,fDone=0,fN=15;
+function newFinal(){$("#final").innerHTML="";fScore=0;fDone=0;$("#finalScore").textContent="";const host=$("#final");makeMcq(host,shuffle(FINAL).slice(0,fN))}
+$("#final").addEventListener("answered",e=>{fDone++;if(e.detail)fScore++;$("#finalScore").className="fb "+(fScore/fDone>=.7?"ok":"no");$("#finalScore").textContent=`${fScore} / ${fDone} richtig`+(fDone===fN?(fScore>=13?" – prüfungsreif! 🏆":fScore>=10?" – gut, wiederhole die Lücken.":" – geh die Stationen noch mal durch."):"");if(fDone===fN){const best=store.get("lernpfad-up-best",0);if(fScore>best)store.set("lernpfad-up-best",fScore)}});
+$("#newFinal").onclick=newFinal;newFinal();
+</script>
+</body>
+</html>
