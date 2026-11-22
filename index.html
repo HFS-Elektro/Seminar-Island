@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; connect-src 'self' data: blob:; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; manifest-src 'self'; worker-src 'self'; script-src 'self' 'sha256-0d6Un4dFfX5oncaEVen9h7eBFJDaw+bfThNtOqCZQAs='">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; connect-src 'self' data: blob:; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; style-src 'self' 'unsafe-inline'; manifest-src 'self'; worker-src 'self'; script-src 'self' 'sha256-/NPfmMyzfFyVKfmZlosIvy9+L4vkVZkYOqzMw+UP0Yc='">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="author" content="P. Disson">
 <link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de">
@@ -149,7 +149,7 @@ footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:v
  <h2 class="sec">Spielen</h2>
  <p class="secl">Lernen mit Humor – mit Reffi, Herrn Eisele und Dr. Jäger.</p>
  <div class="grid">
-  <a class="tile" href="spiele/hafenstadt-didaktika.html"><div class="ic">⚓</div><h3>Hafenstadt Didaktika</h3><p>Reffi läuft durch eine Hafenstadt, sammelt die vier Siegel der Planung und besteht am Leuchtturm das Kolloquium bei Herrn Eisele. Mit Operator-Duell gegen Pirat Kevin, Querbezugs-Stammtisch bei Dr. Jäger, einem Krokodil namens Zeitfresser – und Speedrun mit Bestenliste.</p><div class="meta"><span class="tag new">Neu</span><span class="tag">Schwerpunkt</span><span class="tag">ca. 45–60 Min.</span></div></a>
+  <a class="tile" href="spiele/hafenstadt-didaktika.html"><div class="ic">⚓</div><h3>Hafenstadt Didaktika</h3><p>Reffi läuft durch eine Hafenstadt, sammelt die vier Siegel der Planung und besteht am Leuchtturm das Kolloquium bei Herrn Eisele. Mit Operator-Duell gegen Pirat Kevin, Querbezugs-Stammtisch bei Dr. Jäger, einem Krokodil namens Zeitfresser – und Speedrun mit Bestenliste. <b>Neu: Teil 2</b> – mit Affe Klotz zur Insel der verlorenen Arbeitsblätter, quer durch Pädagogik und Päd. Psychologie bis zum Kolloquium bei Eisele und Jäger.</p><div class="meta"><span class="tag new">Neu</span><span class="tag">Schwerpunkt</span><span class="tag">ca. 45–60 Min.</span></div></a>
   <a class="tile" href="spiele/querbezug-detektiv.html"><div class="ic">🕵️</div><h3>Querbezug-Detektiv</h3><p>Noir-Krimi in acht Akten: Zeugen befragen, Spuren auf der Pinnwand mit roten Fäden mit Theorien aus Pädagogik und Päd. Psychologie verbinden und den Querbezug vor Kommissar Eisele formulieren.</p><div class="meta"><span class="tag new">Neu</span><span class="tag">Querbezüge</span><span class="tag">ca. 5 Min. pro Akte</span></div></a>
   <a class="tile" href="spiele/seminar-island-adventure.html"><div class="ic">🏝️</div><h3>Das Geheimnis von Seminar-Island</h3><p>Das große Lernadventure quer durch alle Themen aus Pädagogik und Päd. Psychologie – Reffi sammelt Kapitel für Kapitel neue Titel, vom „Bändiger des Kopierers“ bis zum „Erzmagier des Kolloquiums“.</p><div class="meta"><span class="tag">Alle Themen</span><span class="tag">Adventure</span></div></a>
  </div>
@@ -180,8 +180,8 @@ footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:v
   <div class="box"><h3>👓 Anzeige & Barrierefreiheit</h3><p>Gilt für alle Seiten des Launchers in diesem Browser.</p>
    <div class="set"><div><b style="display:block;margin-bottom:6px">Schriftgröße</b><div class="seg" id="zoomSeg"><button class="btn" data-z="1">Normal</button><button class="btn" data-z="1.15">Groß</button><button class="btn" data-z="1.3">Sehr groß</button></div></div>
    <label><input type="checkbox" id="optHc"> Höherer Kontrast</label><label><input type="checkbox" id="optRm"> Bewegungen reduzieren</label><label><input type="checkbox" id="optFs"> Spiele automatisch im Vollbild starten</label></div></div>
-  <div class="box"><h3>📲 Als App installieren</h3><p>Auf Handy oder PC installieren – danach funktioniert alles auch ohne Internet, inklusive der Skripte.</p>
-   <div class="row"><button class="btn pri" id="inst" hidden>Jetzt installieren</button></div><p class="note" id="appNote" aria-live="polite"></p></div>
+  <div class="box"><h3>📲 Als App installieren</h3><p>Auf Handy oder PC installieren – danach funktioniert alles auch ohne Internet. Die Skripte (ca. 14 MB) werden erst gespeichert, wenn du sie öffnest – oder alle auf einmal per Knopf.</p>
+   <div class="row"><button class="btn pri" id="inst" hidden>Jetzt installieren</button><button class="btn" id="pdfOff" hidden>📥 Skripte offline speichern</button></div><p class="note" id="appNote" aria-live="polite"></p></div>
   <div class="box" id="teilen"><h3>🔗 Link teilen</h3><p>Den Launcher weitergeben: Link kopieren oder den QR-Code mit dem Handy scannen lassen.</p>
    <label for="shareUrl" class="share-l">Link (anpassbar, z. B. für eine einzelne Seite)</label>
    <div class="share-r"><input id="shareUrl" class="share-in" type="url" spellcheck="false" autocomplete="off"><button class="btn" id="shareReset" title="Link zum Launcher wiederherstellen" aria-label="Link zum Launcher wiederherstellen">↺</button></div>
@@ -192,6 +192,7 @@ footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);color:v
  <footer>
   <span>Lernmaterial zur Prüfungsvorbereitung – keine offiziellen Seminarunterlagen. Fachbeispiele dienen der Veranschaulichung.</span>
   <span>Fortschritt wird nur lokal im Browser gespeichert. Die Seiten laden nichts von fremden Servern; beim Aufruf über GitHub Pages protokolliert GitHub technisch bedingt die IP-Adresse. <button class="btn" id="wipe">Alles zurücksetzen</button></span>
+  <span><b>Haftungshinweis:</b> Dies ist eine öffentlich erreichbare Webseite; es ist nicht auszuschließen, dass auch Fremde auf sie gelangen. Es wurden gängige Sicherheitsmaßnahmen getroffen (keine fremden Server, keine Anmeldung, strenge Sicherheitsrichtlinie), ein hundertprozentiger Schutz ist heute jedoch praktisch nicht möglich. Die Nutzung erfolgt auf eigene Gefahr; für Schäden und für die Richtigkeit der Inhalte wird keine Haftung übernommen.</span>
   <span>Idee &amp; Design: P. Disson · Entwickelt mit Claude (Anthropic) · Lizenz: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.de" rel="license noopener" target="_blank">CC BY-NC-SA 4.0</a> (Namensnennung, nicht kommerziell, Weitergabe unter gleichen Bedingungen). Schriften: SIL Open Font License.</span>
  </footer>
 </div>
@@ -217,8 +218,9 @@ countdown();
 function progress(){const lp=get("lernpfad-up",{}),lpN=Object.values(lp).filter(Boolean).length;
  const lk=get("lernkarten-stand",{}),lkSicher=Object.values(lk).filter(x=>x.b>=4).length,lkSeen=Object.keys(lk).length;
  const sim=get("sim-history",[]);const hd=get("hafenstadt-didaktika",null);const seals=hd?Math.min(4,num(hd.seals)):0;
+ const hf=hd&&hd.f&&typeof hd.f==="object"&&!Array.isArray(hd.f)?hd.f:{},sh=["wa","wb","wc","wd"].filter(k=>hf[k]).length,done2=!!(hd&&hd.done2===true);
  const qd=get("querbezug-detektiv",{}),qdC=qd.cases||{},qdS=Object.values(qdC).reduce((s,c)=>s+num(c&&c.stars),0);
- const items=[[`${lpN}/14`,"Lernpfad-Stationen",lpN/14],[`${lkSicher}`,`Karten sicher (Fach 4–5) · ${lkSeen} geübt`,Math.min(1,lkSicher/110)],[`${sim.length}`,sim[0]?(sim[0].s!=null?`Simulator-Läufe · zuletzt ${num(sim[0].s)}/6`:`Simulator-Läufe · zuletzt Teil 2: ${num(sim[0].r)}/${num(sim[0].rm)}`):"Simulator-Läufe",Math.min(1,sim.length/6)],[hd&&hd.f&&hd.f.lit?"🔥 4/4":`${seals}/4`,"Siegel in Didaktika",seals/4],[`${Object.keys(qdC).length}/8`,`Akten gelöst · ${qdS}/24 ⭐`,Object.keys(qdC).length/8]];
+ const items=[[`${lpN}/14`,"Lernpfad-Stationen",lpN/14],[`${lkSicher}`,`Karten sicher (Fach 4–5) · ${lkSeen} geübt`,Math.min(1,lkSicher/110)],[`${sim.length}`,sim[0]?(sim[0].s!=null?`Simulator-Läufe · zuletzt ${num(sim[0].s)}/6`:`Simulator-Läufe · zuletzt Teil 2: ${num(sim[0].r)}/${num(sim[0].rm)}`):"Simulator-Läufe",Math.min(1,sim.length/6)],[done2?"🏆 8/8":hf.p2?`🔥 · ${sh}/4`:hf.lit?"🔥 4/4":`${seals}/4`,done2?"Hafenstadt: Leuchtfeuer & Insel-Kolloquium":hf.p2?"Arbeitsblätter auf der Insel (Teil 2)":"Siegel in Didaktika",(seals+sh)/8],[`${Object.keys(qdC).length}/8`,`Akten gelöst · ${qdS}/24 ⭐`,Object.keys(qdC).length/8]];
  $("#prog").innerHTML=items.map(([b,s,p])=>`<div class="pc"><b>${esc(b)}</b><span>${esc(s)}</span><i style="--p:${Math.round(Math.min(1,num(p))*100)}%"></i></div>`).join("")}
 progress();window.addEventListener("pageshow",()=>{progress();todayPlan()});
 
@@ -239,6 +241,7 @@ function todayPlan(){const day=Math.floor(Date.now()/864e5),isToday=ts=>ts&&Math
   L.push({b:"Ruhige Generalprobe im Simulator",s:"Komplette Simulation, laut sprechen, danach früh schlafen.",h:"training/kolloquium-simulator.html",done:!!simToday})}
  else{if(nextSt>=0&&(left===null||left>14))L.push({b:`Lernpfad: Station ${nextSt+1} · ${STATIONS[nextSt]}`,s:`${Object.values(lp).filter(Boolean).length} von 14 Stationen geschafft.`,h:"lernen/unterrichtsplanung.html#s"+nextSt,done:false});
   if(nextAkte||akteToday)L.push({b:nextAkte?`Querbezug-Detektiv: „${nextAkte[1]}“`:"Querbezug-Detektiv: Akte des Tages gelöst",s:"Eine Akte, danach die Musterformulierung laut nachsprechen.",h:"spiele/querbezug-detektiv.html",done:!!akteToday});
+  else if(hd&&hd.f&&hd.f.lit&&hd.done2!==true){const hf2=hd.f,sh2=["wa","wb","wc","wd"].filter(k=>hf2[k]).length;L.push({b:"Hafenstadt Didaktika · Teil 2",s:hf2.p2?`${sh2} von 4 Arbeitsblättern gefunden – Klotz wartet schon.`:"Bring die Glut des Leuchtfeuers zu Bernd – dann geht es auf die Insel.",h:"spiele/hafenstadt-didaktika.html",done:false})}
   else if(!hd||!(hd.f&&hd.f.lit))L.push({b:"Hafenstadt Didaktika: ein Kapitel weiterspielen",s:hd?`${hd.seals||0} von 4 Siegeln gesammelt.`:"Starte das Adventure – das Logbuch sammelt die Merksätze.",h:"spiele/hafenstadt-didaktika.html",done:false});
   const simDay=left===null?day%3===0:left<=14?true:day%3===0;
   if(simDay||simToday)L.push({b:gaps?`Simulator: Teil 2 intensiv (${gaps} Lücken offen)`:"Simulator: ein Durchgang",s:gaps?"Deine Lücken kommen bevorzugt dran – mit Prüfer-Nachfragen.":"Laut antworten, Antwortschema einhalten.",h:"training/kolloquium-simulator.html",done:!!simToday})}
@@ -294,8 +297,15 @@ window.addEventListener("appinstalled",()=>{$("#inst").hidden=true;$("#appNote")
  $("#saveQr").onclick=()=>{if(cv.hidden)return;const a=document.createElement("a");a.href=cv.toDataURL("image/png");a.download="seminar-island-qr-code.png";document.body.appendChild(a);a.click();a.remove();note.textContent="✓ QR-Code als Bild gespeichert."};
  if(navigator.share){const b=$("#shareBtn");b.hidden=false;b.onclick=()=>{navigator.share({title:"Seminar-Island",text:"Lernlauncher für das Kolloquium Pädagogik & Päd. Psychologie",url:val()}).catch(()=>{})}}})();
 
+/* Skripte offline: eigener Cache, den der Service Worker bei Updates nicht löscht */
+(function(){const b=$("#pdfOff"),n=$("#appNote");if(!("caches" in window)||!/^https?:$/.test(location.protocol))return;
+ const urls=[...document.querySelectorAll(".dl a.dlrow")].map(a=>new URL(a.getAttribute("href"),location.href).href);
+ const check=()=>caches.open("seminar-island-skripte").then(c=>Promise.all(urls.map(u=>c.match(u)))).then(m=>{const k=m.filter(Boolean).length;b.hidden=false;b.disabled=k===urls.length;b.textContent=k===urls.length?"✓ Skripte offline gespeichert":k?`📥 Restliche Skripte speichern (${k}/${urls.length} da)`:"📥 Skripte offline speichern"}).catch(()=>{});
+ b.onclick=()=>{b.disabled=true;b.textContent="Lade Skripte …";caches.open("seminar-island-skripte").then(c=>Promise.all(urls.map(u=>fetch(u,{cache:"no-cache"}).then(r=>{if(!r.ok)throw new Error("HTTP "+r.status);return c.put(u,r)})))).then(()=>{n.textContent="Skripte gespeichert – sie öffnen sich jetzt auch ohne Internet.";check()}).catch(()=>{n.textContent="Speichern hat nicht geklappt – bitte mit Internetverbindung erneut versuchen.";check()})};
+ check()})();
+
 /* Versionshinweis: nur eigene version.json, kein Nachladen von Code */
-const BUILD="abbdeea4b865";
+const BUILD="1a6aad27d7af";
 if(/^https?:$/.test(location.protocol))fetch("version.json",{cache:"no-store"}).then(r=>r.ok?r.json():null).then(v=>{if(v&&typeof v.version==="string"&&v.version!==BUILD){$("#upd").hidden=false;$("#updBtn").onclick=()=>location.reload()}}).catch(()=>{});
 </script>
 </body>

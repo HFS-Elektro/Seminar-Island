@@ -18,7 +18,7 @@ Alles läuft direkt im Browser, ohne Anmeldung und ohne Server. Der Lernstand bl
 | Training | `training/formulierungshilfe.html` | Satzbausteine fürs Kolloquium mit Vorlesefunktion, Lückentext und Sprech-Trainer |
 | Training | `zertifikat.html` | Druckbares Fortschritts-Zertifikat mit Rang aus allen Spielen und Trainings |
 | Training | `training/lernkarten.html` | Karteikasten nach Leitner (ca. 110 Karten + eigene Karten) |
-| Spiel | `spiele/hafenstadt-didaktika.html` | Point-and-Click-Adventure zur Unterrichtsplanung mit Reffi, Finale bei Herrn Eisele; Speedrun-Modus und Bestenliste |
+| Spiel | `spiele/hafenstadt-didaktika.html` | Point-and-Click-Adventure: Teil 1 zur Unterrichtsplanung (Finale bei Herrn Eisele), Teil 2 mit Affe Klotz auf der Insel der verlorenen Arbeitsblätter quer durch Pädagogik und Päd. Psychologie (Finale bei Eisele und Dr. Jäger); Speedrun-Modus und Bestenliste |
 | Spiel | `spiele/querbezug-detektiv.html` | Noir-Krimi in acht Akten: Spuren mit Theorien aus Pädagogik und Päd. Psychologie verbinden |
 | Spiel | `spiele/seminar-island-adventure.html` | Lernadventure quer durch alle Themen |
 | Skripte | `skripte/*.pdf` | Ausführliche Lernskripte als PDF |
@@ -87,6 +87,10 @@ Hinweis: Der gemeinsame Fortschritt im Launcher funktioniert am zuverlässigsten
 - Beim Aufruf über GitHub Pages protokolliert GitHub technisch bedingt die IP-Adresse. Wer den Launcher z. B. an einer Schule einsetzt, sollte das mit der zuständigen Stelle (Datenschutzbeauftragte) klären. Weil keine Seite fremde Server anspricht, lässt sich der Ordner unverändert auch auf jeden anderen statischen Webspace legen.
 - Fortschritt, Prüfungstermin, eigene Lernkarten, Spielstände und die Bestenliste liegen nur im `localStorage` deines Browsers.
 - Die optionale Sprachaufnahme im Simulator bleibt im Browser und wird nirgendwohin gesendet.
+
+## Haftungsausschluss / Nutzung auf eigene Gefahr
+
+Dies ist eine öffentlich erreichbare Webseite. Es ist nicht auszuschließen, dass auch Fremde auf sie gelangen. Es wurden gängige Sicherheitsmaßnahmen getroffen (siehe Abschnitt „Sicherheit“), ein hundertprozentiger Schutz ist heute jedoch praktisch nicht möglich. **Die Nutzung erfolgt auf eigene Gefahr.** Für Schäden, die aus der Nutzung entstehen, sowie für Vollständigkeit und Richtigkeit der Inhalte wird keine Haftung übernommen.
 
 ## Hinweise
 
